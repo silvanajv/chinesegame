@@ -2,7 +2,7 @@
 
 Juego para practicar chino mandarín con caracteres tradicionales. No se trata de memorizar diálogos: practicas **estructuras gramaticales**. Escuchas preguntas, cambias piezas de una oración, la transformas y construyes respuestas propias.
 
-**Jugar:** https://silvanajv.github.io/chinesegame/chinesegame.html
+**Jugar:** https://silvanajv.github.io/chinesegame/
 
 Funciona en el navegador, en computadora o celular. No necesitas crear cuenta ni instalar nada.
 
