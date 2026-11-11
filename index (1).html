@@ -1,0 +1,1811 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>說說看 Mandarín</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=LXGW+WenKai+TC:wght@400;700&family=Figtree:wght@400;500;600;700;800&family=Noto+Sans:wght@400;500&display=swap">
+<style>
+/* Layout: a study desk — one centered column; each exercise is a single card with the sentence set large in brush-kai, answers below, feedback slides in under it */
+:root{
+  --bg:#eef1f5; --card:#ffffff; --ink:#18202c; --muted:#5d6878; --line:#d8dee7; --soft:#f4f6f9;
+  --accent:#2a55a3; --accent-ink:#ffffff; --accent-soft:#e3eaf7; --seal:#c23b2d;
+  --good:#1d8a57; --good-bg:#e1f3e9; --warn:#a86a10; --warn-bg:#fbefd9; --bad:#c0392b; --bad-bg:#fbe3df;
+  --f-zh:"LXGW WenKai TC","Kaiti TC","BiauKai","STKaiti","Noto Serif TC",serif;
+  --f-ui:"Figtree","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-py:"Noto Sans","Helvetica Neue",Arial,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10141b; --card:#181e28; --ink:#e6ebf2; --muted:#98a3b3; --line:#2a3342; --soft:#1f2632;
+  --accent:#7ea4ec; --accent-ink:#0d1422; --accent-soft:#22304a; --seal:#ef6a58;
+  --good:#4cc78a; --good-bg:#16352a; --warn:#e8b04f; --warn-bg:#3a2c12; --bad:#ff7a69; --bad-bg:#3d1d19; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10141b; --card:#181e28; --ink:#e6ebf2; --muted:#98a3b3; --line:#2a3342; --soft:#1f2632;
+  --accent:#7ea4ec; --accent-ink:#0d1422; --accent-soft:#22304a; --seal:#ef6a58;
+  --good:#4cc78a; --good-bg:#16352a; --warn:#e8b04f; --warn-bg:#3a2c12; --bad:#ff7a69; --bad-bg:#3d1d19; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-ui);font-size:16px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 40px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.zh{font-family:var(--f-zh)}
+.py{font-family:var(--f-py);color:var(--muted)}
+.muted{color:var(--muted)} .small{font-size:.85rem}
+h1{font-size:1.5rem;margin:0 0 12px;font-weight:800;letter-spacing:-.01em;text-wrap:balance}
+h2{font-size:1rem;margin:20px 0 8px;font-weight:700}
+.lbl{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.wrap{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
+/* header */
+.top{max-width:760px;margin:0 auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-block:14px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .seal{width:38px;height:38px;border-radius:8px;background:var(--seal);color:#fff;font-family:var(--f-zh);font-size:1.6rem;display:grid;place-items:center;line-height:1}
+.brand b{display:block;font-family:var(--f-zh);font-size:1.25rem;line-height:1}
+.brand small{color:var(--muted);font-size:.75rem}
+.top nav{display:flex;flex-wrap:wrap;gap:4px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:3px}
+.top nav button{border:0;background:none;border-radius:9px;padding:6px 12px;font-weight:600;font-size:.9rem}
+.top nav button.on{background:var(--accent);color:var(--accent-ink)}
+.me{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:.8rem;flex-wrap:wrap}
+.lvl{font-weight:700}
+.xpbar{width:70px;height:6px;background:var(--line);border-radius:9px;overflow:hidden}.xpbar i{display:block;height:100%;background:var(--accent)}
+.save{padding:2px 8px;border-radius:99px;font-weight:600}
+.save.ok{background:var(--good-bg);color:var(--good)}.save.warn{background:var(--warn-bg);color:var(--warn)}.save.bad{background:var(--bad-bg);color:var(--bad)}.save.wait{background:var(--soft);color:var(--muted)}
+@media (max-width:560px){.me{margin-left:0;width:100%}}
+/* controls */
+.primary{background:var(--accent);color:var(--accent-ink);border:0;border-radius:12px;padding:11px 18px;font-weight:700}
+.primary.big{padding:15px;font-size:1.1rem;width:100%}
+.ghost{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 14px;font-weight:600}
+.ghost:disabled,.primary:disabled{opacity:.45;cursor:default}
+.sm{padding:5px 10px;font-size:.85rem;border-radius:9px}
+.danger{background:var(--bad);color:#fff;border:0;border-radius:12px;padding:10px 16px;font-weight:700}
+.link{background:none;border:0;color:var(--accent);text-decoration:underline;padding:0;font-weight:600}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:99px;padding:8px 14px;font-weight:600}
+.chip b{color:var(--muted);margin-right:2px}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}.chip.on b{color:inherit;opacity:.8}
+.chip.sm{padding:4px 12px}
+.sits{align-items:center;margin-top:10px}
+.structs{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px;margin-top:10px}
+.srow{display:flex;flex-direction:column;align-items:flex-start;gap:3px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.srow.on{border-color:var(--accent);box-shadow:inset 0 0 0 1px var(--accent)}
+.srow .zh{font-size:1.1rem}.srow .pat{font-size:.78rem;color:var(--muted)}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+@media (max-width:560px){.modes{grid-template-columns:1fr 1fr}}
+.mode,.seg4 button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.mode small,.seg4 small{color:var(--muted);font-size:.78rem}
+.mode.on,.seg4 button.on{border-color:var(--accent);background:var(--accent-soft)}
+.seg4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+@media (max-width:560px){.seg4{grid-template-columns:1fr 1fr}}
+.home section{display:flex;flex-direction:column}
+.resume{background:var(--accent-soft);border-radius:12px;padding:10px 14px}
+.note{color:var(--muted);font-size:.85rem}
+.pill{display:inline-block;font-size:.7rem;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--soft);color:var(--muted);letter-spacing:.02em}
+.pill.l1{background:var(--warn-bg);color:var(--warn)}.pill.l2{background:var(--accent-soft);color:var(--accent)}.pill.l3{background:var(--good-bg);color:var(--good)}.pill.new{background:var(--warn-bg);color:var(--warn)}
+/* play */
+.ptop{display:flex;align-items:center;gap:10px}
+.bar{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.cnt,.xp{font-size:.85rem;font-variant-numeric:tabular-nums;color:var(--muted);white-space:nowrap}
+.ex{display:flex;flex-direction:column;gap:14px}
+.exhead{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+.kind{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;font-weight:800;color:var(--seal)}
+.stchip{font-family:var(--f-zh);font-size:1rem;display:flex;gap:6px;align-items:center}
+.instr{margin:0;font-size:1.05rem}
+.audio{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--soft);border-radius:12px;padding:10px 12px}
+.audio .play{background:var(--accent);color:var(--accent-ink);border:0;border-radius:99px;padding:10px 18px;font-weight:700}
+.audio label{font-size:.85rem;color:var(--muted);display:flex;gap:6px;align-items:center}
+.audio select,.msel select{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:3px 6px;max-width:220px}
+.warn{color:var(--warn);font-size:.85rem;margin:0}
+.reveal{min-height:1em}
+.zh.big,.big .zh{font-size:clamp(1.6rem,6vw,2.2rem);line-height:1.25}
+.big1{font-size:4rem;line-height:1.1}
+.qtext,.basesent{display:flex;flex-direction:column;gap:2px}
+.cue{font-size:1.15rem;font-weight:600;background:var(--soft);border-radius:12px;padding:10px 14px}
+.pattern{font-family:var(--f-zh);font-size:1.1rem;color:var(--accent);border:1px dashed var(--accent);border-radius:10px;padding:6px 12px;align-self:flex-start}
+.changes{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+.scr{display:flex;flex-wrap:wrap;gap:8px}.scr span{font-size:1.4rem;background:var(--soft);border-radius:8px;padding:2px 10px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opts.es,.opts.desc{grid-template-columns:1fr}
+@media (max-width:520px){.opts{grid-template-columns:1fr}}
+.opt{position:relative;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:12px 12px 12px 38px;min-height:56px}
+.opt .zh{font-size:1.45rem}
+.opt .k{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:.75rem;color:var(--muted);font-family:var(--f-py)}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+.opt.right{border-color:var(--good);background:var(--good-bg)}.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt:disabled{cursor:default}
+.build{display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+.built{flex:1;min-width:180px;min-height:58px;border:2px dashed var(--line);border-radius:12px;padding:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ph{color:var(--muted);font-size:.9rem;padding:0 6px}
+.tile{background:var(--card);border:1px solid var(--line);border-bottom-width:3px;border-radius:10px;padding:4px 12px;display:flex;flex-direction:column;align-items:center;line-height:1.1;min-width:44px}
+.tile .zh{font-size:1.5rem}.tile small{font-family:var(--f-py);font-size:.7rem;color:var(--muted)}
+.tile.focus{border-color:var(--accent);background:var(--accent-soft)}
+.pool{display:flex;flex-wrap:wrap;gap:8px}
+.tctl{display:flex;gap:6px;flex-wrap:wrap}
+.ans{flex:1;min-width:200px;border:2px solid var(--line);border-radius:12px;padding:12px;background:var(--card);font-size:1.1rem}
+.ans.zh{font-size:1.4rem}
+.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+.msel{font-size:.85rem;color:var(--muted);display:flex;gap:6px;align-items:center;margin-right:auto}
+.hints{margin:0;padding:10px 10px 10px 30px;background:var(--warn-bg);border-radius:12px;display:flex;flex-direction:column;gap:4px}
+.hints li{font-size:.95rem}
+.fb{border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px;border:1px solid var(--line)}
+.fb.ok{background:var(--good-bg);border-color:transparent}.fb.partial,.fb.review{background:var(--warn-bg);border-color:transparent}.fb.bad{background:var(--bad-bg);border-color:transparent}
+.verdict{font-weight:800;font-size:1.1rem}
+.fb.ok .verdict{color:var(--good)}.fb.partial .verdict,.fb.review .verdict{color:var(--warn)}.fb.bad .verdict{color:var(--bad)}
+.gain{font-size:.8rem;font-weight:700;color:var(--muted);margin-left:6px}
+.ach-new{font-weight:700}
+.sent{background:var(--card);border-radius:10px;padding:8px 12px}
+.sent .zh.big{font-size:1.5rem}.sent .es{font-size:.95rem}
+.yours .zh{font-size:1.3rem}
+.tags{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.tag{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:6px;background:var(--card);margin-right:4px}
+.t-gram{color:var(--bad)}.t-vocab{color:var(--accent)}.t-char{color:var(--seal)}.t-py{color:var(--warn)}.t-nat{color:var(--warn)}.t-comp{color:var(--muted)}.t-info{color:var(--muted)}
+.more{font-size:.95rem}.more .zh{font-size:1.2rem}
+.vocabfb{display:flex;flex-direction:column;gap:4px}
+/* summary/bank/progress */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.kpis div{background:var(--soft);border-radius:12px;padding:12px}.kpis b{display:block;font-size:1.6rem;font-variant-numeric:tabular-nums}.kpis span{font-size:.78rem;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}@media (max-width:560px){.two{grid-template-columns:1fr}}
+.two ul,.summary ul{margin:0;padding-left:20px}
+.focus{background:var(--accent-soft);border-radius:12px;padding:10px 14px;margin:0}
+.tblwrap{overflow-x:auto}
+.tbl{width:100%;border-collapse:collapse;font-size:.9rem}
+.tbl th{text-align:left;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);padding:6px 8px;border-bottom:1px solid var(--line)}
+.tbl td{padding:8px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl td.zh.big{font-size:1.5rem}
+.tbl tr.hl td{background:var(--warn-bg)}
+.addf{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.addf input,.addf select,textarea,.filters input,.filters select{border:1px solid var(--line);border-radius:10px;padding:9px 10px;background:var(--card);min-width:0;width:100%}
+@media (max-width:560px){.addf{grid-template-columns:1fr}}
+details{margin-top:12px}summary{cursor:pointer;font-weight:600}
+textarea{display:block;margin:8px 0;font-family:var(--f-py)}
+.confirm{margin-top:12px;background:var(--good-bg);border-radius:12px;padding:10px 14px;line-height:1.6}
+.bhead{display:flex;flex-direction:column;gap:8px}
+.filters{display:grid;grid-template-columns:2fr 1fr 1fr;gap:8px;margin-bottom:8px}@media (max-width:560px){.filters{grid-template-columns:1fr}}
+.achs{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.ach{border:1px dashed var(--line);border-radius:12px;padding:10px;opacity:.55;display:flex;flex-direction:column}
+.ach.on{opacity:1;border-style:solid;border-color:var(--good);background:var(--good-bg)}.ach small{color:var(--muted);font-size:.78rem}
+.chk{display:flex;gap:8px;align-items:center}
+.fixp{display:flex;flex-direction:column;gap:6px;align-items:flex-start;background:var(--card);border-radius:12px;padding:12px}.fixp small{margin:-2px 0 6px}.fixp textarea{width:100%}
+.flash{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:8px 14px;border-radius:10px;font-weight:600;z-index:20;max-width:90vw}
+code{font-family:var(--f-py);background:var(--soft);padding:1px 5px;border-radius:4px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+<script>
+"use strict";
+/* =====================================================================
+   說說看 — motor local (sin IA en tiempo de ejecución)
+   1. Banco de vocabulario  2. Utilidades pinyin/hanzi  3. Español
+   4. Estructuras gramaticales  5. Índice global  6. Respuestas
+   7. Errores típicos  8. Ejercicios  9. Evaluación  10. Progreso
+   ===================================================================== */
+
+/* ---------- 1. BANCO (fuente de verdad: tu libro) ---------- */
+const CATS=['Sustantivo (objeto)','Sustantivo','País/lugar','Idioma','Apellido','Verbo','Adjetivo','Adverbio','Pronombre','Interrogativo','Partícula','Conector','Expresión','Componente','Número','Otro'];
+const BOOK_SRC=`您|nín|usted|Pronombre
+貴|guì|honorable, valioso|Adjetivo
+姓|xìng|apellido, apellidarse|Verbo
+李|lǐ|Li (apellido)|Apellido
+先|xiān|primero|Adverbio
+生|shēng|nacer, vida|Verbo
+王|wáng|Wang (apellido), rey|Apellido
+我|wǒ|yo|Pronombre
+叫|jiào|llamarse, llamar|Verbo
+好|hǎo|bien, bueno|Adjetivo
+萬|wàn|diez mil; Wan (apellido)|Apellido
+思|sī|pensar|Verbo
+妍|yán|bella|Adjetivo
+是|shì|ser|Verbo
+美|měi|hermoso; EE.UU. (美國)|Adjetivo
+國|guó|país, nación|Sustantivo
+人|rén|persona, gente|Sustantivo
+嗎|ma|partícula de pregunta sí/no|Partícula
+不|bù|no|Adverbio
+英|yīng|Inglaterra (英國), excelente|País/lugar
+你|nǐ|tú|Pronombre
+什|shén|qué (parte de 什麼)|Componente
+麼|me|parte de 什麼|Componente
+名|míng|nombre (parte de 名字)|Sustantivo
+字|zì|carácter, nombre|Sustantivo
+哪|nǎ|cuál, qué|Interrogativo
+呢|ne|¿y…? (pregunta de vuelta)|Partícula
+臺|tái|Tai (臺灣, forma completa)|País/lugar
+台|tái|Tai (台灣, forma corta)|País/lugar
+灣|wān|bahía (parte de 台灣)|Sustantivo
+他|tā|él|Pronombre
+中|zhōng|centro; China (中國)|Sustantivo
+她|tā|ella|Pronombre
+誰|shéi|quién|Interrogativo
+華|huá|chino, ilustre|Adjetivo
+早|zǎo|temprano, buenos días|Adjetivo
+趙|zhào|Zhao (apellido)|Apellido
+小|xiǎo|pequeño, joven|Adjetivo
+姐|jiě|hermana mayor (小姐)|Sustantivo
+張|zhāng|Zhang (apellido)|Apellido
+久|jiǔ|mucho tiempo|Adjetivo
+見|jiàn|ver, encontrarse|Verbo
+啊|a|partícula exclamativa|Partícula
+很|hěn|muy|Adverbio
+謝|xiè|agradecer|Verbo
+也|yě|también|Adverbio
+這|zhè|este, esto|Pronombre
+太|tài|demasiado|Adverbio
+們|men|plural de personas|Partícula
+天|tiān|día, cielo|Sustantivo
+氣|qì|aire (天氣)|Sustantivo
+熱|rè|caliente, calor|Adjetivo
+忙|máng|ocupado|Adjetivo
+去|qù|ir|Verbo
+上|shàng|arriba; asistir (上課)|Verbo
+課|kè|clase, lección|Sustantivo
+再|zài|otra vez|Adverbio
+冷|lěng|frío|Adjetivo
+喜|xǐ|gustar (parte de 喜歡)|Componente
+歡|huān|alegría (parte de 喜歡)|Componente
+看|kàn|mirar, ver, leer|Verbo
+電|diàn|electricidad|Sustantivo
+影|yǐng|sombra (電影)|Sustantivo
+視|shì|mirar (電視)|Componente
+都|dōu|todos, ambos|Adverbio
+有|yǒu|tener, haber|Verbo
+沒|méi|no (con 有)|Adverbio
+要|yào|querer, ir a|Verbo
+汽|qì|vapor (汽車)|Sustantivo
+車|chē|vehículo, coche|Sustantivo (objeto)
+買|mǎi|comprar|Verbo
+可|kě|poder (可以)|Verbo
+書|shū|libro|Sustantivo (objeto)
+日|rì|sol, día; Japón (日本)|Sustantivo
+本|běn|raíz; clasificador de libros|Sustantivo
+筆|bǐ|bolígrafo, pluma|Sustantivo (objeto)
+德|dé|Alemania (德國), virtud|País/lugar
+報|bào|periódico (報紙), informar|Sustantivo
+法|fǎ|Francia (法國), ley|País/lugar
+文|wén|idioma escrito, texto|Sustantivo
+東|dōng|este (東西)|Sustantivo
+西|xī|oeste (東西)|Sustantivo
+懂|dǒng|entender|Verbo
+先生|xiānshēng|señor|Sustantivo
+小姐|xiǎojiě|señorita|Sustantivo
+名字|míngzì|nombre|Sustantivo
+謝謝|xièxie|gracias|Expresión
+再見|zàijiàn|adiós|Expresión
+喜歡|xǐhuān|gustar|Verbo
+東西|dōngxī|cosas, objetos|Sustantivo
+日本|Rìběn|Japón|País/lugar
+美國|Měiguó|Estados Unidos|País/lugar
+英國|Yīngguó|Inglaterra|País/lugar
+中國|Zhōngguó|China|País/lugar
+德國|Déguó|Alemania|País/lugar
+法國|Fǎguó|Francia|País/lugar
+台灣|Táiwān|Taiwán|País/lugar
+臺灣|Táiwān|Taiwán (forma completa)|País/lugar
+電影|diànyǐng|película|Sustantivo
+電視|diànshì|televisión|Sustantivo (objeto)
+汽車|qìchē|automóvil|Sustantivo (objeto)
+天氣|tiānqì|clima, tiempo|Sustantivo
+什麼|shénme|qué|Interrogativo
+上課|shàngkè|ir a clase, tener clase|Verbo
+沒有|méiyǒu|no tener, no haber|Verbo
+中文|Zhōngwén|chino (idioma)|Idioma
+英文|Yīngwén|inglés|Idioma
+法文|Fǎwén|francés|Idioma
+德文|Déwén|alemán|Idioma
+日文|Rìwén|japonés|Idioma
+好久不見|hǎojiǔ bú jiàn|¡cuánto tiempo sin verte!|Expresión
+你好|nǐ hǎo|hola|Expresión
+您好|nín hǎo|hola (formal)|Expresión
+貴姓|guìxìng|su apellido (formal)|Expresión
+哪國|nǎ guó|qué país|Interrogativo
+我們|wǒmen|nosotros|Pronombre
+你們|nǐmen|ustedes|Pronombre
+他們|tāmen|ellos|Pronombre
+她們|tāmen|ellas|Pronombre`;
+const CLASS_SRC=`話|huà|habla, idioma hablado (哪國話)|Sustantivo
+和|hé|y (entre sustantivos)|Conector
+紙|zhǐ|papel|Sustantivo
+報紙|bàozhǐ|periódico|Sustantivo (objeto)
+了|le|partícula (太…了)|Partícula`;
+const parseSrc=(src,o)=>src.trim().split('\n').map(l=>{const [hz,py,es,cat]=l.split('|');return {hz,py,es,cat,ex:'',...o};});
+const BASE_BANK=[...parseSrc(BOOK_SRC,{src:'libro',status:'familiar'}),...parseSrc(CLASS_SRC,{src:'ejemplos de clase',status:'nuevo'})];
+
+/* ---------- 2. PINYIN / HANZI ---------- */
+const PUNCT=new Set(['，','。','？','！']);
+const isP=t=>PUNCT.has(t);
+const TONE_OF={'̄':1,'́':2,'̌':3,'̀':4};
+const toneless=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+const compactPy=s=>toneless(s).replace(/v/g,'u').replace(/[^a-z]/g,'');
+function hasTones(s){return /[̀́̄̌]/.test(s.normalize('NFD'))||/[a-zü][1-5]/i.test(s);}
+function toneSeq(s){const d=s.normalize('NFD');const out=[];
+  if(!/[̀́̄̌]/.test(d)&&/[a-zü][1-5]/i.test(s)){(s.match(/[a-züv]+[0-5]/gi)||[]).forEach(m=>{const t=+m.slice(-1);if(t>=1&&t<=4)out.push(t);});return out;}
+  for(const ch of d)if(TONE_OF[ch])out.push(TONE_OF[ch]);return out;}
+function firstTone(py){for(const ch of py.normalize('NFD')){if(TONE_OF[ch])return TONE_OF[ch];if(ch===' ')break;}return 0;}
+const SURN_CAP=new Set(['李','王','趙','張','萬']);
+let PY={};          // token -> pinyin
+let DICT=new Set(); // tokens conocidos (para segmentar)
+let KNOWN_CH=new Set();
+let ENTRY={};       // hz -> entrada del banco
+const EXTRA_TOK={'有沒有':'yǒu méiyǒu'};
+function tokPy(t){if(PY[t])return PY[t];return [...t].map(c=>PY[c]||'?').join('');}
+function sentPy(toks,plain){let out='';toks.forEach((t,i)=>{
+  if(isP(t)){out+={'，':',','。':'.','？':'?','！':'!'}[t];return;}
+  let p=tokPy(t);
+  if(SURN_CAP.has(t)&&(SURN_CAP.has(t)&&toks[i+1]!=='國'))p=p.charAt(0).toUpperCase()+p.slice(1);
+  if(t==='不'&&!plain){const prev=toks[i-1],next=toks[i+1];
+    if(prev&&next&&(next===prev||next.startsWith(prev)))p='bu';
+    else if(next&&!isP(next)&&firstTone(tokPy(next))===4)p='bú';}
+  out+=(out?' ':'')+p;});
+  return out.replace(/^./,c=>c.toUpperCase());}
+const SIMP={'们':'們','吗':'嗎','国':'國','这':'這','谁':'誰','谢':'謝','见':'見','课':'課','气':'氣','热':'熱','电':'電','视':'視','欢':'歡','东':'東','车':'車','买':'買','书':'書','笔':'筆','报':'報','湾':'灣','华':'華','张':'張','赵':'趙','贵':'貴','么':'麼','没':'沒','话':'話','纸':'紙','万':'萬','说':'說','学':'學','对':'對','个':'個'};
+function toTrad(s){const f=[];const o=[...s].map(c=>{if(SIMP[c]){f.push(c+'→'+SIMP[c]);return SIMP[c];}return c;}).join('');return {s:o,found:[...new Set(f)]};}
+const normHz=s=>s.replace(/[\s，。！？、,.!?;；:：「」『』"'“”…~～·]/g,'').replace(/臺/g,'台');
+function tokenize(s){const out=[];let i=0;const a=[...s];while(i<a.length){let L=Math.min(4,a.length-i);for(;L>1;L--)if(DICT.has(a.slice(i,i+L).join('')))break;out.push(a.slice(i,i+L).join(''));i+=L;}return out;}
+function hzToPy(s){const t=tokenize(s);let o='';for(const x of t){if(PY[x])o+=compactPy(PY[x]);else return null;}return o;}
+function lev(a,b){a=[...a];b=[...b];const m=a.length,n=b.length;if(!m)return n;if(!n)return m;let prev=Array.from({length:n+1},(_,j)=>j);
+  for(let i=1;i<=m;i++){const cur=[i];for(let j=1;j<=n;j++)cur[j]=Math.min(prev[j]+1,cur[j-1]+1,prev[j-1]+(a[i-1]===b[j-1]?0:1));prev=cur;}return prev[n];}
+
+/* ---------- 3. ESPAÑOL ---------- */
+const SUBJ={'我':{p:0,pron:'yo',pre:''},'你':{p:1,pron:'tú',pre:''},'您':{p:2,pron:'usted',pre:'usted'},'他':{p:2,pron:'él',pre:'él'},'她':{p:2,pron:'ella',pre:'ella'},'我們':{p:3,pron:'nosotros',pre:''},'你們':{p:4,pron:'ustedes',pre:'ustedes'},'他們':{p:4,pron:'ellos',pre:'ellos'},'她們':{p:4,pron:'ellas',pre:'ellas'}};
+const CONJ={ser:['soy','eres','es','somos','son'],tener:['tengo','tienes','tiene','tenemos','tienen'],llamarse:['me llamo','te llamas','se llama','nos llamamos','se llaman'],apellidarse:['me apellido','te apellidas','se apellida','nos apellidamos','se apellidan'],entender:['entiendo','entiendes','entiende','entendemos','entienden'],estar:['estoy','estás','está','estamos','están'],querer:['quiero','quieres','quiere','queremos','quieren'],ver:['veo','ves','ve','vemos','ven'],leer:['leo','lees','lee','leemos','leen']};
+const GP=['me','te','le','nos','les'];
+const gen=(s,stem)=>stem+({'他':'o','她':'a','我們':'os','你們':'os','他們':'os','她們':'as'}[s]||'o/a');
+const cap=s=>s.replace(/^([¿¡]?)(.)/,(m,a,b)=>a+b.toUpperCase());
+function fin(s,q){s=s.replace(/\s+/g,' ').trim();return cap(q?'¿'+s+'?':s+'.');}
+const pre=s=>SUBJ[s]?SUBJ[s].pre:'';
+const pp=s=>SUBJ[s]?SUBJ[s].p:2;
+function esC(o){const S0=SUBJ[o.subj];let p=S0.p;const pron=S0.pron;const rest=typeof o.rest==='function'?o.rest(o.subj):(o.rest||'');let s;
+  let head='',neg=o.neg?'no ':'';
+  if(o.adv==='ye'){head=pron+(o.neg?' tampoco ':' también ');neg='';}
+  else if(o.adv==='dou'){if(o.neg){head='ninguno de '+pron+' ';p=2;}else head='todos '+(p===3?'':pron+' ');neg='';}
+  else if(S0.pre)head=S0.pre+' ';
+  if(o.v==='gustar')s=(head?'a '+head:'')+neg+GP[p]+' '+(o.gustan?'gustan':'gusta')+' '+rest;
+  else s=head+neg+CONJ[o.v][p]+' '+rest;
+  return fin(s,o.q);}
+
+/* ---------- 4. ESTRUCTURAS ---------- */
+const mk=(hz,es,x)=>({hz,toks:[hz],es,gloss:es,...x});
+const mkT=(toks,es,x)=>({hz:toks.join(''),toks,es,gloss:es,...x});
+const BASE_SLOTS={
+ SURN:[mk('李','Li'),mk('王','Wang'),mk('趙','Zhao'),mk('張','Zhang'),mk('萬','Wan')],
+ NAMES:[['萬思妍','Wàn Sīyán','Wan Siyan'],['王小華','Wáng Xiǎohuá','Wang Xiaohua'],['李美英','Lǐ Měiyīng','Li Meiying'],['張文華','Zhāng Wénhuá','Zhang Wenhua'],['趙小英','Zhào Xiǎoyīng','Zhao Xiaoying']].map(([h,p,e])=>mk(h,e,{py:p,name:1})),
+ COUNTRY:[mk('美國','Estados Unidos'),mk('英國','Inglaterra'),mk('中國','China'),mk('德國','Alemania'),mk('法國','Francia'),mk('日本','Japón'),mk('台灣','Taiwán')],
+ LANG:[mk('中文','chino'),mk('英文','inglés'),mk('法文','francés'),mk('德文','alemán'),mk('日文','japonés')],
+ OBJ:[mk('書','libros',{esN:'libros'}),mk('筆','un bolígrafo',{esN:'bolígrafo',gloss:'bolígrafo'}),mk('車','coche',{esN:'coche'}),mk('汽車','un automóvil',{esN:'automóvil',gloss:'automóvil'}),mk('電視','televisión',{esN:'televisión'}),mk('報紙','el periódico',{esN:'periódico',gloss:'periódico'})],
+ THIS:[mk('書','un libro',{w:'這'}),mk('筆','un bolígrafo',{w:'這'}),mk('車','un coche',{w:'這'}),mk('報紙','un periódico',{w:'這'}),mk('電視','una televisión',{w:'這'})],
+ TITLES:[mkT(['王','先生'],'el señor Wang',{w:'他'}),mkT(['李','先生'],'el señor Li',{w:'他'}),mkT(['張','先生'],'el señor Zhang',{w:'他'}),mkT(['李','小姐'],'la señorita Li',{w:'她'}),mkT(['趙','小姐'],'la señorita Zhao',{w:'她'}),mkT(['萬','小姐'],'la señorita Wan',{w:'她'})],
+ LIKE_VO:[mkT(['看','電影'],'ver películas'),mkT(['看','電視'],'ver la televisión'),mkT(['看','書'],'leer libros'),mkT(['看','報'],'leer el periódico'),mkT(['買','東西'],'comprar cosas'),mkT(['看','台灣','電影'],'ver películas taiwanesas'),mkT(['看','美國','電影'],'ver películas estadounidenses'),mkT(['看','日本','電影'],'ver películas japonesas')],
+ KAN_O:[mkT(['電影'],'películas',{v:'ver'}),mkT(['電視'],'la televisión',{v:'ver'}),mkT(['書'],'libros',{v:'leer'}),mkT(['報'],'el periódico',{v:'leer'}),mkT(['台灣','電影'],'películas taiwanesas',{v:'ver'}),mkT(['美國','電影'],'películas estadounidenses',{v:'ver'}),mkT(['日本','電影'],'películas japonesas',{v:'ver'})],
+ YAO_VO:[mkT(['去','上課'],'ir a clase'),mkT(['買','書'],'comprar libros'),mkT(['買','筆'],'comprar un bolígrafo'),mkT(['買','車'],'comprar un coche'),mkT(['買','東西'],'comprar cosas'),mkT(['看','電影'],'ver una película'),mkT(['去','台灣'],'ir a Taiwán'),mkT(['去','日本'],'ir a Japón'),mkT(['去','美國'],'ir a Estados Unidos')],
+ NAT_N:[mk('車','los coches',{gloss:'coches'}),mk('電影','las películas',{gloss:'películas'}),mk('書','los libros',{gloss:'libros'})],
+};
+const SL={};for(const k in BASE_SLOTS)SL[k]=BASE_SLOTS[k].slice();
+const ADJ=[{hz:'忙',toks:['忙'],k:'p',es:s=>gen(s,'ocupad'),gloss:'ocupado/a'},{hz:'好',toks:['好'],k:'p',es:'bien',gloss:'bien'},{hz:'熱',toks:['熱'],k:'w',esW:'calor',gloss:'calor'},{hz:'冷',toks:['冷'],k:'w',esW:'frío',gloss:'frío'}];
+const PRED=[
+ {hz:'是美國人',toks:['是','美國','人'],neg:['不','是','美國','人'],v:'ser',es:'de Estados Unidos',gloss:'ser de EE.UU.',yes:['是'],no:['不','是']},
+ {hz:'是台灣人',toks:['是','台灣','人'],neg:['不','是','台灣','人'],v:'ser',es:'de Taiwán',gloss:'ser de Taiwán',yes:['是'],no:['不','是']},
+ {hz:'喜歡看電影',toks:['喜歡','看','電影'],neg:['不','喜歡','看','電影'],v:'gustar',es:'ver películas',gloss:'gustar ver películas',yes:['喜歡'],no:['不','喜歡']},
+ {hz:'很忙',toks:['很','忙'],neg:['不','忙'],v:'estar',es:s=>gen(s,'ocupad'),gloss:'estar ocupado',yes:['很','忙'],no:['不','忙']},
+ {hz:'有車',toks:['有','車'],neg:['沒有','車'],v:'tener',es:'coche',gloss:'tener coche',yes:['有'],no:['沒有']},
+ {hz:'懂中文',toks:['懂','中文'],neg:['不','懂','中文'],v:'entender',es:'chino',gloss:'entender chino',yes:['懂'],no:['不','懂']},
+ {hz:'要去上課',toks:['要','去','上課'],neg:['不','要','去','上課'],v:'querer',es:'ir a clase',gloss:'ir a clase',yes:['要'],no:['不','要']}];
+const WHO=[{hz:'你',toks:['你'],es:'tú',gloss:'tú'},{hz:'他',toks:['他'],es:'él',gloss:'él'},{hz:'她',toks:['她'],es:'ella',gloss:'ella'},{hz:'你們',toks:['你們'],es:'ustedes',gloss:'ustedes'}];
+const PERS=['我','你','他','她','您','我們','你們','他們'];
+const PLURAL_S=['我們','你們','他們'];
+const mapA=s=>({'你':'我','您':'我','你們':'我們'})[s]||s;
+const PLUR={'我':'我們','你':'你們','他':'他們','她':'她們','您':'你們'};
+const end=p=>p.q?'？':'。';
+const T=(...a)=>a.flat().filter(x=>x!=null&&x!==false&&x!=='');
+const S={};
+function def(o){o.forms=o.forms||{};o.sub=o.sub||{};S[o.id]=o;return o;}
+
+def({id:'xing',shortWh:p=>[p.x.hz],name:'姓 + apellido',topic:1,pattern:'Sujeto + 姓 + apellido',
+ expl:'姓 va justo antes del apellido. Para preguntar: 你姓什麼？ o, con respeto, 您貴姓？',
+ h2:'El apellido va justo después de 姓. La negación 不 va antes de 姓.',
+ cando:'Decir tu apellido y preguntar el de otros',
+ slots:{subj:['我','你','他','她','您'],x:SL.SURN},sub:{subj:'sujeto',x:'apellido'},forms:{neg:1,ma:1,wh:1},whSlot:'x',
+ yes:()=>['是'],no:()=>['不','是'],
+ render(p){if(p.q==='wh')return p.subj==='您'?{toks:['您','貴姓','？'],es:'¿Cuál es su apellido?'}:{toks:[p.subj,'姓','什麼','？'],es:fin('cómo '+CONJ.apellidarse[pp(p.subj)]+(pre(p.subj)?' '+pre(p.subj):''),1)};
+  return {toks:T(p.subj,p.neg&&'不','姓',p.x.hz,p.q==='ma'&&'嗎',end(p)),es:esC({subj:p.subj,v:'apellidarse',rest:p.x.es,neg:p.neg,q:!!p.q})};}});
+
+def({id:'jiao',shortWh:p=>[p.n.hz],name:'叫 + nombre',topic:1,pattern:'Sujeto + 叫 + nombre completo',
+ expl:'叫 + nombre completo. Para preguntar: 你叫什麼名字？',
+ h2:'叫 va antes del nombre. En la pregunta, 什麼名字 ocupa el lugar del nombre.',
+ cando:'Decir tu nombre y preguntar el de otros',
+ slots:{subj:['我','你','他','她'],n:SL.NAMES},sub:{subj:'sujeto',n:'nombre'},forms:{neg:1,ma:1,wh:1},whSlot:'n',
+ yes:()=>['是'],no:()=>['不','是'],
+ render(p){if(p.q==='wh')return {toks:[p.subj,'叫','什麼','名字','？'],es:fin('cómo '+CONJ.llamarse[pp(p.subj)]+(pre(p.subj)?' '+pre(p.subj):''),1)};
+  return {toks:T(p.subj,p.neg&&'不','叫',p.n.hz,p.q==='ma'&&'嗎',end(p)),es:esC({subj:p.subj,v:'llamarse',rest:p.n.es,neg:p.neg,q:!!p.q})};}});
+
+def({id:'guoren',shortWh:p=>[p.c.hz,'人'],name:'是 + país + 人',topic:2,pattern:'Sujeto + 是 + país + 人',
+ expl:'Nacionalidad = país + 人 (美國人). Para preguntar: 你是哪國人？',
+ h2:'Nacionalidad = país + 人. Se niega con 不是.',
+ cando:'Decir tu nacionalidad y preguntar la de otros',
+ slots:{subj:PERS,c:SL.COUNTRY},sub:{subj:'sujeto',c:'país'},forms:{neg:1,ma:1,anb:1,wh:1,plural:1},whSlot:'c',
+ yes:()=>['是'],no:()=>['不','是'],
+ render(p){const q=!!p.q;
+  if(p.q==='wh')return {toks:[p.subj,'是','哪國','人','？'],es:fin('de qué país '+CONJ.ser[pp(p.subj)]+(pre(p.subj)?' '+pre(p.subj):''),1)};
+  if(p.q==='anb')return {toks:[p.subj,'是','不','是',p.c.hz,'人','？'],es:esC({subj:p.subj,v:'ser',rest:'de '+p.c.es,q})};
+  return {toks:T(p.subj,p.neg&&'不','是',p.c.hz,'人',p.q==='ma'&&'嗎',end(p)),es:esC({subj:p.subj,v:'ser',rest:'de '+p.c.es,neg:p.neg,q})};}});
+
+def({id:'dong',shortWh:p=>[p.l.hz],name:'懂 + idioma',topic:2,pattern:'Sujeto + 懂 + idioma (，不懂 + idioma)',
+ expl:'Idioma = país + 文 (中文, 法文). "¿Qué idiomas?" se dice 哪國話.',
+ h2:'懂 va antes del idioma. Para contrastar: 我懂中文，不懂法文.',
+ cando:'Decir qué idiomas entiendes y cuáles no',
+ slots:{subj:PERS,l:SL.LANG,l2:[null,...SL.LANG]},sub:{subj:'sujeto',l:'idioma'},forms:{neg:1,ma:1,anb:1,wh:1,plural:1},whSlot:'l',
+ valid:p=>!p.l2||(p.l2!==p.l&&!p.neg&&!p.q),
+ yes:()=>['懂'],no:()=>['不','懂'],
+ render(p){const q=!!p.q;
+  if(p.q==='wh')return {toks:[p.subj,'懂','哪國','話','？'],es:fin('qué idiomas '+CONJ.entender[pp(p.subj)]+(pre(p.subj)?' '+pre(p.subj):''),1)};
+  if(p.q==='anb')return {toks:[p.subj,'懂','不','懂',p.l.hz,'？'],es:esC({subj:p.subj,v:'entender',rest:p.l.es,q})};
+  let es=esC({subj:p.subj,v:'entender',rest:p.l.es,neg:p.neg,q});
+  if(p.l2)es=es.slice(0,-1)+', no '+CONJ.entender[pp(p.subj)]+' '+p.l2.es+'.';
+  return {toks:T(p.subj,p.neg&&'不','懂',p.l.hz,p.l2&&['，','不','懂',p.l2.hz],p.q==='ma'&&'嗎',end(p)),es};}});
+
+function weatherEs(a,neg,q,mod){return fin((neg?'no ':'')+'hace '+(mod||'')+a.esW,q);}
+def({id:'hen',name:'很 + adjetivo',topic:3,pattern:'Sujeto + 很 + adjetivo',
+ expl:'Con adjetivos no se usa 是: 我很忙, 天氣很冷. Al negar, 不 sustituye a 很.',
+ h2:'Con adjetivos no hay 是. Negativo: 不 + adjetivo (sin 很). Pregunta: adjetivo + 嗎.',
+ cando:'Decir cómo estás y qué tiempo hace',
+ slots:{subj:[...PERS,'天氣'],a:ADJ},sub:{subj:'sujeto',a:'adjetivo'},forms:{neg:1,ma:1,anb:1,plural:1},
+ valid:p=>(p.subj==='天氣')===(p.a.k==='w'),
+ yes:p=>['很',p.a.hz],no:p=>['不',p.a.hz],
+ render(p){const W=p.subj==='天氣',q=!!p.q,a=p.a;
+  const es=W?weatherEs(a,p.neg,q):(a.hz==='好'&&p.q==='ma'?fin('cómo '+CONJ.estar[pp(p.subj)]+(pre(p.subj)?' '+pre(p.subj):''),1):esC({subj:p.subj,v:'estar',rest:a.es,neg:p.neg,q}));
+  if(p.q==='ma')return {toks:[p.subj,a.hz,'嗎','？'],es};
+  if(p.q==='anb')return {toks:[p.subj,a.hz,'不',a.hz,'？'],es};
+  if(p.neg)return {toks:[p.subj,'不',a.hz,'。'],alts:[[p.subj,'不','太',a.hz,'。']],es};
+  return {toks:[p.subj,'很',a.hz,'。'],es};}});
+
+def({id:'tai',name:'太 + adjetivo + 了',topic:3,pattern:'Sujeto + 太 + adjetivo + 了',
+ expl:'太 + adjetivo + 了 = demasiado. 不太 + adjetivo = no muy.',
+ h2:'太 abre y 了 cierra: 太熱了. Para "no muy", 不太 + adjetivo, sin 了.',
+ cando:'Exagerar o suavizar: demasiado calor, no muy ocupado',
+ slots:{subj:['天氣','我','你','他','她'],a:ADJ.filter(a=>a.hz!=='好')},sub:{subj:'sujeto',a:'adjetivo'},forms:{neg:1},
+ valid:p=>(p.subj==='天氣')===(p.a.k==='w'),
+ render(p){const W=p.subj==='天氣';
+  if(p.neg)return {toks:[p.subj,'不','太',p.a.hz,'。'],es:W?weatherEs(p.a,1,0,'mucho '):esC({subj:p.subj,v:'estar',rest:s=>'muy '+gen(s,'ocupad'),neg:1})};
+  return {toks:[p.subj,'太',p.a.hz,'了','。'],es:W?fin('hace demasiado '+p.a.esW):esC({subj:p.subj,v:'estar',rest:s=>'demasiado '+gen(s,'ocupad')})};}});
+
+def({id:'xihuan',shortWh:p=>p.vo.toks,name:'喜歡 + verbo + objeto',topic:4,pattern:'Sujeto + 喜歡 + verbo + objeto',
+ expl:'喜歡 va antes de la actividad: 我喜歡看電影. Negativo: 不喜歡.',
+ h2:'喜歡 + actividad (verbo + objeto). 不 va antes de 喜歡. A-不-A: 喜不喜歡.',
+ cando:'Hablar de lo que te gusta hacer',
+ slots:{subj:PERS,vo:SL.LIKE_VO},sub:{subj:'sujeto',vo:'actividad'},forms:{neg:1,ma:1,anb:1,wh:1,plural:1},whSlot:'vo',whFilter:v=>v.toks[0]==='看',
+ yes:()=>['喜歡'],no:()=>['不','喜歡'],
+ render(p){const q=!!p.q;
+  if(p.q==='wh')return {toks:[p.subj,'喜歡','看','什麼','？'],es:fin('qué '+GP[pp(p.subj)]+' gusta ver'+(pre(p.subj)?' a '+pre(p.subj):''),1)};
+  const es=esC({subj:p.subj,v:'gustar',rest:p.vo.es,neg:p.neg,q});
+  if(p.q==='anb')return {toks:[p.subj,'喜','不','喜歡',...p.vo.toks,'？'],alts:[[p.subj,'喜歡','不','喜歡',...p.vo.toks,'？']],es};
+  return {toks:T(p.subj,p.neg&&'不','喜歡',p.vo.toks,p.q==='ma'&&'嗎',end(p)),es};}});
+
+def({id:'kan',shortWh:p=>p.o.toks,name:'看 + objeto',topic:4,pattern:'Sujeto + 看 + objeto',
+ expl:'看 sirve para ver (電影, 電視) y para leer (書, 報).',
+ h2:'Verbo + objeto, sin artículo. A-不-A: 看不看.',
+ cando:'Decir qué ves o lees',
+ slots:{subj:PERS,o:SL.KAN_O},sub:{subj:'sujeto',o:'objeto'},forms:{neg:1,ma:1,anb:1,wh:1,plural:1},whSlot:'o',
+ yes:()=>['看'],no:()=>['不','看'],
+ render(p){const q=!!p.q;
+  if(p.q==='wh')return {toks:[p.subj,'看','什麼','？'],es:fin('qué '+CONJ.ver[pp(p.subj)]+(pre(p.subj)?' '+pre(p.subj):''),1)};
+  const es=esC({subj:p.subj,v:p.o.v,rest:p.o.es,neg:p.neg,q});
+  if(p.q==='anb')return {toks:[p.subj,'看','不','看',...p.o.toks,'？'],es};
+  return {toks:T(p.subj,p.neg&&'不','看',p.o.toks,p.q==='ma'&&'嗎',end(p)),es};}});
+
+def({id:'yedou',name:'也 / 都',topic:4,pattern:'Sujeto + 也/都 + (不) + verbo…',
+ expl:'也 (también) y 都 (todos) van después del sujeto y antes del verbo. 都 necesita un sujeto plural.',
+ h2:'Orden: sujeto + 也/都 + 不 + verbo. Nunca 也 al principio de la oración.',
+ cando:'Decir "también", "tampoco" y "todos"',
+ slots:{subj:PERS,adv:['也','都'],pr:PRED},sub:{subj:'sujeto',pr:'predicado'},forms:{neg:1,ma:1},
+ valid:p=>p.adv!=='都'||PLURAL_S.includes(p.subj),
+ yes:p=>p.pr.yes,no:p=>p.pr.no,
+ render(p){return {toks:T(p.subj,p.adv,p.neg?p.pr.neg:p.pr.toks,p.q==='ma'&&'嗎',end(p)),es:esC({subj:p.subj,v:p.pr.v,rest:p.pr.es,neg:p.neg,q:!!p.q,adv:p.adv==='也'?'ye':'dou'})};}});
+
+def({id:'you',shortWh:p=>[p.o.hz],name:'有 / 沒有',topic:5,pattern:'Sujeto + 有/沒有 + objeto (和 + objeto)',
+ expl:'有 se niega SIEMPRE con 沒: 沒有. Nunca 不有. Dos cosas: A 和 B.',
+ h2:'有 → 沒有 (nunca 不有). Para unir dos sustantivos: 和.',
+ cando:'Decir qué tienes y qué no tienes',
+ slots:{subj:PERS,o:SL.OBJ,o2:[null,...SL.OBJ]},sub:{subj:'sujeto',o:'objeto'},forms:{neg:1,ma:1,anb:1,wh:1,plural:1},whSlot:'o',
+ valid:p=>!p.o2||(p.o2!==p.o&&!p.neg&&!p.q),
+ yes:()=>['有'],no:()=>['沒有'],
+ render(p){const q=!!p.q;
+  if(p.q==='wh')return {toks:['什麼','東西','，',p.subj,p.neg?'沒有':'有','？'],alts:[[p.subj,p.neg?'沒有':'有','什麼','東西','？']],es:fin('qué cosas '+(p.neg?'no ':'')+CONJ.tener[pp(p.subj)]+(pre(p.subj)?' '+pre(p.subj):''),1)};
+  if(p.q==='anb')return {toks:[p.subj,'有沒有',p.o.hz,'？'],es:esC({subj:p.subj,v:'tener',rest:p.o.esN,q})};
+  if(p.neg)return {toks:T(p.subj,'沒有',p.o.hz,p.q==='ma'&&'嗎',end(p)),alts:p.q?[]:[[p.subj,'沒',p.o.hz,'。']],es:esC({subj:p.subj,v:'tener',rest:p.o.esN,neg:1,q})};
+  return {toks:T(p.subj,'有',p.o.hz,p.o2&&['和',p.o2.hz],p.q==='ma'&&'嗎',end(p)),es:esC({subj:p.subj,v:'tener',rest:p.o.es+(p.o2?' y '+p.o2.es:''),q})};}});
+
+def({id:'yao',shortWh:p=>p.vo.toks,name:'要 + verbo',topic:3,pattern:'Sujeto + 要 + verbo + objeto',
+ expl:'要 + verbo = querer / ir a hacer algo: 我要去上課.',
+ h2:'要 va antes del verbo. Negativo: 不要 (o 不 + verbo).',
+ cando:'Decir qué quieres o vas a hacer',
+ slots:{subj:PERS,vo:SL.YAO_VO},sub:{subj:'sujeto',vo:'actividad'},forms:{neg:1,ma:1,anb:1,wh:1,plural:1},whSlot:'vo',whFilter:v=>v.toks[0]==='買',
+ yes:()=>['要'],no:()=>['不','要'],
+ render(p){const q=!!p.q;
+  if(p.q==='wh')return {toks:[p.subj,'要','買','什麼','？'],es:fin('qué '+CONJ.querer[pp(p.subj)]+' comprar'+(pre(p.subj)?' '+pre(p.subj):''),1)};
+  const es=esC({subj:p.subj,v:'querer',rest:p.vo.es,neg:p.neg,q});
+  if(p.q==='anb')return {toks:[p.subj,'要','不','要',...p.vo.toks,'？'],es};
+  if(p.neg)return {toks:T(p.subj,'不','要',p.vo.toks,p.q==='ma'&&'嗎',end(p)),alts:(!p.q&&p.vo.toks[0]==='去')?[[p.subj,'不',...p.vo.toks,'。']]:[],es};
+  return {toks:T(p.subj,'要',p.vo.toks,p.q==='ma'&&'嗎',end(p)),es};}});
+
+def({id:'naguo',shortWh:p=>[p.c.hz,p.n.hz],name:'哪國 + sustantivo',topic:2,pattern:'Sujeto + 喜歡 + país + sustantivo',
+ expl:'País + sustantivo = de ese país: 德國車 (coches alemanes). Para preguntar: 哪國 + sustantivo.',
+ h2:'El país va delante del sustantivo, sin nada en medio: 日本電影.',
+ cando:'Preguntar y decir de qué país son las cosas que te gustan',
+ slots:{subj:PERS,c:SL.COUNTRY,n:SL.NAT_N},sub:{subj:'sujeto',c:'país',n:'cosa'},forms:{neg:1,ma:1,wh:1,plural:1},whSlot:'c',
+ yes:()=>['喜歡'],no:()=>['不','喜歡'],
+ render(p){const q=!!p.q;
+  if(p.q==='wh')return {toks:[p.subj,'喜歡','哪國',p.n.hz,'？'],es:fin('de qué país '+GP[pp(p.subj)]+' gustan '+p.n.es+(pre(p.subj)?' a '+pre(p.subj):''),1)};
+  return {toks:T(p.subj,p.neg&&'不','喜歡',p.c.hz,p.n.hz,p.q==='ma'&&'嗎',end(p)),es:esC({subj:p.subj,v:'gustar',gustan:1,rest:p.n.es+' de '+p.c.es,neg:p.neg,q})};}});
+
+def({id:'zhe',shortWh:p=>p.x.toks,name:'這是 / 他是誰',topic:1,pattern:'這/他 + 是 + cosa/persona',
+ expl:'這是 + cosa (esto es…). Para personas: 他是王先生. Preguntas: 這是什麼？ 他是誰？',
+ h2:'是 une las dos partes. Para preguntar, 什麼 (cosa) o 誰 (persona) ocupa el lugar de la respuesta.',
+ cando:'Identificar cosas y personas',
+ slots:{w:['這','他','她'],x:[...SL.THIS,...SL.TITLES]},sub:{x:'cosa o persona'},forms:{neg:1,ma:1,anb:1,wh:1},whSlot:'x',
+ valid:p=>p.x.w===p.w,
+ yes:()=>['是'],no:()=>['不','是'],
+ render(p){const q=!!p.q,th=p.w==='這',who=th?'esto':SUBJ[p.w].pron;
+  if(p.q==='wh')return th?{toks:['這','是','什麼','？'],es:'¿Qué es esto?'}:{toks:[p.w,'是','誰','？'],es:'¿Quién es '+who+'?'};
+  const es=fin(who+(p.neg?' no es ':' es ')+p.x.es,q);
+  if(p.q==='anb')return {toks:[p.w,'是','不','是',...p.x.toks,'？'],es};
+  return {toks:T(p.w,p.neg&&'不','是',p.x.toks,p.q==='ma'&&'嗎',end(p)),es};}});
+
+const NE_BASE=[
+ {hz:'我很忙',gloss:'estoy ocupado/a',sid:'hen',p:{subj:'我',a:ADJ[0],neg:false,q:''}},
+ {hz:'我很好',gloss:'estoy bien',sid:'hen',p:{subj:'我',a:ADJ[1],neg:false,q:''}},
+ {hz:'我是美國人',gloss:'soy de EE.UU.',sid:'guoren',p:{subj:'我',c:SL.COUNTRY[0],neg:false,q:''}},
+ {hz:'我是台灣人',gloss:'soy de Taiwán',sid:'guoren',p:{subj:'我',c:SL.COUNTRY[6],neg:false,q:''}},
+ {hz:'我喜歡看電影',gloss:'me gusta ver películas',sid:'xihuan',p:{subj:'我',vo:SL.LIKE_VO[0],neg:false,q:''}},
+ {hz:'我有車',gloss:'tengo coche',sid:'you',p:{subj:'我',o:SL.OBJ[2],o2:null,neg:false,q:''}},
+ {hz:'我懂中文',gloss:'entiendo chino',sid:'dong',p:{subj:'我',l:SL.LANG[0],l2:null,neg:false,q:''}},
+ {hz:'我要去上課',gloss:'voy a clase',sid:'yao',p:{subj:'我',vo:SL.YAO_VO[0],neg:false,q:''}}];
+NE_BASE.forEach(b=>b.toks=[b.hz]);
+def({id:'ne',name:'…，你呢？',topic:3,pattern:'Oración，+ persona + 呢？',
+ expl:'呢 devuelve la pregunta: 我很好，你呢？ = …¿y tú?',
+ h2:'Después de tu oración: coma + persona + 呢. Para responder "yo también": 我也…',
+ cando:'Devolver la pregunta y responder "yo también"',
+ slots:{base:NE_BASE,who:WHO},sub:{who:'persona',base:'oración'},forms:{ne:1},isQ:1,
+ render(p){const b=S[p.base.sid].render(p.base.p);return {toks:[...b.toks.slice(0,-1),'，',p.who.hz,'呢','？'],es:b.es.replace(/\.$/,'')+', ¿y '+p.who.es+'?'};}});
+
+/* Meta-estructuras: se practican aplicándolas sobre otras */
+def({id:'ma',meta:1,q:'ma',name:'嗎 · pregunta sí/no',topic:4,pattern:'Oración + 嗎？',
+ expl:'Una afirmación se vuelve pregunta añadiendo 嗎 al final, sin cambiar el orden.',
+ h2:'El orden no cambia: solo añade 嗎 al final. Nunca con 什麼, 哪 o 誰.',
+ cando:'Hacer preguntas de sí o no',bases:['guoren','xihuan','you','dong','yao','kan','hen']});
+def({id:'anb',meta:1,q:'anb',name:'A不A · pregunta',topic:3,pattern:'Sujeto + V不V (o 有沒有) + …？',
+ expl:'Repite el verbo o adjetivo con 不 en medio: 忙不忙？ Con 有: 有沒有？ No lleva 嗎.',
+ h2:'Verbo + 不 + verbo. Con 有 es 有沒有. Con 喜歡: 喜不喜歡. Sin 嗎.',
+ cando:'Hacer preguntas con la forma A-不-A',bases:['hen','guoren','dong','xihuan','kan','you','yao']});
+def({id:'men',meta:1,plural:1,name:'們 · plural',topic:5,pattern:'我/你/他 + 們',
+ expl:'們 forma el plural de los pronombres: 我們, 你們, 他們. El verbo no cambia.',
+ h2:'Solo cambia el pronombre (+們). El verbo no se conjuga. Puedes añadir 都 (todos).',
+ cando:'Hablar de varias personas (nosotros, ustedes, ellos)',bases:['guoren','xihuan','you','dong','hen','yao','kan']});
+
+const TOPICS=[
+ {id:1,name:'Nombres e identidad',sids:['xing','jiao','zhe']},
+ {id:2,name:'Nacionalidad e idiomas',sids:['guoren','dong','naguo']},
+ {id:3,name:'Saludos, clima y actividades',sids:['hen','tai','yao','ne','anb']},
+ {id:4,name:'Gustos y entretenimiento',sids:['xihuan','kan','yedou','ma']},
+ {id:5,name:'Objetos y posesiones',sids:['you','zhe','naguo','men']}];
+const STRUCT_ORDER=['xing','jiao','zhe','guoren','dong','naguo','hen','tai','yao','ne','anb','xihuan','kan','yedou','ma','you','men'];
+const SITS=[
+ {id:'conocer',name:'Conocer a alguien',items:[{sid:'xing'},{sid:'jiao'},{sid:'hen',f:p=>p.a.hz==='好'},{sid:'ne',f:p=>p.base.hz==='我很好'}]},
+ {id:'presentarte',name:'Presentarte',items:[{sid:'jiao'},{sid:'xing'},{sid:'guoren'},{sid:'dong'}]},
+ {id:'clima',name:'El clima',items:[{sid:'hen',f:p=>p.subj==='天氣'}]},
+ {id:'gustos',name:'Pasatiempos',items:[{sid:'xihuan'},{sid:'kan'},{sid:'naguo',f:p=>p.n.hz==='電影'},{sid:'ne',f:p=>p.base.sid==='xihuan'}]},
+ {id:'nacion',name:'Nacionalidad e idiomas',items:[{sid:'guoren'},{sid:'dong'},{sid:'naguo'},{sid:'yedou',f:p=>p.pr.v==='ser'}]},
+ {id:'cosas',name:'Posesiones',items:[{sid:'you'},{sid:'zhe',f:p=>p.w==='這'},{sid:'naguo',f:p=>p.n.hz==='車'}]},
+ {id:'diario',name:'Preguntas cotidianas',items:[{sid:'zhe'},{sid:'you'},{sid:'yao'},{sid:'ne'},{sid:'yedou'}]},
+ {id:'actividades',name:'Actividades diarias',items:[{sid:'yao'},{sid:'hen',f:p=>p.a.hz==='忙'},{sid:'kan'}]}];
+
+/* ---------- 5. ÍNDICE GLOBAL ---------- */
+let VALID_HZ=new Set(),VALID_PY=new Set(),STATEMENTS=[],EX_CACHE={};
+const EXTRA_HZ=new Set(['你呢','您呢','謝謝','謝謝你','你好','您好','好久不見','啊','我也是','我也很好','好']);
+let EXTRA_PY=new Set();
+const FORMS=[{neg:false,q:''},{neg:true,q:''},{neg:false,q:'ma'},{neg:true,q:'ma'},{neg:false,q:'anb'},{neg:false,q:'wh'},{neg:true,q:'wh'}];
+function formOk(st,f){if(f.neg&&!st.forms.neg)return false;if(f.q&&!st.forms[f.q])return false;if(f.neg&&f.q==='wh'&&st.id!=='you')return false;return true;}
+function cartesian(slots){let out=[{}];for(const k in slots){const n=[];for(const o of out)for(const v of slots[k])n.push({...o,[k]:v});out=n;}return out;}
+function stValid(st,p){if(st.valid&&!st.valid(p))return false;if(p.q==='wh'&&st.whFilter&&!st.whFilter(p[st.whSlot]))return false;return true;}
+function subjOf(p){return p.subj||p.w;}
+function variants(r,sa){const all=[r.toks,...(r.alts||[])];const out=[];all.forEach(t=>{out.push(t);if(sa&&t[0]===sa&&t.length>2)out.push(t.slice(1));});return out;}
+function eachRender(st,fn){if(st.meta)return;
+  if(st.id==='ne'){cartesian(st.slots).forEach(p=>{p.q='ne';fn(st.render(p),p);});return;}
+  cartesian(st.slots).forEach(p0=>FORMS.forEach(f=>{const p={...p0,...f};if(!formOk(st,f)||!stValid(st,p))return;fn(st.render(p),p);}));}
+function injectUserWords(entries){for(const k in BASE_SLOTS){SL[k].length=0;SL[k].push(...BASE_SLOTS[k]);}
+  entries.forEach(e=>{const u={user:1};
+    if(e.cat==='Sustantivo (objeto)'){SL.OBJ.push(mk(e.hz,e.es,{esN:e.es,...u}));SL.THIS.push(mk(e.hz,e.es,{w:'這',...u}));SL.YAO_VO.push(mkT(['買',e.hz],'comprar '+e.es,u));}
+    else if(e.cat==='País/lugar'&&[...e.hz].length>=2){SL.COUNTRY.push(mk(e.hz,e.es,u));}
+    else if(e.cat==='Idioma'){SL.LANG.push(mk(e.hz,e.es,u));}
+    else if(e.cat==='Apellido'&&[...e.hz].length===1){SL.SURN.push(mk(e.hz,e.es,u));}});
+  S.dong.slots.l2=[null,...SL.LANG];S.you.slots.o2=[null,...SL.OBJ];S.zhe.slots.x=[...SL.THIS,...SL.TITLES];}
+function rebuildIndex(bank){
+  PY={};ENTRY={};bank.forEach(e=>{if(!PY[e.hz])PY[e.hz]=e.py;if(!ENTRY[e.hz])ENTRY[e.hz]=e;});
+  Object.assign(PY,EXTRA_TOK);SL.NAMES.forEach(n=>PY[n.hz]=n.py);
+  DICT=new Set(Object.keys(PY));KNOWN_CH=new Set();Object.keys(PY).forEach(k=>[...k].forEach(c=>KNOWN_CH.add(c)));
+  injectUserWords(bank.filter(e=>e.src==='tú'));
+  VALID_HZ=new Set();VALID_PY=new Set();STATEMENTS=[];EX_CACHE={};
+  for(const id in S){const st=S[id];eachRender(st,(r,p)=>{variants(r,subjOf(p)).forEach(t=>{VALID_HZ.add(normHz(t.join('')));VALID_PY.add(compactPy(sentPy(t,1)));});
+    if(!p.q&&!p.neg)STATEMENTS.push(r);});}
+  EXTRA_PY=new Set([...EXTRA_HZ].map(h=>compactPy(sentPy(tokenize(h),1))));}
+function exampleFor(hz){if(EX_CACHE[hz]!==undefined)return EX_CACHE[hz];let best=null;
+  for(const r of STATEMENTS){const s=r.toks.join('');if(s.includes(hz)&&s.replace(/[。？]/,'')!==hz&&(!best||s.length<best.toks.join('').length))best=r;}
+  return EX_CACHE[hz]=best;}
+
+/* ---------- 6. RESPUESTAS ACEPTADAS ---------- */
+function mkAns(list,free){const acc=new Set(),accPy=new Set(),arr=[],pyMap=new Map();
+  list.forEach(a=>variants(a,a.sa).forEach(t=>{const h=normHz(t.join(''));if(!acc.has(h)){acc.add(h);arr.push(t);}const c=compactPy(sentPy(t,1));accPy.add(c);if(!pyMap.has(c))pyMap.set(c,[sentPy(t),sentPy(t,1)]);}));
+  return {list,acc,accPy,arr,pyMap,free:free||[]};}
+function slotKey(st){return st.slots.subj?'subj':(st.slots.w?'w':null);}
+function answersFor(st,p){
+  if(st.id==='ne')return neAnswers(p);
+  const key=slotKey(st),sa=mapA(p[key]);const base={...p,q:'',neg:false,[key]:sa};const out=[];const free=[];
+  if(p.q==='wh'){const wn=st.id==='you'&&p.neg;
+    for(const v of st.slots[st.whSlot]){if(v==null)continue;if(st.whFilter&&!st.whFilter(v))continue;const bp={...base,[st.whSlot]:v,neg:wn};if(st.valid&&!st.valid(bp))continue;out.push({...st.render(bp),pol:'+',sa});
+      if(st.id==='you'&&!wn)for(const v2 of st.slots.o2){if(!v2||v2===v)continue;out.push({...st.render({...bp,o2:v2}),pol:'+',sa,extra:1});}
+      if(st.id==='dong')for(const v2 of st.slots.l2){if(!v2||v2===v)continue;out.push({...st.render({...bp,l2:v2}),pol:'+',sa,extra:1});}}
+    if(st.shortWh)for(const v of st.slots[st.whSlot]){if(v==null)continue;if(st.whFilter&&!st.whFilter(v))continue;const bp={...base,[st.whSlot]:v};if(st.valid&&!st.valid(bp))continue;out.push({toks:[...st.shortWh(bp),'。'],es:'',pol:'+',short:1});}
+    if(st.id==='jiao')free.push({hz:new RegExp('^('+sa+')?叫[\\u3400-\\u9fff]{2,4}$'),py:new RegExp('^('+compactPy(tokPy(sa))+')?jiao[a-z]{2,16}$')});
+  }else{const aff=st.render(base),neg=st.render({...base,neg:true});out.push({...aff,pol:'+',sa},{...neg,pol:'-',sa});
+    const Y=st.yes(base),N=st.no(base);
+    out.push({toks:[...Y,'。'],es:'Sí.',pol:'+',short:1},{toks:[...N,'。'],es:'No.',pol:'-',short:1},
+      {toks:[...Y,'，',...aff.toks],es:'Sí. '+aff.es,pol:'+',alts:(aff.alts||[]).map(a=>[...Y,'，',...a]),sa:null},
+      {toks:[...N,'，',...neg.toks],es:'No. '+neg.es,pol:'-',alts:(neg.alts||[]).map(a=>[...N,'，',...a])});
+    if(st.whSlot&&p[st.whSlot])for(const v of st.slots[st.whSlot]){if(!v||v===p[st.whSlot])continue;const bp={...base,[st.whSlot]:v};if(!stValid(st,bp))continue;const r=st.render(bp);out.push({toks:[...N,'，',...r.toks],es:'No. '+r.es,pol:'-',extra:1});}}
+  return mkAns(out,free);}
+function neAnswers(p){const st=S[p.base.sid];const sa=mapA(p.who.hz);const bp={...p.base.p,subj:sa};const aff=st.render(bp),neg=st.render({...bp,neg:true});
+  const ins=t=>[t[0],'也',...t.slice(1)];
+  const list=[{...aff,pol:'+',sa},{toks:ins(aff.toks),es:aff.es.replace(/\.$/,'')+' también.',pol:'+',sa,model:1},{...neg,pol:'-',sa},{toks:ins(neg.toks),es:neg.es.replace(/^No /,'Tampoco '),pol:'-',sa}];
+  if(p.base.sid==='guoren')list.push({toks:[sa,'也','是','。'],es:'Yo también.',pol:'+'});
+  return mkAns(list);}
+function modelOf(A,pol){const c=A.list.filter(a=>!a.short&&!a.extra&&a.sa!==null&&(!pol||a.pol===pol));const m=c.find(a=>a.model)||c[Math.floor(Math.random()*Math.min(c.length,A.list.length>4?2:c.length))]||A.list[0];return m;}
+
+/* ---------- 7. ERRORES TÍPICOS ---------- */
+const RULES=[
+ {id:'buyou',t:'gram',hz:/不有/,py:/buyou/,m:'有 se niega con 沒: 沒有. Nunca 不有.'},
+ {id:'meishi',t:'gram',hz:/沒(是|喜歡|懂|要|看|叫|姓)/,py:/mei(shi|xihuan|dong|yao|kan|jiao|xing)/,m:'沒 solo niega a 有. Con este verbo se usa 不.'},
+ {id:'henshi',t:'gram',hz:/很是/,py:/henshi/,m:'很 no va antes de 是. Con 是 no se usa 很: 我是美國人.'},
+ {id:'shihen',t:'gram',hz:/是很(忙|好|熱|冷)/,py:/shihen(mang|hao|re|leng)/,m:'Con adjetivos no se usa 是: di 我很忙, no 我是很忙.'},
+ {id:'whma',t:'gram',hz:/(什麼|哪|誰).*嗎$/,py:/(shenme|naguo|shei).*ma$/,m:'Una pregunta con 什麼, 哪 o 誰 ya es pregunta: no lleva 嗎.'},
+ {id:'anbma',t:'gram',hz:/(.)不\1.*嗎$|有沒有.*嗎$|喜不喜歡.*嗎$/,py:/(shi|mang|hao|re|leng|kan|dong|yao)bu\1.*ma$|youmeiyou.*ma$|xibuxihuan.*ma$/,m:'La forma A-不-A (忙不忙) ya es pregunta: no añadas 嗎.'},
+ {id:'henma',t:'nat',hz:/很(忙|好|熱|冷)嗎$/,py:/hen(mang|hao|re|leng)ma$/,m:'Con 嗎 lo natural es quitar 很: 你忙嗎？'},
+ {id:'tainole',t:'nat',hz:/(^|[^不])太(熱|冷|忙)$/,py:/(^|[^u])tai(re|leng|mang)$/,m:'太 + adjetivo suele cerrar con 了: 太熱了.'},
+ {id:'advfront',t:'gram',hz:/^(也|都)(我|你|他|她)/,py:/^(ye|dou)(wo|ni|ta|nin)/,m:'也 y 都 van después del sujeto y antes del verbo: 我也…'},
+ {id:'buye',t:'gram',hz:/不(也|都)/,py:/bu(ye|dou)/,m:'El orden es 也不 / 都不: adverbio + 不 + verbo.'},
+ {id:'noren',t:'vocab',hz:/是(美國|英國|中國|德國|法國|日本|台灣)$/,py:/shi(meiguo|yingguo|zhongguo|deguo|faguo|riben|taiwan)$/,m:'Para la nacionalidad añade 人: 美國人.'},
+ {id:'buend',t:'gram',hz:/不$/,py:/bu$/,m:'不 va antes del verbo o del adjetivo, no al final.'}];
+const RULEMSG={};RULES.forEach(r=>RULEMSG[r.id]=r);
+RULEMSG.order={t:'gram',m:'El orden básico es sujeto + verbo + objeto.'};
+RULEMSG.noma={t:'gram',m:'Sin 嗎 (o sin A-不-A) la oración no es una pregunta.'};
+const COUNTRY_SET=()=>new Set(SL.COUNTRY.map(c=>c.hz));
+function isAnb(b){return b.includes('有沒有')||b.some((x,k)=>x==='不'&&k>0&&b[k+1]&&(b[k+1]===b[k-1]||b[k+1].startsWith(b[k-1])));}
+function mutate(toks){const out=[];const last=toks[toks.length-1];const body=isP(last)?toks.slice(0,-1):toks.slice();const E=isP(last)?last:'。';
+  const add=(b,rule,e=E)=>out.push({toks:[...b,e],rule});
+  const i=body.indexOf('沒有');if(i>=0)add([...body.slice(0,i),'不','有',...body.slice(i+1)],'buyou');else{const j=body.indexOf('有');if(j>=0)add([...body.slice(0,j),'不',...body.slice(j)],'buyou');}
+  const s=body.indexOf('是');if(s>=0&&!body.includes('很')&&!isAnb(body))add([...body.slice(0,s),'很',...body.slice(s)],'henshi');
+  const h=body.indexOf('很');if(h>=0&&!body.includes('是'))add([...body.slice(0,h),'是',...body.slice(h)],'shihen');
+  if(body.some(x=>['什麼','哪國','誰'].includes(x))&&!body.includes('嗎'))add([...body,'嗎'],'whma','？');
+  if(isAnb(body)&&!body.includes('嗎'))add([...body,'嗎'],'anbma','？');
+  const cs=COUNTRY_SET();const r=body.indexOf('人');if(r>0&&cs.has(body[r-1])&&body[r-2]==='是')add([...body.slice(0,r),...body.slice(r+1)],'noren');
+  const b=body.indexOf('不');if(b>=0&&!isAnb(body)&&b<body.length-1)add([...body.filter((x,k)=>k!==b),'不'],'buend');
+  const y=body.findIndex(x=>x==='也'||x==='都');if(y>0)add([body[y],...body.filter((x,k)=>k!==y)],'advfront');
+  if(y>=0&&body[y+1]==='不'){const c=body.slice();[c[y],c[y+1]]=[c[y+1],c[y]];add(c,'buye');}
+  const tl=body.indexOf('了');if(tl>1&&body[tl-2]==='太')add(body.filter((x,k)=>k!==tl),'tainole');
+  const bs=body.findIndex((x,k)=>x==='不'&&['是','喜歡','懂','要','看','叫','姓'].includes(body[k+1]));if(bs>=0&&!isAnb(body)){const c=body.slice();c[bs]='沒';add(c,'meishi');}
+  if(body.includes('嗎'))add(body.filter(x=>x!=='嗎'),'noma','？');
+  if(body.length>=3&&SUBJ[body[0]]&&!isP(body[1])){const c=body.slice();[c[0],c[1]]=[c[1],c[0]];add(c,'order');}
+  return out;}
+
+/* ---------- 8. EJERCICIOS ---------- */
+const rnd=n=>Math.floor(Math.random()*n);
+const pick=a=>a[rnd(a.length)];
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=rnd(i+1);[a[i],a[j]]=[a[j],a[i]];}return a;};
+const uniqBy=(a,f)=>{const s=new Set();return a.filter(x=>{const k=f(x);if(s.has(k))return false;s.add(k);return true;});};
+const tj=t=>t.join('');
+const valKey=v=>v==null?'':typeof v==='string'?v:(v.hz||tj(v.toks));
+let WORDSTAT=()=>({});
+let BLOCKED=()=>[];
+function blockedSent(toks){const n=normHz(tj(toks));return BLOCKED().some(b=>b.q==='*'&&b.a===n);}  // inyectado por la capa de progreso
+function wpick(arr){const W=WORDSTAT();const ws=arr.map(v=>{if(v==null)return 1;const k=valKey(v);const r=W[k];const e=ENTRY[k];return 1+(r&&r.w>r.c?1.5:0)+(e&&e.status==='nuevo'?1:0)+(r?0:0.3);});
+  let t=ws.reduce((a,b)=>a+b,0)*Math.random();for(let i=0;i<arr.length;i++){t-=ws[i];if(t<=0)return arr[i];}return arr[arr.length-1];}
+const Q_SUBJ=['你','你','你','你','您','你們','他','她'];
+function randParams(st,o={}){for(let k=0;k<80;k++){const p={neg:false,q:''};
+  for(const key in st.slots){let arr=st.slots[key];
+    if(key==='subj'&&o.subj){const f=o.subj.filter(x=>arr.includes(x));if(f.length)arr=f;}
+    if(key==='subj'&&o.singular)arr=arr.filter(x=>PLUR[x]);
+    if(key==='l2'||key==='o2')p[key]=Math.random()<.8?null:pick(arr.filter(Boolean));
+    else p[key]=(key==='subj'&&o.subj)?pick(arr):wpick(arr);}
+  Object.assign(p,o.form||{});
+  if(o.plural&&st.slots.subj)p.subj=pick(PLURAL_S);
+  if(st.id==='ne')p.q='ne';
+  else if(!formOk(st,p))return null;
+  if(!stValid(st,p))continue;if(o.filter&&!o.filter(p))continue;return p;}return null;}
+function words(st,p){const out=[];for(const k in st.slots){const v=p[k];if(v==null)continue;if(typeof v==='string'){if(ENTRY[v])out.push(v);continue;}(v.toks||[v.hz]).forEach(t=>{if(ENTRY[t])out.push(t);});if(ENTRY[v.hz]&&!out.includes(v.hz))out.push(v.hz);}
+  ['喜歡','有','沒有','是','很','懂','要','姓','叫','也','都','太','了','呢','嗎'].forEach(g=>{if(st.render&&tj(st.render(p).toks).includes(g)&&ENTRY[g]&&!out.includes(g))out.push(g);});return out;}
+function vkey(st,p){return Object.keys(st.slots).filter(k=>k!=='subj'&&k!=='w').map(k=>valKey(p[k])).join('|');}
+function gloss(v,key){if(key==='subj')return SUBJ[v]?SUBJ[v].pron:v;if(v==null)return '';if(typeof v==='string')return v;return v.gloss||(typeof v.es==='string'?v.es:v.hz);}
+function supports(st,kind){
+  if(kind==='listen'||kind==='conv')return st.meta?!!st.q||!!st.plural:(st.isQ||!!(st.forms.ma||st.forms.anb||st.forms.wh));
+  if(kind==='subst')return st.meta||Object.keys(st.sub).length>0;
+  if(kind==='trans')return st.id!=='ne';
+  return true;}
+function resolve(st,kind){if(!st.meta)return {b:st,form:{},plural:false};
+  const bases=st.bases.map(id=>S[id]).filter(b=>st.q?b.forms[st.q]:b.slots.subj&&b.forms.plural);const b=pick(bases);
+  return {b,form:st.q?{q:st.q}:{},plural:!!st.plural};}
+function sidsFor(st,b,p){const s=[b.id];if(st.meta&&!s.includes(st.id))s.push(st.id);
+  if(p&&p.q==='ma'&&!s.includes('ma'))s.push('ma');if(p&&p.q==='anb'&&!s.includes('anb'))s.push('anb');
+  if(p&&p.subj&&PLURAL_S.includes(p.subj)&&!s.includes('men')&&st.meta)s.push('men');return s;}
+function makeQuestion(st,o={}){
+  let b=st,p;
+  if(st.meta){const r=resolve(st);b=r.b;p=randParams(b,{subj:r.plural?['你們','他們']:Q_SUBJ,form:{q:st.q||'ma'}});}
+  else if(st.isQ){p=randParams(st,{filter:o.filter});}
+  else{const qs=['ma','anb','wh'].filter(q=>st.forms[q]);if(!qs.length)return null;
+    const wq=st.forms.wh?['wh','wh',...qs]:qs;let q=o.q||pick(wq);
+    p=randParams(st,{subj:Q_SUBJ,form:{q},filter:o.filter});
+    if(p&&st.id==='you'&&q==='wh'&&Math.random()<.35)p.neg=true;}
+  if(!p)return null;
+  const r=b.render(p);let toks=r.toks,es=r.es;if(blockedSent(r.toks))return null;const qk=normHz(tj(r.toks));
+  if(b.id==='hen'&&p.a.hz==='好'&&p.q==='ma'&&p.subj==='你'&&Math.random()<.4){toks=['好久不見','，',...toks];es='¡Cuánto tiempo sin verte! '+es;}
+  let ans=answersFor(b,p);const bl=BLOCKED().filter(x=>x.q===qk).map(x=>x.a);
+  if(bl.length||BLOCKED().some(x=>x.q==='*')){const keep=ans.list.filter(a=>!bl.includes(normHz(tj(a.toks)))&&!blockedSent(a.toks));if(!keep.length)return null;ans=mkAns(keep,ans.free);}
+  return {st:b,meta:st.meta?st:null,p,toks,es,qk,ans,model:modelOf(ans),sids:sidsFor(st,b,p)};}
+function partial(toks){return toks.map((t,i)=>isP(t)?t:(i%2===0?t:'＿')).join(' ');}
+function hintsFor(st,b,model,extra){const ex=otherExample(b,model);
+  return ['Estructura: '+(st.meta?st.pattern+' (sobre '+b.pattern+')':b.pattern),(extra?extra+' ':'')+(st.meta?st.h2:b.h2),'Empieza así: '+partial(model.toks),ex?'Otro ejemplo: '+tj(ex.toks)+' — '+ex.es:''];}
+function otherExample(b,model){const m=model?normHz(tj(model.toks)):'';for(let i=0;i<20;i++){const p=randParams(b);if(!p)continue;const r=b.render(p);if(normHz(tj(r.toks))!==m)return r;}return null;}
+function diffRegion(a,b){let i=0;while(i<a.length&&i<b.length&&a[i]===b[i])i++;let j=0;while(j<a.length-i&&j<b.length-i&&a[a.length-1-j]===b[b.length-1-j])j++;return {i,j,ra:a.slice(i,a.length-j),rb:b.slice(i,b.length-j)};}
+function describe(base,target){const A=base.filter(t=>!isP(t)),B=target.filter(t=>!isP(t));const d=diffRegion(A,B);
+  if(!d.ra.length&&!d.rb.length)return 'No cambiar nada';
+  if(!d.ra.length){const ins=tj(d.rb);if(d.i>=A.length)return 'Añadir '+ins+' al final';if(/^(不|沒|也|都|很|太)/.test(d.rb[0])&&!(d.rb.length>1&&d.i>0))return 'Añadir '+ins+' antes de '+A[d.i];return d.i>0?'Añadir '+ins+' después de '+A[d.i-1]:'Añadir '+ins+' al principio';}
+  if(!d.rb.length)return 'Quitar '+tj(d.ra);return 'Cambiar '+tj(d.ra)+' por '+tj(d.rb);}
+const GRAM=new Set(['很','不','沒有','沒','嗎','也','都','是','姓','叫','喜歡','有','要','太','了','懂','看','哪國','什麼','誰','呢','和','有沒有','們']);
+const DISTRACT_GRAM=['不','沒','很','嗎','是','也','都','了','呢','有'];
+function mcSentences(correct,acc,extra){const opts=[{toks:correct.toks,ok:true,es:correct.es}];const seen=new Set([normHz(tj(correct.toks))]);
+  const pushIf=o=>{const h=normHz(tj(o.toks));if(seen.has(h)||acc.has(h))return;seen.add(h);opts.push(o);};
+  shuffle(mutate(correct.toks)).forEach(m=>{if(opts.length<3)pushIf({toks:m.toks,why:m.rule});});
+  shuffle(extra||[]).forEach(e=>{if(opts.length<4)pushIf(e);});
+  shuffle(mutate(correct.toks)).forEach(m=>{if(opts.length<4)pushIf({toks:m.toks,why:m.rule});});
+  return shuffle(opts);}
+function meaningVariants(b,p,n){const out=[];for(let i=0;i<30&&out.length<n;i++){const k=pick(Object.keys(b.sub).length?Object.keys(b.sub):Object.keys(b.slots));const arr=b.slots[k].filter(v=>v!==p[k]&&v!=null);if(!arr.length)continue;const p2={...p,[k]:pick(arr)};if(!stValid(b,p2))continue;const r=b.render(p2);out.push({toks:r.toks,es:r.es,wrongMeaning:1});}return out;}
+function pool(toks,extraN){const base=toks.filter(t=>!isP(t));const d=shuffle(DISTRACT_GRAM.filter(x=>!base.includes(x))).slice(0,extraN||1);return shuffle([...base,...d]);}
+function freeAns(A,model,o={}){return {type:'free',A,model,strict:!!o.strict,template:o.template||null,pool:o.pool||pool(model.toks,o.extraN)};}
+function mcAns(opts,kind){return {type:'mc',opts,kind:kind||'zh'};}
+const KIND_LABEL={listen:'Escucha',subst:'Sustitución',trans:'Transformación',build:'Construcción',conv:'Conversación',vocab:'Vocabulario'};
+
+function exListen(st,o={}){const Q=o.Q||makeQuestion(st,o);if(!Q)return null;const lvl=o.lvl||0,method=o.method;
+  let fmt=o.fmt||(method==='mc'?(Math.random()<.5?'meaning':'response'):lvl===0?'meaning':lvl===1?(Math.random()<.5?'response':'produce'):(Math.random()<.2?'meaning':'produce'));
+  const ex={kind:'listen',st,b:Q.st,p:Q.p,Q,fmt,sids:Q.sids,audio:Q.toks,hidden:true,words:words(Q.st,Q.p),vkey:vkey(Q.st,Q.p),
+    review:{q:{toks:Q.toks,es:Q.es},a:Q.model},hints:hintsFor(st,Q.st,Q.model,'Primero entiende qué pregunta: ¿sí/no, o con palabra interrogativa?')};
+  if(fmt==='meaning'){ex.instr='Escucha. ¿Qué significa la pregunta?';
+    const others=uniqBy([...meaningVariants(Q.st,Q.p,4).map(r=>r.es),...otherQuestions(Q,4).map(x=>x.es)].filter(e=>e!==Q.es),x=>x);
+    ex.answer=mcAns(shuffle([{es:Q.es,ok:true},...shuffle(others).slice(0,3).map(es=>({es}))]),'es');}
+  else if(fmt==='response'){ex.instr='Escucha y elige la respuesta adecuada.';
+    const others=otherQuestions(Q,3).map(x=>({toks:x.model.toks,es:x.model.es,wrongQ:x.es}));
+    ex.answer=mcAns(mcSentencesQ(Q,others));}
+  else{ex.instr='Escucha y responde.';ex.answer=freeAns(Q.ans,Q.model,{strict:false,extraN:2});}
+  return ex;}
+function mcSentencesQ(Q,others){const opts=[{toks:Q.model.toks,ok:true,es:Q.model.es}];const seen=new Set([normHz(tj(Q.model.toks))]);
+  const push=o=>{const h=normHz(tj(o.toks));if(seen.has(h)||Q.ans.acc.has(h))return;seen.add(h);opts.push(o);};
+  others.slice(0,2).forEach(push);shuffle(mutate(Q.model.toks)).forEach(m=>{if(opts.length<4)push({toks:m.toks,why:m.rule});});others.forEach(o=>{if(opts.length<4)push(o);});
+  return shuffle(opts);}
+function otherQuestions(Q,n){const pool=STRUCT_ORDER.map(id=>S[id]).filter(s=>!s.meta&&s.id!==Q.st.id&&supports(s,'listen'));const out=[];
+  for(let i=0;i<20&&out.length<n;i++){const q=makeQuestion(pick(pool));if(q&&q.es!==Q.es)out.push(q);}return out;}
+
+function exSubst(st,o={}){const {b,form,plural}=resolve(st,'subst');const lvl=o.lvl||0;
+  const p0=o.p||randParams(b,{form,plural});if(!p0)return null;
+  const subKeys=Object.keys(b.sub).filter(k=>b.slots[k].filter(v=>v!=null&&v!==p0[k]).some(v=>stValid(b,{...p0,[k]:v})));if(!subKeys.length)return null;
+  let fmt=o.fmt||(lvl===0?'select':lvl===1?pick(['complete','replace1']):lvl===2?'replaceN':pick(['construct','replaceN']));
+  const nChange=fmt==='replaceN'?Math.min(2,subKeys.length):1;if(fmt==='replaceN'&&nChange<2)fmt='replace1';
+  const keys=shuffle(subKeys).slice(0,nChange);const p1={...p0};
+  for(const k of keys){const opts=shuffle(b.slots[k].filter(v=>v!=null&&v!==p0[k]));for(const v of opts){if(stValid(b,{...p1,[k]:v})){p1[k]=v;break;}}}
+  const r0=b.render(p0),r1=b.render(p1);if(blockedSent(r1.toks))return null;const A=mkAns([{...r1,sa:null}]);
+  const ex={kind:'subst',st,b,p:p1,fmt,sids:sidsFor(st,b,p1),words:words(b,p1),vkey:vkey(b,p1),review:{a:r1},hints:hintsFor(st,b,r1,'Solo cambia lo que se pide; el resto de la estructura se queda igual.')};
+  const k0=keys[0];const changes=keys.map(k=>({label:b.sub[k],from:k==='subj'?p0[k]:tj(p0[k].toks||[p0[k].hz]),to:gloss(p1[k],k)}));
+  if(fmt==='select'||fmt==='complete'){const d=diffRegion(r1.toks,r1.toks);const reg=regionOf(b,p1,k0);const tpl={before:r1.toks.slice(0,reg[0]),after:r1.toks.slice(reg[1])};
+    ex.cue=r1.es;ex.template=tpl;
+    if(fmt==='select'){ex.instr='Elige la palabra que completa la oración.';
+      const vals=shuffle(b.slots[k0].filter(v=>v!=null&&v!==p1[k0]&&tj(toksOfVal(v,k0))!==tj(toksOfVal(p1[k0],k0)))).slice(0,3);
+      ex.answer=mcAns(shuffle([{toks:toksOfVal(p1[k0],k0),ok:true,es:gloss(p1[k0],k0)},...vals.map(v=>({toks:toksOfVal(v,k0),es:gloss(v,k0),wrongMeaning:1}))]),'word');}
+    else{ex.instr='Completa la oración.';
+      const vals=shuffle(b.slots[k0].filter(v=>v!=null&&v!==p1[k0])).slice(0,2);
+      ex.answer=o.method==='mc'?mcAns(shuffle([{toks:toksOfVal(p1[k0],k0),ok:true,es:gloss(p1[k0],k0)},...shuffle(b.slots[k0].filter(v=>v!=null&&v!==p1[k0])).slice(0,3).map(v=>({toks:toksOfVal(v,k0),es:gloss(v,k0),wrongMeaning:1}))]),'word')
+        :freeAns(A,r1,{strict:true,template:tpl,pool:shuffle([...toksOfVal(p1[k0],k0),...vals.flatMap(v=>toksOfVal(v,k0))])});}}
+  else if(fmt==='construct'){ex.instr='Construye una oración nueva con la misma estructura.';ex.cue=r1.es;ex.showPattern=1;
+    ex.answer=o.method==='mc'?mcAns(mcSentences(r1,A.acc,[{toks:r0.toks,es:r0.es,wrongMeaning:1},...meaningVariants(b,p1,2)])):freeAns(A,r1,{strict:true,extraN:2});}
+  else{ex.instr=nChange>1?'Cambia los elementos indicados.':'Cambia el elemento indicado.';ex.base=r0;ex.changes=changes;
+    ex.answer=o.method==='mc'?mcAns(mcSentences(r1,A.acc,[{toks:r0.toks,es:r0.es,unchanged:1},...meaningVariants(b,p1,2)])):freeAns(A,r1,{strict:true,pool:shuffle([...r1.toks.filter(t=>!isP(t)),...toksOfVal(p0[k0],k0).filter(t=>!r1.toks.includes(t))])});}
+  return ex;}
+function toksOfVal(v,k){return typeof v==='string'?[v]:(v.toks||[v.hz]);}
+function regionOf(b,p,k){const r=b.render(p).toks;const alt={...p};const opts=b.slots[k].filter(v=>v!=null&&v!==p[k]&&stValid(b,{...p,[k]:v}));
+  if(!opts.length){const vt=toksOfVal(p[k],k);const i=r.findIndex((t,ix)=>tj(r.slice(ix,ix+vt.length))===tj(vt));return i>=0?[i,i+vt.length]:[0,1];}
+  alt[k]=opts[0];const r2=b.render(alt).toks;const d=diffRegion(r,r2);
+  // amplía la región para cubrir el valor completo
+  const vt=toksOfVal(p[k],k);const i=r.findIndex((t,ix)=>tj(r.slice(ix,ix+vt.length))===tj(vt));if(i>=0)return [i,i+vt.length];return [d.i,r.length-d.j];}
+
+const T_LABEL={neg:'Hazla negativa.',ma:'Conviértela en pregunta con 嗎.',anb:'Conviértela en pregunta A-不-A.',wh:'Haz la pregunta para saber',plural:'Pásala a plural.',subj:'Cambia el sujeto a',answer:'Responde la pregunta'};
+function transformsOf(st){if(st.meta)return [st.q||'plural'];const t=[];if(st.forms.neg)t.push('neg');if(st.forms.ma)t.push('ma');if(st.forms.anb)t.push('anb');if(st.forms.wh)t.push('wh');if(st.forms.plural)t.push('plural');if(st.slots.subj&&st.id!=='tai'&&st.id!=='hen')t.push('subj');if(st.forms.ma||st.forms.wh)t.push('answer');return t;}
+function targetOf(b,p0,T){
+  if(T==='neg'){const r=b.render({...p0,neg:true});return {r,A:mkAns([{...r,sa:null}])};}
+  if(T==='ma'||T==='anb'||T==='wh'){const r=b.render({...p0,q:T});return {r,A:mkAns([{...r,sa:null}])};}
+  if(T==='plural'){const ns=PLUR[p0.subj];if(!ns)return null;const p1={...p0,subj:ns};const r=b.render(p1);const list=[{...r,sa:null}];
+    const withDou=t=>(t[1]==='也'||t[1]==='都')?null:[t[0],'都',...t.slice(1)];const d=withDou(r.toks);if(d)list.push({toks:d,es:r.es,sa:null});
+    if(ns==='她們'){const r2=b.render({...p0,subj:'他們'});list.push({...r2,sa:null});}
+    return {r,A:mkAns(list),p1};}
+  if(T==='subj'){const opts=b.slots.subj.filter(s=>s!==p0.subj&&s!=='天氣');const ns=pick(opts);const p1={...p0,subj:ns};const r=b.render(p1);return {r,A:mkAns([{...r,sa:null}]),p1,to:ns};}
+  return null;}
+function exTrans(st,o={}){const {b,form,plural}=resolve(st,'trans');const lvl=o.lvl||0;
+  let Ts=transformsOf(st).filter(t=>t!=='answer'||supports(b,'listen'));if(st.meta)Ts=[st.q||'plural'];
+  if(!Ts.length)return null;const T=o.T||pick(Ts);
+  if(T==='answer')return exAnswer(st,b,o);
+  const subjPick=['ma','anb','wh'].includes(T)?['你','他','她','您']:null;
+  const p0=o.p||randParams(b,{subj:subjPick,singular:T==='plural'});if(!p0)return null;
+  if(T==='wh'&&b.whFilter&&!b.whFilter(p0[b.whSlot]))return exTrans(st,{...o,T:'neg'});
+  const tg=targetOf(b,p0,T);if(!tg)return null;const r0=b.render(p0);const r1=tg.r;if(blockedSent(r1.toks)||blockedSent(r0.toks))return null;
+  let fmt=o.fmt||['identify','choose','complete','produce'][Math.min(3,lvl)];
+  const label=T==='wh'?T_LABEL.wh+' «'+b.sub[b.whSlot]+'».':T==='subj'?T_LABEL.subj+' «'+SUBJ[tg.to].pron+'».':T_LABEL[T];
+  const p1=tg.p1||{...p0,neg:T==='neg',q:['ma','anb','wh'].includes(T)?T:''};
+  const ex={kind:'trans',st,b,p:p1,T,fmt,base:r0,task:label,sids:sidsFor(st,b,p1).concat(T==='ma'?['ma']:T==='anb'?['anb']:T==='plural'?['men']:[]).filter((v,i,a)=>a.indexOf(v)===i&&S[v]),
+    words:words(b,p1),vkey:vkey(b,p1),review:{a:r1},hints:hintsFor(st,b,r1,transClue(T,b,p0))};
+  if(fmt==='identify'){ex.instr='¿Qué hay que cambiar?';const correct=describe(r0.toks,r1.toks);
+    const alt=[];['neg','ma','anb','plural'].filter(x=>x!==T).forEach(x=>{const t=targetOf(b,p0,x);if(t&&(x!=='anb'||b.forms.anb)&&(x!=='ma'||b.forms.ma)&&(x!=='neg'||b.forms.neg)&&(x!=='plural'||b.forms.plural))alt.push({d:describe(r0.toks,t.r.toks),why:'Eso hace otra transformación ('+({neg:'negativa',ma:'pregunta con 嗎',anb:'pregunta A-不-A',plural:'plural'}[x])+').'});});
+    mutate(r1.toks).forEach(m=>{const dd=diffRegion(r0.toks.filter(t=>!isP(t)),m.toks.filter(t=>!isP(t)));if(dd.rb.length<=2&&dd.ra.length<=1&&m.rule!=='order')alt.push({d:describe(r0.toks,m.toks),rule:m.rule});});
+    const opts=[{d:correct,ok:true}];const seen=new Set([correct]);shuffle(alt).forEach(a=>{if(opts.length<4&&!seen.has(a.d)&&a.d!=='No cambiar nada'){seen.add(a.d);opts.push(a);}});
+    ['Añadir 很 antes de '+r0.toks[1],'Quitar '+r0.toks[0],'Añadir 嗎 al final','Añadir 不 al final'].forEach(d=>{if(opts.length<4&&!seen.has(d)){seen.add(d);opts.push({d});}});
+    ex.answer=mcAns(shuffle(opts),'desc');}
+  else if(fmt==='choose'){ex.instr='Elige la oración transformada correctamente.';
+    const others=['neg','ma','anb','plural'].filter(x=>x!==T&&b.forms[x==='plural'?'plural':x]).map(x=>targetOf(b,p0,x)).filter(Boolean).map(t=>({toks:t.r.toks,es:t.r.es,otherT:1}));
+    ex.answer=mcAns(mcSentences(r1,tg.A.acc,[...others,{toks:r0.toks,es:r0.es,unchanged:1}]));}
+  else if(fmt==='complete'&&o.method!=='mc'){const A0=r0.toks,B0=r1.toks;const d=diffRegion(A0,B0);
+    if(!d.rb.length||d.rb.every(isP))fmt=ex.fmt='produce';
+    else{ex.instr='Completa la parte que cambia.';ex.template={before:B0.slice(0,d.i),after:B0.slice(B0.length-d.j)};
+      ex.answer=freeAns(tg.A,r1,{strict:true,template:ex.template,pool:shuffle([...d.rb.filter(t=>!isP(t)),...shuffle(DISTRACT_GRAM.filter(x=>!d.rb.includes(x))).slice(0,3)])});}}
+  if(!ex.answer){ex.instr='Escribe la oración transformada.';ex.answer=o.method==='mc'?mcAns(mcSentences(r1,tg.A.acc,[{toks:r0.toks,es:r0.es,unchanged:1}])):freeAns(tg.A,r1,{strict:true,extraN:2});}
+  return ex;}
+function transClue(T,b,p){return {neg:b.id==='you'?'Con 有, la negación es 沒有.':b.id==='hen'?'Al negar un adjetivo, 不 sustituye a 很.':b.id==='tai'?'太…了 se convierte en 不太…':'不 va justo antes del verbo.',
+  ma:'Añade 嗎 al final, sin cambiar el orden.',anb:b.id==='you'?'Con 有: 有沒有.':'Repite el verbo con 不 en medio.',wh:'La palabra interrogativa va donde estaría la respuesta.',plural:'Añade 們 al pronombre; el verbo no cambia.',subj:'Solo cambia el pronombre.'}[T]||'';}
+function exAnswer(st,b,o){const Q=makeQuestion(st.meta?st:b,{});if(!Q)return null;const lvl=o.lvl||0;
+  let pol=null,wh=null,A=Q.ans,model=Q.model,cue;
+  if(Q.p.q==='wh'){const m=Q.model;wh=m;cue='Responde con: '+(Q.st.whSlot?gloss(findVal(Q.st,Q.p,m),Q.st.whSlot):'tu respuesta')+'.';A=mkAns([{...m,sa:m.sa}],A.free);model=m;}
+  else if(Q.st.id!=='ne'){pol=Math.random()<.5?'+':'-';model=modelOf(Q.ans,pol);A=mkAns(Q.ans.list.filter(a=>a.pol===pol));cue=pol==='+'?'Responde que sí, con oración completa o corta.':'Responde que no, con oración completa o corta.';}
+  else cue='Responde con naturalidad.';
+  const ex={kind:'trans',T:'answer',st,b:Q.st,p:Q.p,Q,base:{toks:Q.toks,es:Q.es},task:cue,sids:Q.sids,words:words(Q.st,Q.p),vkey:vkey(Q.st,Q.p),review:{q:{toks:Q.toks,es:Q.es},a:model},hints:hintsFor(st,Q.st,model,'Responde con la misma estructura de la pregunta; 你 se vuelve 我.')};
+  ex.instr='Pregunta → respuesta.';ex.fmt=lvl<2?'choose':'produce';
+  if(lvl<2||o.method==='mc')ex.answer=mcAns(mcSentencesQ({...Q,model,ans:A},otherQuestions(Q,2).map(x=>({toks:x.model.toks,es:x.model.es,wrongQ:x.es}))));
+  else ex.answer=freeAns(A,model,{strict:false,extraN:2});
+  return ex;}
+function findVal(b,p,m){const k=b.whSlot;for(const v of b.slots[k]){if(!v)continue;const t=tj(toksOfVal(v,k));if(tj(m.toks).includes(t))return v;}return null;}
+
+function exBuild(st,o={}){const {b,form,plural}=resolve(st,'build');const lvl=o.lvl||0;
+  let fmt=o.fmt||(lvl===0?'arrange':lvl===1?pick(['fill','arrange']):lvl===2?pick(['translate','answer']):pick(['pattern','translate','answer']));
+  if(fmt==='answer'&&!supports(st.meta?st:b,'listen'))fmt='translate';
+  if(fmt==='answer'){const Q=makeQuestion(st.meta?st:b,{});if(!Q)fmt='translate';else{
+    const ex={kind:'build',st,b:Q.st,p:Q.p,Q,fmt,sids:Q.sids,words:words(Q.st,Q.p),vkey:vkey(Q.st,Q.p),question:{toks:Q.toks,es:Q.es},audio:Q.toks,
+      instr:'Responde usando la estructura: '+Q.st.pattern,review:{q:{toks:Q.toks,es:Q.es},a:Q.model},hints:hintsFor(st,Q.st,Q.model,'Copia la estructura de la pregunta y pon tu información.')};
+    ex.answer=o.method==='mc'?mcAns(mcSentencesQ(Q,otherQuestions(Q,2).map(x=>({toks:x.model.toks,es:x.model.es,wrongQ:x.es})))):freeAns(Q.ans,Q.model,{strict:false,extraN:2});return ex;}}
+  const p=o.p||randParams(b,{form,plural});if(!p)return null;const r=b.render(p);if(blockedSent(r.toks))return null;const A=mkAns([{...r,sa:null}]);
+  const ex={kind:'build',st,b,p,fmt,sids:sidsFor(st,b,p),words:words(b,p),vkey:vkey(b,p),cue:r.es,review:{a:r},hints:hintsFor(st,b,r,'')};
+  if(fmt==='arrange'){ex.instr='Ordena las palabras para decir:';let sc;for(let i=0;i<8;i++){sc=shuffle(r.toks.filter(t=>!isP(t)));if(tj(sc)!==tj(r.toks.filter(t=>!isP(t))))break;}ex.scrambled=sc;
+    ex.answer=o.method==='mc'?mcAns(mcOrders(r,A.acc)):freeAns(A,r,{strict:true,pool:shuffle([...sc,...shuffle(DISTRACT_GRAM.filter(x=>!sc.includes(x))).slice(0,1)])});}
+  else if(fmt==='fill'){const idx=r.toks.map((t,i)=>GRAM.has(t)?i:-1).filter(i=>i>=0);if(!idx.length){fmt=ex.fmt='translate';}else{const i=pick(idx);
+    ex.instr='Completa la parte que falta.';ex.template={before:r.toks.slice(0,i),after:r.toks.slice(i+1)};const miss=r.toks[i];
+    ex.answer=o.method==='mc'?mcAns(shuffle([{toks:[miss],ok:true},...shuffle(DISTRACT_GRAM.filter(x=>x!==miss&&!A.acc.has(normHz(tj([...ex.template.before,x,...ex.template.after]))))).slice(0,3).map(x=>({toks:[x]}))]),'word')
+      :freeAns(A,r,{strict:true,template:ex.template,pool:shuffle([miss,...shuffle(DISTRACT_GRAM.filter(x=>x!==miss)).slice(0,3)])});}}
+  if(fmt==='pattern'){ex.instr='Construye una oración con la estructura indicada.';ex.showPattern=1;}
+  if(fmt==='translate'||fmt==='pattern'){if(fmt==='translate')ex.instr='Dilo en chino:';
+    ex.answer=o.method==='mc'?mcAns(mcSentences(r,A.acc,meaningVariants(b,p,2))):freeAns(A,r,{strict:true,extraN:2});}
+  return ex;}
+function mcOrders(r,acc){const body=r.toks.filter(t=>!isP(t)),e=r.toks[r.toks.length-1];const opts=[{toks:r.toks,ok:true,es:r.es}];const seen=new Set([normHz(tj(r.toks))]);
+  mutate(r.toks).filter(m=>['order','advfront','buend','buye'].includes(m.rule)).forEach(m=>{const h=normHz(tj(m.toks));if(!seen.has(h)&&!acc.has(h)){seen.add(h);opts.push({toks:m.toks,why:m.rule});}});
+  for(let i=0;i<30&&opts.length<4;i++){const s=[...shuffle(body),e];const h=normHz(tj(s));if(!seen.has(h)&&!acc.has(h)&&!VALID_HZ.has(h)){seen.add(h);opts.push({toks:s,why:'order'});}}
+  return shuffle(opts.slice(0,4));}
+
+function exConv(st,o={}){const sit=SITS.find(s=>s.id===o.sit)||null;let Q=null;
+  for(let i=0;i<10&&!Q;i++){let item=sit?pick(sit.items):null;const s=item?S[item.sid]:st;Q=makeQuestion(s,{filter:item&&item.f});}
+  if(!Q)return null;
+  const ex={kind:'conv',st:Q.meta||Q.st,b:Q.st,p:Q.p,Q,sit:o.sit,sids:Q.sids,audio:Q.toks,hidden:true,words:words(Q.st,Q.p),vkey:vkey(Q.st,Q.p),
+    instr:'Responde con naturalidad.',review:{q:{toks:Q.toks,es:Q.es},a:Q.model},hints:hintsFor(Q.meta||Q.st,Q.st,Q.model,'Responde con la estructura de la pregunta.')};
+  ex.answer=o.method==='mc'?mcAns(mcSentencesQ(Q,otherQuestions(Q,3).map(x=>({toks:x.model.toks,es:x.model.es,wrongQ:x.es})))):freeAns(Q.ans,Q.model,{strict:false,extraN:2});
+  return ex;}
+
+function exVocab(entry,bank){const dir=Math.random()<.6?'hz':'es';const others=shuffle(bank.filter(e=>e.hz!==entry.hz&&e.es!==entry.es&&e.cat!=='Componente')).slice(0,3);
+  const ex={kind:'vocab',entry,fmt:dir,sids:[],words:[entry.hz],audio:[entry.hz],review:{entry},hints:['Categoría: '+entry.cat,'Pinyin: '+entry.py,'',''],
+    instr:dir==='hz'?'¿Qué significa?':'¿Cuál es la palabra?'};
+  ex.answer=mcAns(shuffle([{ok:true,es:entry.es,toks:[entry.hz]},...others.map(e=>({es:e.es,toks:[e.hz]}))]),dir==='hz'?'es':'word');return ex;}
+
+/* ---------- 9. EVALUACIÓN LOCAL ---------- */
+function segAccept(s,first,rest){const a=[...s],n=a.length;const reach=new Array(n+1).fill(false);
+  for(let i=1;i<=n;i++)if(first(a.slice(0,i).join('')))reach[i]=true;
+  for(let i=1;i<n;i++){if(!reach[i])continue;for(let j=i+1;j<=n;j++)if(!reach[j]&&rest(a.slice(i,j).join('')))reach[j]=true;}return reach[n];}
+const glossOf=t=>ENTRY[t]?' («'+ENTRY[t].es+'»)':'';
+function evalHz(A,raw,strict){const tags=[];const {s,found}=toTrad(raw);
+  if(found.length)tags.push({t:'char',m:'Usaste caracteres simplificados ('+found.join(', ')+'). En Taiwán se escriben en tradicional.'});
+  const n=normHz(s);if(!n)return {v:'empty'};
+  const first=x=>A.acc.has(x)||A.free.some(f=>f.hz.test(x));
+  if(first(n)||segAccept(n,first,x=>A.acc.has(x)||VALID_HZ.has(x)||EXTRA_HZ.has(x)))return {v:found.length?'partial':'ok',tags,input:n};
+  RULES.forEach(r=>{if(r.hz.test(n))tags.push({t:r.t,m:r.m});});
+  let best=A.arr[0],bd=1e9;A.arr.forEach(t=>{const d=lev(n,normHz(tj(t)));if(d<bd){bd=d;best=t;}});const bh=normHz(tj(best));
+  const up=hzToPy(n);
+  if(up&&A.accPy.has(up)){const tgt=A.arr.find(t=>compactPy(sentPy(t,1))===up)||best;const th=normHz(tj(tgt));
+    if([...th].length===[...n].length){const a=[...n],b=[...th];const d=a.map((c,i)=>c!==b[i]?c+' → '+b[i]:null).filter(Boolean);tags.push({t:'char',m:'Mismo sonido, carácter distinto: '+d.join(', ')+'.'});return {v:'partial',tags,corr:tgt,input:n};}}
+  const ut=tokenize(n),bt=tokenize(bh);
+  const us=ut.slice().sort().join();const perm=A.arr.find(t=>{const tt=tokenize(normHz(tj(t)));return tt.length===ut.length&&tt.slice().sort().join()===us;});
+  if(perm){best=perm;}
+  if(perm&&n!==normHz(tj(perm))){tags.push({t:'gram',m:'Las palabras son correctas, pero el orden no sigue la estructura.'});return {v:'partial',tags,corr:best,input:n};}
+  if(VALID_HZ.has(n)){tags.push({t:'comp',m:'Tu oración es correcta, pero no responde a lo que se pedía.'});return {v:'partial',tags,corr:best,input:n};}
+  if(ut.length===bt.length){const dif=ut.map((x,i)=>x!==bt[i]?i:-1).filter(i=>i>=0);if(dif.length===1){const u=ut[dif[0]],c=bt[dif[0]];if(DICT.has(u)){const neg=['不','沒','沒有','有'];
+    if(!tags.length)tags.push({t:neg.includes(u)&&neg.includes(c)?'gram':'vocab',m:'Usaste '+u+glossOf(u)+' en lugar de '+c+glossOf(c)+'.'});return {v:'partial',tags,corr:best,input:n};}}}
+  const unknown=[...n].some(c=>!KNOWN_CH.has(c));const ratio=bd/Math.max([...n].length,[...bh].length);
+  if(unknown&&!strict){tags.push({t:'info',m:'Usaste caracteres que no están en tu banco; no puedo comprobarlos con reglas.'});return {v:'review',tags,corr:best,input:n,unknown};}
+  if(ratio<=0.34){if(!tags.some(t=>t.t!=='char'))tags.push({t:'gram',m:'Casi. Compara tu respuesta con la corrección.'});return {v:'partial',tags,corr:best,input:n};}
+  if(tags.length&&!unknown)return {v:'bad',tags,corr:best,input:n};
+  if(!strict||unknown)return {v:'review',tags,corr:best,input:n,unknown};
+  tags.push({t:'gram',m:'La respuesta no sigue la estructura pedida.'});return {v:'bad',tags,corr:best,input:n};}
+function evalPy(A,raw,strict){const tags=[];const c=compactPy(raw);if(!c)return {v:'empty'};
+  const first=x=>A.accPy.has(x)||A.free.some(f=>f.py.test(x));const rest=x=>A.accPy.has(x)||VALID_PY.has(x)||EXTRA_PY.has(x);
+  let ok=first(c);if(!ok){const parts=raw.split(/[,.!?，。！？;；]+/).map(compactPy).filter(Boolean);if(parts.length>1&&first(parts[0])&&parts.slice(1).every(rest))ok=true;}
+  if(!ok)ok=segAccept(c,first,rest);
+  if(ok){let tone=null;if(hasTones(raw)&&A.pyMap.has(c)){const [sand,plain]=A.pyMap.get(c);const us=String(toneSeq(raw));
+      if(us!==String(toneSeq(sand))&&us!==String(toneSeq(plain))){tags.push({t:'py',m:'Revisa los tonos: se escribe '+sand.replace(/[.?!,]+$/,'')+'.'});tone='bad';}}
+    return {v:'ok',tags,input:raw,tone};}
+  RULES.forEach(r=>{if(r.py.test(c))tags.push({t:r.t,m:r.m});});
+  let best=A.arr[0],bd=1e9;A.arr.forEach(t=>{const d=lev(c,compactPy(sentPy(t,1)));if(d<bd){bd=d;best=t;}});const bp=compactPy(sentPy(best,1));
+  const tp=best.filter(t=>!isP(t)).map(t=>compactPy(tokPy(t)));
+  if(c!==bp&&c.length===bp.length&&tp.every(x=>c.includes(x))){tags.push({t:'gram',m:'Las palabras son correctas, pero el orden no sigue la estructura.'});return {v:'partial',tags,corr:best,input:raw};}
+  if(VALID_PY.has(c)){tags.push({t:'comp',m:'Tu oración es correcta, pero no responde a lo que se pedía.'});return {v:'partial',tags,corr:best,input:raw};}
+  const ratio=bd/Math.max(c.length,bp.length);
+  if(ratio<=0.3){const miss=best.filter(t=>!isP(t)&&!c.includes(compactPy(tokPy(t))));
+    if(!tags.length)tags.push(miss.length?{t:'vocab',m:'Revisa: '+miss.map(t=>t+' ('+tokPy(t)+')').join(', ')+'.'}:{t:'py',m:'Casi: revisa la ortografía del pinyin.'});return {v:'partial',tags,corr:best,input:raw};}
+  if(tags.length)return {v:'bad',tags,corr:best,input:raw};
+  if(!strict)return {v:'review',tags,corr:best,input:raw};
+  tags.push({t:'gram',m:'La respuesta no sigue la estructura pedida.'});return {v:'bad',tags,corr:best,input:raw};}
+function evaluate(ex,input,method){const a=ex.answer;
+  if(a.type==='mc'){const o=a.opts[input];if(!o)return {v:'empty'};if(o.ok)return {v:'ok',tags:[],pick:input};
+    const tags=[];if(o.why&&RULEMSG[o.why])tags.push({t:RULEMSG[o.why].t,m:RULEMSG[o.why].m});
+    else if(typeof o.why==='string'&&!RULEMSG[o.why])tags.push({t:'comp',m:o.why});
+    else if(o.rule&&RULEMSG[o.rule])tags.push({t:RULEMSG[o.rule].t,m:'Ese cambio produce un error: '+RULEMSG[o.rule].m});
+    else if(o.unchanged)tags.push({t:'comp',m:'Esa es la oración original: falta hacer el cambio.'});
+    else if(o.otherT)tags.push({t:'gram',m:'Esa oración hace otra transformación: «'+o.es+'».'});
+    else if(o.wrongQ)tags.push({t:'comp',m:'Esa respuesta corresponde a otra pregunta: «'+o.wrongQ+'».'});
+    else if(o.wrongMeaning&&o.es)tags.push({t:'vocab',m:'Eso significa «'+o.es+'».'});
+    else if(a.kind==='es')tags.push({t:'comp',m:'No es eso. Vuelve a escuchar fijándote en la palabra interrogativa y el verbo.'});
+    return {v:'bad',tags,pick:input};}
+  let raw=input;if(a.template){if(method==='pinyin')raw=sentPy(a.template.before,1)+' '+input+' '+sentPy(a.template.after,1);else raw=tj(a.template.before)+input+tj(a.template.after);}
+  return method==='pinyin'?evalPy(a.A,raw,a.strict):evalHz(a.A,raw,a.strict);}
+
+/* ---------- 10. MAESTRÍA Y REPETICIÓN ESPACIADA ---------- */
+const LEVELS=['Nuevo','Practicando','Desarrollando','Dominado'];
+const INTERVALS=[0,3*60e3,15*60e3,2*3600e3,24*3600e3,3*24*3600e3,7*24*3600e3];
+function levelOf(r){if(!r||!r.a)return 0;const last=r.last.slice(-10);const acc=last.reduce((s,x)=>s+x[0],0)/Math.max(1,last.length);
+  const kinds=Object.keys(r.kinds||{}).length;
+  if(r.okNH>=8&&kinds>=3&&r.ear>=1&&r.prod>=2&&(r.vocab||[]).length>=4&&acc>=0.8&&(r.days||[]).length>=2)return 3;
+  if(r.okNH>=4&&acc>=0.7)return 2;if(r.c>=2)return 1;return 0;}
+function accOf(r){if(!r||!r.last.length)return null;const l=r.last.slice(-10);return l.reduce((s,x)=>s+x[0],0)/l.length;}
+
+if(false)module.exports={setBlocked:f=>BLOCKED=f,normHz,tj,S,SL,TOPICS,SITS,BASE_BANK,rebuildIndex,makeQuestion,answersFor,evaluate,evalHz,evalPy,exListen,exSubst,exTrans,exBuild,exConv,exVocab,sentPy,mutate,describe,STATEMENTS:()=>STATEMENTS,VALID:()=>VALID_HZ,setWS:f=>WORDSTAT=f,exampleFor,levelOf};
+
+const SPRINT_CSS="[hidden]{display:none!important}\n:host{display:block;--paper:var(--bg);--grid:var(--accent);--grid-dash:var(--line);--f-han:var(--f-zh);font-family:var(--f-ui);color:var(--ink);font-size:16px}\n\n/* Layout: one-screen notebook drill \u2014 a \u7530\u5b57\u683c practice cell at center, timer rule beneath, four answer keys */\n\n*{box-sizing:border-box}\nbutton{font:inherit;color:inherit}\nbutton:focus-visible{outline:3px solid var(--accent);outline-offset:2px}\n.screen{max-width:600px;margin:0 auto;min-height:100%;display:flex;flex-direction:column}\n.han{font-family:var(--f-han)}\n\n/* Home */\n.home{padding-block:8px 32px;gap:20px}\n.brand{display:flex;align-items:flex-end;gap:14px}\n.brand .seal{font-family:var(--f-han);font-size:3.2rem;line-height:1;color:var(--accent)}\n.brand h1{margin:0;font-size:2rem;font-weight:800;letter-spacing:-.02em;line-height:1}\n.brand p{margin:4px 0 0;color:var(--muted);font-size:.95rem}\n.label{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700}\n.lessons{display:flex;flex-direction:column;gap:8px}\n.lesson{display:grid;grid-template-columns:56px 1fr auto;align-items:center;gap:14px;text-align:left;\n  background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;width:100%}\n.lesson:hover:not(:disabled){border-color:var(--grid)}\n.lesson:disabled{cursor:not-allowed;opacity:.5}\n.lesson.review{border-style:dashed;border-color:var(--bad)}\n.cell-mini{width:56px;height:56px;border:1.5px solid var(--grid);position:relative;display:grid;place-items:center;font-family:var(--f-han);font-size:2.3rem;background:var(--paper)}\n.cell-mini::before,.cell-mini::after{content:\"\";position:absolute;border:0 dashed var(--grid-dash)}\n.cell-mini::before{left:50%;top:0;bottom:0;border-left-width:1px}\n.cell-mini::after{top:50%;left:0;right:0;border-top-width:1px}\n.cell-mini span{position:relative;z-index:1}\n.lesson h2{margin:0;font-size:1.02rem;font-weight:700}\n.lesson h2 small{display:block;font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:2px}\n.lesson p{margin:3px 0 0;color:var(--muted);font-size:.85rem;line-height:1.35}\n.lesson .meta{font-size:.78rem;color:var(--muted);text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}\n.lesson .meta b{display:block;color:var(--ink);font-size:.95rem}\n.badge{display:inline-block;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:99px;background:var(--good-bg);color:var(--good)}\n.foot{color:var(--muted);font-size:.82rem;line-height:1.5}\n.foot kbd{font-family:var(--f-py);border:1px solid var(--line);border-radius:4px;padding:0 5px;background:var(--card)}\n.linkbtn{background:none;border:0;color:var(--muted);text-decoration:underline;cursor:pointer;padding:0;font-size:.82rem}\n\n/* Preview / interstitial */\n.preview{padding-block:8px 24px;gap:14px;height:min(80vh,780px)}\n.topbar{display:flex;align-items:center;gap:12px}\n.back{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:7px 12px;cursor:pointer;font-weight:600;font-size:.9rem}\n.preview h2{margin:0;font-size:1.5rem;font-weight:800;letter-spacing:-.01em}\n.lead{margin:0;color:var(--muted);line-height:1.45;max-width:60ch}\n.groups{display:flex;flex-direction:column;gap:14px;overflow-y:auto;flex:1;min-height:0;padding-bottom:4px}\n.group h3{margin:0 0 8px;font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}\n.chips{display:grid;grid-template-columns:repeat(auto-fill,minmax(122px,1fr));gap:8px}\n.chip{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;display:flex;align-items:center;gap:10px;min-width:0}\n.chip .g{font-family:var(--f-han);font-size:1.9rem;line-height:1;flex:none}\n.chip .t{min-width:0;display:flex;flex-direction:column}\n.chip .t b{font-family:var(--f-py);font-size:.88rem;font-weight:600}\n.chip .t span{font-size:.75rem;color:var(--muted);overflow-wrap:anywhere;line-height:1.25}\n.note{font-size:.82rem;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:10px 12px;line-height:1.45}\n.primary{background:var(--accent);color:var(--accent-ink);border:0;border-radius:14px;padding:16px;font-weight:800;font-size:1.1rem;cursor:pointer;width:100%}\n.inter{justify-content:center;gap:18px;padding-block:32px;min-height:min(70vh,640px)}\n.inter .big{font-family:var(--f-han);font-size:5rem;line-height:1;color:var(--accent)}\n.inter h2{margin:0;font-size:1.7rem;font-weight:800}\n.steps{display:flex;flex-direction:column;gap:8px;margin:0;padding:0;list-style:none}\n.steps li{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:.92rem;line-height:1.4}\n\n/* Play */\n.play{height:min(82vh,800px);min-height:540px;padding-block:4px 16px;gap:10px}\n.hud{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:.88rem}\n.hud .ln{font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0;flex:1}\n.hud .stat{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}\n.hud .stat b{color:var(--ink)}\n.phase{font-size:.68rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;border-radius:99px;background:var(--good-bg);color:var(--good);white-space:nowrap}\n.prog{height:4px;background:var(--line);border-radius:99px;overflow:hidden}\n.prog i{display:block;height:100%;background:var(--grid);width:0;transition:width .25s}\n.stage{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;position:relative}\n.prompt{font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:700;min-height:1em;text-align:center}\n.cells{display:flex;--sz:min(62vw,34vh,300px)}\n.cells.two{--sz:min(42vw,28vh,220px)}\n.stage.revealed .cells{--sz:min(38vw,20vh,180px)}\n.stage.revealed .cells.two{--sz:min(30vw,17vh,140px)}\n.cell{width:var(--sz);height:var(--sz);background:var(--card);border:2px solid var(--grid);position:relative;container-type:size;display:grid;place-items:center}\n.cells.two .cell+.cell{border-left-width:0}\n.cell::before,.cell::after{content:\"\";position:absolute;border:0 dashed var(--grid-dash)}\n.cell::before{left:50%;top:0;bottom:0;border-left-width:1.5px}\n.cell::after{top:50%;left:0;right:0;border-top-width:1.5px}\n.cell .glyph{position:relative;z-index:1;font-family:var(--f-han);font-size:80cqw;line-height:1}\n.stage.ok .cell{background:var(--good-bg)}\n.stage.no .cell{background:var(--bad-bg)}\n.revq{text-align:center;display:flex;flex-direction:column;gap:6px;padding:18px 10px}\n.bigpy{font-family:var(--f-py);font-size:clamp(2.6rem,12vw,4.2rem);font-weight:700;line-height:1.05}\n.revsub{color:var(--muted);font-size:1.15rem}\n.reveal{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;font-size:.9rem;line-height:1.5;text-align:center;max-width:100%}\n.reveal .main{font-size:1.15rem;font-weight:700}\n.reveal .main .py{font-family:var(--f-py)}\n.reveal .h{color:var(--muted)}\n.toast{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-size:.9rem;font-weight:700;color:var(--bad);opacity:0;transition:opacity .15s;white-space:nowrap;background:var(--paper);padding:2px 8px;border-radius:6px}\n.toast.on{opacity:1}\n.toast .han{font-size:1.2rem}\n.timer{height:10px;background:var(--line);border-radius:99px;overflow:hidden}\n.timer i{display:block;height:100%;width:100%;background:var(--accent);transform-origin:left}\n.timer.low i{background:var(--bad)}\n.opts{display:grid;grid-template-columns:1fr 1fr;gap:10px}\n.opt{position:relative;background:var(--card);border:2px solid var(--line);border-radius:14px;padding:12px 10px;min-height:76px;cursor:pointer;\n  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;transition:border-color .1s,background .1s;touch-action:manipulation}\n.opt:hover{border-color:var(--grid)}\n.opt .top{font-family:var(--f-py);font-size:1.35rem;font-weight:600;line-height:1.1}\n.opt .top.hanopt{font-family:var(--f-han);font-size:2rem;font-weight:400}\n.opt .top.solo{font-size:2.7rem}\n.opt .sub{font-size:.82rem;color:var(--muted);line-height:1.2}\n.opt .k{position:absolute;top:6px;left:9px;font-size:.7rem;color:var(--muted);font-family:var(--f-py)}\n.opt.right{border-color:var(--good);background:var(--good-bg)}\n.opt.wrong{border-color:var(--bad);background:var(--bad-bg)}\n.opt:disabled{cursor:default}\n.seg{display:grid;grid-template-columns:1fr 1fr;gap:6px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:4px}\n.seg button{border:0;background:transparent;border-radius:9px;padding:9px 4px;cursor:pointer;font-weight:600;font-size:.95rem;display:flex;flex-direction:column;align-items:center;gap:1px}\n.seg button small{font-weight:400;color:var(--muted);font-size:.75rem;font-variant-numeric:tabular-nums}\n.seg button[aria-pressed=\"true\"]{background:var(--accent);color:var(--accent-ink)}\n.seg button[aria-pressed=\"true\"] small{color:inherit;opacity:.85}\n.speed{display:flex;flex-direction:column;gap:8px}\n.opt .top.pyonly{font-size:1.7rem}\n.pausep{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:10px}\n.pausep p{margin:0;color:var(--muted);font-size:.9rem;line-height:1.4}\n.pausep .reveal{text-align:left}\n\n/* Results */\n.results{padding-block:28px;gap:18px}\n.results h2{margin:0;font-size:1.8rem;font-weight:800;letter-spacing:-.02em}\n.results h2 .han{color:var(--accent);margin-right:8px}\n.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}\n.kpi{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px}\n.kpi b{display:block;font-size:1.5rem;font-variant-numeric:tabular-nums}\n.kpi span{font-size:.75rem;color:var(--muted)}\n.row{display:flex;gap:10px;flex-wrap:wrap}\n.row>button{flex:1 1 160px}\n.secondary{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px;font-weight:700;font-size:1rem;cursor:pointer}\n@media (max-width:420px){.opt .top{font-size:1.2rem}.opt{min-height:68px}.chips{grid-template-columns:repeat(auto-fill,minmax(104px,1fr))}}\n@media (prefers-reduced-motion: reduce){*{transition:none!important}}\n";
+const Sprint=(()=>{
+
+let ALL=[],A={},WORDS=[],WMAP={},LESSONS=[],EXAM=0;
+const RAD=[['亻','rén','persona'],['人','rén','persona'],['女','nǚ','mujer'],['口','kǒu','boca / hablar'],['言','yán','palabras / habla'],['讠','yán','palabras / habla'],['日','rì','sol'],['目','mù','ojo'],['氵','shuǐ','agua / líquido'],['水','shuǐ','agua / líquido'],['車','chē','vehículo'],['心','xīn','corazón / mente'],['忄','xīn','corazón / mente']];
+const RADOPTS={'亻':'persona','女':'mujer','口':'boca','言':'palabras','日':'sol','目':'ojo','氵':'agua','心':'corazón','車':'vehículo'};
+const IDS={'亻':'你他們什','女':'她姓姐好妍','口':'叫嗎呢喜啊哪','言':'謝課誰這','日':'是早','目':'看見','氵':'灣汽法沒','心':'思懂德忙'};
+const GROUPS={'País/lugar':'Países y lugares','Idioma':'Idiomas','Pronombre':'Pronombres','Expresión':'Saludos y expresiones','Verbo':'Verbos','Interrogativo':'Preguntas','Sustantivo':'Cosas y personas','Sustantivo (objeto)':'Cosas y personas'};
+const CONF=['日目早是','見貴視','天太','他她也們你什','東車','姓姐好妍她','叫嗎呢啊哪喜','謝課誰這','汽法灣沒冷','王生美','先生','小太','電影','國中','書筆','都報','懂德忙','英萬華','台可','字好'];
+const confOf=c=>{const s=new Set();CONF.forEach(g=>{if(g.includes(c))[...g].forEach(x=>{if(x!==c)s.add(x);});});return s;};
+const plain=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const isNew=e=>e.status==='nuevo'||e.src==='tú';
+function loadData(){const bank=fullBank();A={};ALL=[];WORDS=[];WMAP={};
+  bank.forEach(e=>{if([...e.hz].length===1){if(!A[e.hz]){A[e.hz]={p:e.py,m:e.es};ALL.push([e.hz,e.py,e.es]);}}
+    else if(!WMAP[e.hz]){const w=[e.hz,e.py,e.es,GROUPS[e.cat]||'Otras',isNew(e)];WORDS.push(w);WMAP[e.hz]=w;}});
+  LESSONS=makeLessons();LESSONS.forEach((l,i)=>l.idx=i);EXAM=LESSONS.length-1;}
+const charCard=c=>({key:'char:'+c,kind:'char',q:c,top:A[c].p,sub:A[c].m});
+const wordCard=w=>({key:'word:'+w,kind:'word',q:w,top:WMAP[w][1],sub:WMAP[w][2]});
+const cardFromKey=k=>{const i=k.indexOf(':');const kind=k.slice(0,i),q=k.slice(i+1);return kind==='char'&&A[q]?charCard(q):kind==='word'&&WMAP[q]?wordCard(q):null;};
+
+function charLesson(name,icon,desc,groups){groups=groups.map(([g,s])=>[g,[...s].filter(c=>A[c]).join('')]);return{name,icon,desc,groups,learn:true,need:2,startT:4000,
+  build:()=>groups.flatMap(([,s])=>[...s].map(charCard))};}
+
+function makeLessons(){return [
+ {name:'Radicales Base',icon:'亻',desc:'Las 8 piezas que se repiten en tus caracteres.',learn:true,need:2,startT:4000,rad:true,
+  build(){const a=RAD.map(([g,p,m])=>({key:'rad:'+g,kind:'rad',q:g,top:p,sub:m}));
+   const b=[];for(const r in IDS)for(const c of IDS[r])b.push({key:'id:'+c,kind:'id',q:c,top:r,sub:RADOPTS[r]});
+   return [...a,...b];}},
+ {name:'Palabras Compuestas',icon:'國',desc:`${WORDS.filter(w=>!w[4]).length} palabras del libro: países, saludos, verbos y más.`,learn:true,need:2,startT:4400,
+  groups:null,build:()=>WORDS.filter(w=>!w[4]).map(w=>wordCard(w[0]))},
+ charLesson('Caracteres Sueltos','嗎','Pronombres, partículas y verbos cortitos.',[['Pronombres','我你他她誰們'],['Partículas finales','嗎呢啊'],['Conectores y verbos','不很也都要買懂']]),
+ charLesson('Nombres y Títulos','姓','Apellidos, trato formal y tu nombre.',[['Apellidos','李王趙張'],['Trato formal','您貴姓叫'],['Títulos','先生小姐'],['Nombre','名字'],['Nota del margen','萬思妍']]),
+ charLesson('Países y Lugares','灣','Cada carácter de los países y de Taiwán.',[['Países','美國英中德法日本'],['Taiwán','臺台灣華'],['Gente e idioma','人文']]),
+ charLesson('Preguntas y Saludos','早','Qué, cuál, esto y los saludos de la lección 2.',[['Preguntas','什麼哪這'],['Saludos','早好久見謝再'],['Ser','是']]),
+ charLesson('Clima y Rutina','熱','Clima, estados de ánimo y verbos diarios.',[['Clima','天氣熱冷'],['Estados','忙太'],['Verbos','去上課有沒可看']]),
+ charLesson('Cosas y Gustos','書','Gustos, pantallas, transporte y objetos.',[['Gustos','喜歡'],['Pantallas','電影視'],['Transporte','汽車'],['Objetos','書筆報東西']]),
+ {name:'Examen Final',icon:'考',desc:`Los ${ALL.length} caracteres de tu banco${WORDS.some(w=>w[4])?' y tus palabras nuevas':''}, con o sin significado.`,exam:true,learn:false,need:1,startT:3500,
+  build:()=>shuffle([...ALL.map(x=>charCard(x[0])),...WORDS.filter(w=>w[4]).map(w=>wordCard(w[0]))])}
+];}
+
+
+// ================= STATE =================
+let save={unlocked:0,best:{},weak:{},speed:'normal',examMode:'py'};
+function loadSave(){let old=null;try{old=JSON.parse(localStorage.getItem('hanzi-sprint-v2')||'null');}catch(e){}
+  save=Object.assign({unlocked:0,best:{},weak:{},speed:'normal',examMode:'py'},P.sprint||old||{});}
+function persistS(){P.sprint=JSON.parse(JSON.stringify(save));persist('prog');}
+let G=null;
+let app=null,SR=null;
+const $=id=>SR.getElementById(id);
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]];}return a;}
+const fmt=ms=>{const s=Math.round(ms/1000);return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');};
+const SPEEDS={calma:{name:'Tranquila',start:5500,min:2500,max:8000,pen:600},normal:{name:'Normal',start:4000,min:1500,max:5500,pen:500}};
+const SP=()=>SPEEDS[save.speed]||SPEEDS.normal;
+const sec=ms=>(ms/1000).toFixed(1).replace('.0','');
+
+// ================= HOME =================
+function home(){
+  stopTimer();G=null;
+  const weakKeys=Object.keys(save.weak).filter(cardFromKey);
+  const tiles=LESSONS.map((l,i)=>{const locked=i>save.unlocked;const b=save.best[i];
+    return `<button class="lesson" data-l="${i}" ${locked?'disabled':''}>
+      <span class="cell-mini"><span>${l.icon}</span></span>
+      <span><h2><small>${l.exam?'Bonus':'Lección '+(i+1)}</small>${l.name}</h2><p>${locked?'Completa la anterior para desbloquear.':l.desc}</p></span>
+      <span class="meta">${b?`<span class="badge">Hecha</span><b>${fmt(b.time)}</b>${b.acc}% a la primera`:locked?'🔒':''}</span></button>`;}).join('');
+  const nw=WORDS.filter(w=>w[4]).map(w=>w[0]).concat(ALL.filter(x=>{const e=ENTRY[x[0]];return e&&isNew(e);}).map(x=>x[0]));
+  const newTile=`<button class="lesson" id="nw" ${nw.length?'':'disabled'}><span class="cell-mini"><span>新</span></span>
+      <span><h2><small>Tu banco</small>Mis palabras nuevas</h2><p>${nw.length?nw.length+' palabras marcadas como nuevas: '+nw.slice(0,8).join(' '):'Añade palabras en «Mi banco» y aparecerán aquí.'}</p></span><span class="meta"></span></button>`;
+  const review=weakKeys.length?`<button class="lesson review" id="rev"><span class="cell-mini"><span>複</span></span>
+      <span><h2><small>Repaso</small>Mis fallos</h2><p>${weakKeys.length} caracteres que más te han costado.</p></span><span class="meta"></span></button>`:'';
+  app.innerHTML=`<div class="screen home">
+    <div class="brand"><span class="seal">速</span><div><h1>Hanzi Sprint</h1><p>${ALL.length} caracteres y ${WORDS.length} palabras de tu banco</p></div></div>
+    <div class="speed"><span class="label">Velocidad de la ronda rápida</span><div class="seg">${Object.entries(SPEEDS).map(([k,s])=>`<button data-sp="${k}" aria-pressed="${save.speed===k}">${s.name}<small>${sec(s.start)} s → ${sec(s.min)} s</small></button>`).join('')}</div></div>
+    ${newTile}${review}
+    <div class="lessons">${tiles}</div>
+    <div class="foot">Cada lección tiene dos rondas: primero aprendes sin reloj, luego juegas con reloj. El tiempo empieza en ${sec(SP().start)} s y baja hasta ${sec(SP().min)} s si aciertas; si fallas, sube. Un carácter queda dominado al acertarlo 2 veces seguidas.<br>Teclado: <kbd>1</kbd>–<kbd>4</kbd> responder · <kbd>Enter</kbd> continuar · <kbd>P</kbd> pausa · <kbd>Esc</kbd> salir.
+    ${save.unlocked>0||Object.keys(save.best).length?'<br><button class="linkbtn" id="reset">Reiniciar progreso</button>':''}</div>
+  </div>`;
+  app.querySelectorAll('[data-l]').forEach(b=>b.onclick=()=>preview(LESSONS[+b.dataset.l]));
+  app.querySelectorAll('[data-sp]').forEach(b=>b.onclick=()=>{save.speed=b.dataset.sp;persistS();home();});
+  if($('nw')&&nw.length)$('nw').onclick=()=>preview(customLesson('Mis palabras nuevas',nw.map(h=>[...h].length>1?wordCard(h):charCard(h)).filter(Boolean)));
+  if($('rev'))$('rev').onclick=()=>preview(customLesson('Mis fallos',weakKeys.sort((a,b)=>save.weak[b]-save.weak[a]).slice(0,24).map(cardFromKey)));
+  const r=$('reset');if(r){let armed=false;r.onclick=()=>{if(!armed){armed=true;r.textContent='Toca otra vez para confirmar';return;}save={unlocked:0,best:{},weak:{},speed:save.speed};persistS();home();};}
+}
+function customLesson(name,cards){return{name,icon:'複',custom:true,learn:true,need:2,startT:4000,build:()=>cards.map(c=>({...c}))};}
+
+// ================= PREVIEW =================
+function chip(g,p,m){return `<div class="chip"><span class="g">${g}</span><span class="t"><b>${p}</b><span>${m}</span></span></div>`;}
+function preview(l){
+  stopTimer();let body='';
+  if(l.rad){
+    body=`<div class="group"><h3>Los radicales</h3><div class="chips">${RAD.map(r=>chip(...r)).join('')}</div></div>
+    <div class="group"><h3>Dónde aparecen</h3><div class="chips">${Object.entries(IDS).map(([r,cs])=>chip(r,RADOPTS[r],[...cs].join(' '))).join('')}</div></div>
+    <div class="note">冷 lleva 冫 (hielo), no 氵. 先 no lleva 亻, y 汽 no lleva 車. Por eso no salen en las preguntas de radical.</div>`;
+  }else if(l.groups){
+    body=l.groups.map(([g,s])=>`<div class="group"><h3>${g}</h3><div class="chips">${[...s].map(c=>chip(c,A[c].p,A[c].m)).join('')}</div></div>`).join('');
+  }else if(l.idx===1){
+    const gr={};WORDS.forEach(w=>(gr[w[3]]=gr[w[3]]||[]).push(w));
+    body=Object.entries(gr).map(([g,ws])=>`<div class="group"><h3>${g}</h3><div class="chips">${ws.map(w=>chip(w[0],w[1],w[2])).join('')}</div></div>`).join('');
+  }else{
+    const cs=l.build();
+    body=`<div class="group"><h3>${cs.length} ${l.custom?'para repasar':'caracteres'}</h3><div class="chips">${cs.map(c=>chip(c.q,c.top,c.sub)).join('')}</div></div>`;
+  }
+  const lead=l.exam?(save.examMode==='py'?'Sin ronda de aprendizaje. Las opciones solo muestran el pinyin. ':'Sin ronda de aprendizaje. Las opciones muestran pinyin y significado, y algunas preguntas van al revés. ')+'Si fallas, el carácter vuelve unas tarjetas después.':'Repásalos un momento. Primero verás cada uno sin reloj; después viene la ronda rápida.';
+  app.innerHTML=`<div class="screen preview">
+    <div class="topbar"><button class="back" id="bk">← Lecciones</button></div>
+    <h2>${l.name}</h2><p class="lead">${lead}</p>
+    ${l.exam?`<div class="speed"><span class="label">Opciones del examen</span><div class="seg"><button data-em="py" aria-pressed="${save.examMode==='py'}">Solo pinyin<small>más difícil</small></button><button data-em="meaning" aria-pressed="${save.examMode==='meaning'}">Con significado<small>pinyin + español</small></button></div></div>`:''}
+    <div class="groups">${body}</div>
+    <button class="primary" id="go" data-enter>Empezar</button></div>`;
+  $('bk').onclick=home;$('go').onclick=()=>start(l);
+  app.querySelectorAll('[data-em]').forEach(b=>b.onclick=()=>{save.examMode=b.dataset.em;persistS();preview(l);});
+}
+
+// ================= GAME =================
+function start(l){
+  const cards=l.build();cards.forEach(c=>{c.streak=0;c.done=false;c.seen=false;});
+  G={l,cards,keys:new Set(cards.map(c=>c.key)),T:SP().start-(l.exam?500:0),pyOnly:!!l.exam&&save.examMode!=='meaning',phase:l.learn?'learn':'speed',
+     queue:l.learn?cards.slice():shuffle(cards),learnI:0,mastered:0,first:0,miss:{},t0:performance.now(),lock:true};
+  if(l.learn)shell();else{G.phase='speed';shell();}
+  setTimeout(next,250);
+}
+function shell(){
+  const sp=G.phase==='speed';
+  app.innerHTML=`<div class="screen play">
+    <div class="hud"><button class="back" id="bk" aria-label="Salir">✕</button><button class="back" id="pz" aria-label="Pausa">❚❚</button><span class="ln">${G.l.name}</span>
+      <span class="phase">${sp?'Ronda rápida':'Aprender'}</span><span class="stat" id="st"></span></div>
+    <div class="prog"><i id="pg"></i></div>
+    <div class="stage" id="stg"></div>
+    <div class="timer" id="tm" ${sp?'':'hidden'}><i id="tb"></i></div>
+    <div class="opts" id="op"></div>
+    <button class="primary" id="cont" hidden data-enter>Siguiente →</button>
+    <div class="pausep" id="pp" hidden><div class="label">En pausa</div><p>Toma tus notas con calma. El reloj está detenido.</p><div id="peek"></div>
+      <div class="row"><button class="secondary" id="pk">Ver respuesta</button><button class="primary" id="rs" data-enter>Continuar</button></div></div></div>`;
+  $('bk').onclick=home;$('pz').onclick=()=>G&&(G.paused?resume():pause());$('rs').onclick=resume;$('pk').onclick=peek;$('cont').onclick=()=>{if(G&&G.waiting){G.waiting=false;next();}};
+  hud();
+}
+function hud(){
+  if(!G)return;const n=G.cards.length;
+  if(G.phase==='learn'){$('st').innerHTML=`<b>${Math.min(G.learnI,n)}</b>/${n}`;$('pg').style.width=(G.learnI/n*100)+'%';}
+  else{$('st').innerHTML=`<b>${G.mastered}</b>/${n} · <b>${(G.T/1000).toFixed(1)}</b> s`;$('pg').style.width=(G.mastered/n*100)+'%';}
+}
+function pause(){
+  if(!G||G.paused)return;G.paused=true;
+  if(G.phase==='speed'&&!G.lock){G.pausedRem=G.deadline-performance.now();stopTimer();}
+  G.contWas=!$('cont').hidden;
+  $('op').hidden=true;$('tm').hidden=true;$('cont').hidden=true;
+  $('peek').innerHTML='';$('pk').hidden=G.lock;$('pp').hidden=false;$('pz').textContent='▶';
+}
+function peek(){
+  const c=G&&G.card;if(!c||G.lock)return;G.peeked=true;$('pk').hidden=true;
+  const main=c.kind==='id'?`<span class="han">${c.q}</span> lleva <span class="han">${c.top}</span> · ${c.sub}`:`<span class="han">${c.q}</span> <span class="py">${c.top}</span> · ${c.sub}`;
+  $('peek').innerHTML=`<div class="reveal"><div class="main">${main}</div>${hints(c).map(h=>`<div class="h">${h}</div>`).join('')}<div class="h">Esta tarjeta volverá más adelante, sin contar como error.</div></div>`;
+}
+function resume(){
+  if(!G||!G.paused)return;G.paused=false;
+  $('pp').hidden=true;$('op').hidden=false;$('tm').hidden=G.phase!=='speed';$('cont').hidden=!G.contWas;$('pz').textContent='❚❚';
+  if(G.peeked&&!G.lock){G.peeked=false;G.lock=true;G.pausedRem=null;G.queue.splice(Math.min(G.queue.length,3),0,G.card);next();return;}
+  if(G.pendingNext){G.pendingNext=false;next();return;}
+  if(G.phase==='speed'&&!G.lock&&G.pausedRem!=null){G.deadline=performance.now()+G.pausedRem;G.pausedRem=null;tick();}
+}
+function next(){
+  if(!G)return;
+  if(G.paused){G.pendingNext=true;return;}
+  if(!G.queue.length){
+    if(G.phase==='learn')return interstitial();
+    return finish();
+  }
+  const c=G.card=G.queue.shift();
+  const canRev=G.phase==='speed'&&(c.kind==='char'||c.kind==='word');
+  G.rev=canRev&&!G.pyOnly&&Math.random()<(G.l.exam?.3:.35);
+  G.opts=makeOpts(c,G.rev);
+  const stg=$('stg');stg.className='stage';
+  const prompt=G.rev?(c.kind==='word'?'¿Cuál es la palabra?':'¿Cuál es el carácter?'):
+    c.kind==='rad'?'¿Qué significa este radical?':c.kind==='id'?'¿Qué radical lleva?':c.kind==='word'?'¿Qué palabra es?':'¿Qué carácter es?';
+  const chars=[...c.q];
+  stg.innerHTML=`<div class="prompt">${prompt}</div>`+(G.rev
+    ?`<div class="revq"><div class="bigpy">${c.top}</div><div class="revsub">${c.sub}</div></div>`
+    :`<div class="cells${chars.length>1?' two':''}">${chars.map(ch=>`<div class="cell"><span class="glyph">${ch}</span></div>`).join('')}</div>`)
+    +`<div class="toast" id="to"></div>`;
+  $('op').innerHTML=G.opts.map((o,i)=>{
+    const top=G.rev?`<span class="top hanopt solo">${o.q}</span>`
+      :c.kind==='id'?`<span class="top hanopt">${o.top}</span><span class="sub">${o.sub}</span>`
+      :G.pyOnly?`<span class="top pyonly">${o.top}</span>`
+      :`<span class="top">${o.top}</span><span class="sub">${o.sub}</span>`;
+    return `<button class="opt" data-i="${i}"><span class="k">${i+1}</span>${top}</button>`;}).join('');
+  SR.querySelectorAll('.opt').forEach(b=>b.onclick=()=>answer(+b.dataset.i));
+  $('cont').hidden=true;G.waiting=false;G.lock=false;
+  hud();
+  if(G.phase==='speed'){
+    G.dur=G.T+(c.kind==='word'?400:0)+(c.kind==='id'?500:0)+(G.rev?300:0);
+    G.deadline=performance.now()+G.dur;tick();
+  }
+}
+function makeOpts(c,rev){
+  let cands;
+  if(c.kind==='rad')cands=RAD.map(([g,p,m])=>({key:'rad:'+g,q:g,top:p,sub:m}));
+  else if(c.kind==='id')cands=Object.entries(RADOPTS).map(([t,s])=>({key:'r:'+t,q:t,top:t,sub:s}));
+  else if(c.kind==='word')cands=WORDS.map(w=>wordCard(w[0]));
+  else cands=ALL.map(x=>charCard(x[0]));
+  const conf=c.kind==='char'?confOf(c.q):new Set();const pp=plain(c.top);
+  const scored=[];
+  for(const o of cands){
+    if(c.kind==='id'?o.top===c.top:o.q===c.q)continue;
+    if(!rev&&o.sub===c.sub)continue;
+    if(G.pyOnly&&o.top===c.top)continue;
+    let s=Math.random()*1.2;
+    if(G.keys.has(o.key))s+=1;
+    if(c.kind==='char'){if(conf.has(o.q))s+=rev?3:1.2;if(plain(o.top)===pp)s+=rev?1:3;}
+    if(c.kind==='word'&&[...o.q].some(ch=>c.q.includes(ch)))s+=2.5;
+    if(c.kind==='id'&&(c.top==='日'&&o.top==='目'||c.top==='目'&&o.top==='日'))s+=3;
+    scored.push([s,o]);
+  }
+  scored.sort((a,b)=>b[0]-a[0]);
+  const ex=G.pyOnly;const kf=o=>rev?o.q:ex?o.top:o.sub;
+  const picks=[];const seen=new Set([kf(c)]);
+  for(const [,o] of scored){const k=kf(o);if(seen.has(k))continue;seen.add(k);picks.push(o);if(picks.length===3)break;}
+  return shuffle([{...c,ok:true},...picks]);
+}
+let raf=0;
+function tick(){
+  if(!G||G.lock||G.paused||G.phase!=='speed')return;
+  const rem=G.deadline-performance.now();const f=Math.max(0,rem/G.dur);
+  const tb=$('tb');if(tb)tb.style.transform=`scaleX(${f})`;
+  const tm=$('tm');if(tm)tm.classList.toggle('low',f<.35);
+  if(rem<=0)return answer(null);
+  raf=requestAnimationFrame(tick);
+}
+function stopTimer(){cancelAnimationFrame(raf);}
+function hints(c){
+  const h=[];
+  if(c.kind==='char'){
+    for(const r in IDS)if(IDS[r].includes(c.q))h.push(`Radical <span class="han">${r}</span> · ${RADOPTS[r]}`);
+    const ws=WORDS.filter(w=>w[0].includes(c.q)).slice(0,2).map(w=>`<span class="han">${w[0]}</span> ${w[1]} · ${w[2]}`);
+    if(ws.length)h.push('En: '+ws.join(' / '));
+    const cf=[...confOf(c.q)].filter(x=>A[x]).slice(0,3);
+    if(cf.length)h.push('No confundir con: '+cf.map(x=>`<span class="han">${x}</span> ${A[x].p}`).join(', '));
+  }else if(c.kind==='word'){
+    h.push([...c.q].map(ch=>A[ch]?`<span class="han">${ch}</span> ${A[ch].m}`:ch).join(' + '));
+  }else if(c.kind==='id'){
+    if(A[c.q])h.push(`<span class="han">${c.q}</span> ${A[c.q].p} · ${A[c.q].m}`);
+  }
+  return h;
+}
+function recordMiss(c){G.miss[c.key]=G.miss[c.key]||{c,n:0};G.miss[c.key].n++;}
+function answer(i){
+  if(!G||G.lock||G.paused)return;G.lock=true;stopTimer();
+  const c=G.card;const btns=SR.querySelectorAll('.opt');btns.forEach(b=>b.disabled=true);
+  const ri=G.opts.findIndex(o=>o.ok);const ok=i===ri;const stg=$('stg');
+  if(i!=null&&!ok)btns[i].classList.add('wrong');btns[ri].classList.add('right');
+  stg.classList.add(ok?'ok':'no');
+
+  if(G.phase==='learn'){
+    G.learnI++;
+    if(ok)c.streak=1;else{c.streak=0;recordMiss(c);}
+    stg.classList.add('revealed');
+    const main=c.kind==='id'
+      ?`<span class="han">${c.q}</span> lleva <span class="han">${c.top}</span> · ${c.sub}`
+      :`<span class="han">${c.q}</span> <span class="py">${c.top}</span> · ${c.sub}`;
+    const rv=document.createElement('div');rv.className='reveal';
+    rv.innerHTML=`<div class="main">${main}</div>${hints(c).map(h=>`<div class="h">${h}</div>`).join('')}`;
+    stg.insertBefore(rv,$('to'));
+    $('cont').hidden=false;G.waiting=true;hud();
+    return;
+  }
+
+  // speed phase
+  const firstTime=!c.seen;c.seen=true;
+  if(ok){
+    if(firstTime)G.first++;
+    c.streak++;G.T=Math.max(SP().min,G.T-150);
+    if(c.streak>=G.l.need){c.done=true;G.mastered++;}
+    else G.queue.splice(Math.min(G.queue.length,5+(Math.random()*4|0)),0,c);
+    hud();setTimeout(next,240);
+  }else{
+    c.streak=0;recordMiss(c);G.T=Math.min(SP().max,G.T+SP().pen);
+    G.queue.splice(Math.min(G.queue.length,3),0,c);
+    const to=$('to');
+    const ans=c.kind==='id'?`<span class="han">${c.top}</span> ${c.sub}`:`<span class="han">${c.q}</span> ${c.top} · ${c.sub}`;
+    to.innerHTML=(i==null?'⏱ ':'')+ans;to.className='toast on';
+    hud();setTimeout(next,1300);
+  }
+}
+function interstitial(){
+  stopTimer();G.lock=true;
+  const n=G.cards.length;const got=G.cards.filter(c=>c.streak>0).length;
+  app.innerHTML=`<div class="screen inter">
+    <div class="big">快</div><h2>Ahora, la ronda rápida</h2>
+    <p class="lead">Acertaste ${got} de ${n} en la ronda de aprendizaje.</p>
+    <ul class="steps">
+      <li>Empiezas con <b>${(G.T/1000).toFixed(1)} s</b> por carácter. Cada acierto baja el tiempo y cada fallo lo sube.</li>
+      <li>${G.l.rad?'':'Algunas preguntas van al revés: ves el pinyin y eliges el carácter. '}Las opciones incluyen caracteres que se parecen.</li>
+      <li>Si fallas, el carácter vuelve 3 tarjetas después. Para dominarlo, acierta 2 veces seguidas.</li>
+    </ul>
+    <button class="primary" id="go" data-enter>Vamos</button></div>`;
+  $('go').onclick=()=>{G.phase='speed';G.queue=shuffle(G.cards.filter(c=>!c.done));shell();setTimeout(next,250);};
+}
+function finish(){
+  stopTimer();
+  const l=G.l;const n=G.cards.length;const time=performance.now()-G.t0;
+  const acc=Math.round(G.first/n*100);
+  const misses=Object.values(G.miss).sort((a,b)=>b.n-a.n);
+  // weak list: add misses, clear clean ones
+  for(const c of G.cards){if(c.kind!=='char'&&c.kind!=='word')continue;const m=G.miss[c.key];
+    if(m)save.weak[c.key]=(save.weak[c.key]||0)+m.n;else delete save.weak[c.key];}
+  if(!l.custom){
+    const i=l.idx;const prev=save.best[i];
+    save.best[i]={time:prev?Math.min(prev.time,time):time,acc:prev?Math.max(prev.acc,acc):acc};
+    if(i<EXAM&&save.unlocked<i+1)save.unlocked=i+1;
+  }
+  persistS();
+  const nextL=!l.custom&&l.idx<EXAM?LESSONS[l.idx+1]:null;
+  const missCards=misses.map(m=>m.c);
+  app.innerHTML=`<div class="screen results">
+    <h2><span class="han">完成</span>${l.name}</h2>
+    <div class="kpis"><div class="kpi"><b>${fmt(time)}</b><span>tiempo</span></div><div class="kpi"><b>${acc}%</b><span>a la primera (ronda rápida)</span></div><div class="kpi"><b>${(G.T/1000).toFixed(1)} s</b><span>velocidad final</span></div></div>
+    ${misses.length?`<div class="group"><h3 class="label" style="margin:0 0 8px">Para repasar</h3><div class="chips">${misses.map(m=>chip(m.c.q,m.c.kind==='id'?m.c.top+' '+m.c.sub:m.c.top,(m.c.kind==='id'?'radical':m.c.sub)+' · ×'+m.n)).join('')}</div></div>`
+      :`<div class="note">Sin errores en toda la lección.</div>`}
+    <div class="row">
+      ${misses.length?`<button class="secondary" id="pm">Practicar estos ${misses.length}</button>`:`<button class="secondary" id="again">Repetir</button>`}
+      ${nextL?`<button class="primary" id="nx" data-enter>Siguiente: ${nextL.name}</button>`:`<button class="primary" id="hm2" data-enter>Volver a lecciones</button>`}
+    </div>
+    <button class="linkbtn" id="hm" style="align-self:flex-start">Volver a lecciones</button>
+  </div>`;
+  G=null;
+  if($('pm'))$('pm').onclick=()=>preview(customLesson('Repaso: '+l.name,missCards));
+  if($('again'))$('again').onclick=()=>start(l);
+  if($('nx'))$('nx').onclick=()=>preview(nextL);
+  if($('hm2'))$('hm2').onclick=home;
+  $('hm').onclick=home;
+}
+
+document.addEventListener('keydown',e=>{
+  if(!active())return;const tg=(e.composedPath()[0]||{}).tagName;if(tg==='INPUT'||tg==='SELECT'||tg==='TEXTAREA')return;
+  if(e.key==='Escape'){home();return;}
+  if(e.key==='Enter'||e.key===' '){
+    const b=[...SR.querySelectorAll('[data-enter]')].find(x=>x.offsetParent!==null);
+    if(b){e.preventDefault();b.click();}return;
+  }
+  if(G&&(e.key==='p'||e.key==='P')&&$('pz')){G.paused?resume():pause();return;}
+  if(G&&!G.lock&&!G.paused&&/^[1-4]$/.test(e.key)){const n=+e.key-1;if(G.opts&&n<G.opts.length)answer(n);}
+});
+let pausedRem=null;
+document.addEventListener('visibilitychange',()=>{
+  if(!active()||!G||G.lock||G.paused||G.phase!=='speed')return;
+  if(document.hidden){pausedRem=G.deadline-performance.now();stopTimer();}
+  else if(pausedRem!=null){G.deadline=performance.now()+pausedRem;pausedRem=null;tick();}
+});
+
+function active(){return UI.screen==='sprint'&&app&&app.isConnected;}
+function open(host){if(!host.shadowRoot){host.attachShadow({mode:'open'});}SR=host.shadowRoot;SR.innerHTML='<style>'+SPRINT_CSS+'</style><div id="app"></div>';app=SR.getElementById('app');loadData();loadSave();home();}
+function stop(){stopTimer();G=null;}
+return {open,stop};})();
+
+/* ---------- 11. ESTADO Y GUARDADO ---------- */
+const LS_KEY='shuoshuokan-v1';
+const KINDS=['listen','subst','trans','build','conv'];
+const MODES=[{id:'mixed',name:'Práctica mixta',d:'Todos los tipos, según tu nivel'},{id:'listen',name:'Escuchar',d:'Preguntas en audio'},{id:'subst',name:'Sustituir',d:'Cambia piezas de una estructura'},{id:'trans',name:'Transformar',d:'Negar, preguntar, plural…'},{id:'build',name:'Construir',d:'Arma oraciones completas'},{id:'conv',name:'Conversar',d:'Preguntas inesperadas'}];
+const METHODS=[{id:'mc',name:'Opción múltiple',d:'Reconocer'},{id:'tiles',name:'Seleccionar caracteres',d:'Armar con fichas'},{id:'pinyin',name:'Pinyin',d:'Con o sin tonos'},{id:'hanzi',name:'Teclado chino',d:'Cuando estés lista'}];
+const TAGNAME={gram:'Gramática',vocab:'Vocabulario',char:'Caracteres',py:'Pinyin / tonos',nat:'Poco natural',comp:'Comprensión',info:'Nota'};
+const ACH=[
+ {id:'first',n:'Primer paso',d:'Tu primer acierto',t:P=>P.cnt.ok>=1},
+ {id:'ear',n:'Buen oído',d:'10 aciertos escuchando',t:P=>P.cnt.ear>=10},
+ {id:'tiles',n:'Constructora',d:'10 oraciones armadas con fichas',t:P=>P.cnt.tiles>=10},
+ {id:'py',n:'Pinyin',d:'Primer acierto escribiendo pinyin',t:P=>P.cnt.py>=1},
+ {id:'hz',n:'漢字',d:'Primer acierto con teclado chino',t:P=>P.cnt.hz>=1},
+ {id:'nohint',n:'Sin ayuda',d:'20 aciertos sin pistas',t:P=>P.cnt.nohint>=20},
+ {id:'streak',n:'Racha de 8',d:'8 aciertos seguidos',t:P=>P.cnt.best>=8},
+ {id:'dev',n:'En marcha',d:'Una estructura en Desarrollando',t:P=>Object.values(P.st).some(r=>levelOf(r)>=2)},
+ {id:'mast',n:'Dominada',d:'Primera estructura dominada',t:P=>Object.values(P.st).some(r=>levelOf(r)>=3)},
+ {id:'bank',n:'Banco creciente',d:'Añadiste 5 palabras',t:P=>P.cnt.added>=5},
+ {id:'topics',n:'Todo terreno',d:'Practicaste los 5 temas',t:P=>Object.keys(P.cnt.topics).length>=5},
+ {id:'sessions',n:'Constancia',d:'5 sesiones terminadas',t:P=>P.cnt.sessions>=5}];
+function defProg(){return {v:1,xp:0,ach:{},st:{},w:{},cnt:{ok:0,ear:0,tiles:0,py:0,hz:0,nohint:0,streak:0,best:0,added:0,topics:{},sessions:0},sessions:[],fixes:{accept:{},block:[],reports:[]},prefs:{method:'mc',rate:0.85,voice:'',pyTiles:false,goal:12,mode:'mixed'},updatedAt:0};}
+function normProg(x){const d=defProg();if(!x||typeof x!=='object')return d;return {...d,...x,cnt:{...d.cnt,...(x.cnt||{})},prefs:{...d.prefs,...(x.prefs||{})},st:x.st||{},w:x.w||{},ach:x.ach||{},sessions:Array.isArray(x.sessions)?x.sessions:[],fixes:{accept:{},block:[],reports:[],...(x.fixes||{})}};}
+let B={added:[],status:{},updatedAt:0};
+let P=defProg();
+let SESSION=null;
+WORDSTAT=()=>P.w;
+BLOCKED=()=>P.fixes.block;
+const SAVE={local:false,remote:'pending',at:0};
+let DB=null,UID=null,remoteTimer=null,writing=false,again=false,dirtyB=false,dirtyP=false;
+function fullBank(){return [...BASE_BANK.map(e=>({...e,status:B.status[e.hz]||e.status})),...B.added];}
+function loadLocal(){try{const raw=localStorage.getItem(LS_KEY);if(!raw)return;const d=JSON.parse(raw);if(d.bank&&Array.isArray(d.bank.added))B={added:d.bank.added,status:d.bank.status||{},updatedAt:d.bank.updatedAt||0};P=normProg(d.prog);SESSION=d.session||null;SAVE.local=true;}catch(e){}}
+function saveLocal(){try{localStorage.setItem(LS_KEY,JSON.stringify({bank:B,prog:P,session:SESSION?{...SESSION,fails:[],queue:undefined}:null}));SAVE.local=true;}catch(e){SAVE.local=false;}}
+function persist(what){const t=Date.now();if(what!=='prog'){B.updatedAt=t;dirtyB=true;}if(what!=='bank'){P.updatedAt=t;dirtyP=true;}saveLocal();
+  if(DB){clearTimeout(remoteTimer);remoteTimer=setTimeout(writeRemote,1500);}renderSave();}
+async function writeRemote(){if(!DB)return;if(writing){again=true;return;}if(!dirtyB&&!dirtyP)return;writing=true;SAVE.remote='saving';renderSave();
+  const jobs=[];const wb=dirtyB,wp=dirtyP;dirtyB=dirtyP=false;
+  try{if(wb)await DB.doc('data/users/'+UID+'/bank').set(JSON.parse(JSON.stringify(B)));
+    if(wp)await DB.doc('data/users/'+UID+'/progress').set(JSON.parse(JSON.stringify(P)));
+    SAVE.remote='ok';SAVE.at=Date.now();}
+  catch(e){SAVE.remote='error';if(wb)dirtyB=true;if(wp)dirtyP=true;}
+  writing=false;renderSave();if(again){again=false;writeRemote();}}
+function mergeBank(rb){if(!rb||!Array.isArray(rb.added))return 0;const have=new Set(fullBank().map(e=>normHz(e.hz)));let n=0;
+  rb.added.forEach(e=>{if(e&&e.hz&&!have.has(normHz(e.hz))){B.added.push(e);have.add(normHz(e.hz));n++;}});
+  for(const k in (rb.status||{}))if(rb.status[k]==='familiar')B.status[k]='familiar';return n;}
+async function initRemote(){
+  const timer=setTimeout(()=>{if(SAVE.remote==='pending'){SAVE.remote='none';renderSave();}},10000);
+  try{if(!window.claude||!window.claude.use){SAVE.remote='none';renderSave();return;}
+    const [db,user]=await Promise.all([window.claude.use('db'),window.claude.use('user')]);
+    if(!db||!user){SAVE.remote='none';clearTimeout(timer);renderSave();return;}
+    const id=await user.id();if(!id){SAVE.remote='none';clearTimeout(timer);renderSave();return;}
+    DB=db;UID=id;
+    const [bs,ps]=await Promise.all([db.doc('data/users/'+id+'/bank').get(),db.doc('data/users/'+id+'/progress').get()]);
+    clearTimeout(timer);let changed=false;
+    if(bs.exists){if(mergeBank(bs.data()))changed=true;}
+    if(ps.exists){const rp=ps.data();if((rp.updatedAt||0)>(P.updatedAt||0)){P=normProg(JSON.parse(JSON.stringify(rp)));changed=true;}}
+    rebuildIndex(fullBank());SAVE.remote='ok';SAVE.at=Date.now();
+    dirtyB=!bs.exists||B.added.length>((bs.data()||{}).added||[]).length;dirtyP=!ps.exists||(P.updatedAt>((ps.data()||{}).updatedAt||0));
+    if(dirtyB||dirtyP)writeRemote();saveLocal();
+    if(changed&&UI.screen!=='play'&&UI.screen!=='sprint')render();else renderSave();
+  }catch(e){clearTimeout(timer);SAVE.remote='error';renderSave();}}
+
+/* ---------- 12. SESIÓN, SELECCIÓN Y REGISTRO ---------- */
+const UI={screen:'home',sel:{type:'topic',id:1},showStructs:false,sit:'any',ex:null,res:null,tiles:null,tSel:-1,hints:0,plays:0,revealed:0,pick:null,bankMsg:null,bankQ:'',bankCat:'',bankStatus:'',importMsg:null,confirmReset:false,exportText:'',lastAdded:[]};
+function rec(sid){return P.st[sid]||(P.st[sid]={a:0,c:0,okNH:0,last:[],kinds:{},prod:0,ear:0,vocab:[],days:[],box:0,due:0});}
+const today=()=>new Date().toISOString().slice(0,10);
+function selSids(sel){if(sel.type==='struct')return [sel.id];if(sel.type==='topic')return TOPICS.find(t=>t.id===sel.id).sids;return STRUCT_ORDER.slice();}
+function activeSids(list){if(list.length===1)return list;const tried=list.filter(s=>rec(s).a>0);const learning=tried.filter(s=>levelOf(rec(s))<2).length;
+  const fresh=list.filter(s=>rec(s).a===0);const add=fresh.slice(0,Math.max(0,3-learning));const out=[...tried,...add];return out.length?out:list.slice(0,2);}
+function srWeight(sid){const r=rec(sid);const now=Date.now();let w=1+Math.random();if(!r.a)w+=1.5;if(r.due<=now)w+=2;w+=(6-r.box)*0.3;const acc=accOf(r);if(acc!==null)w+=(1-acc)*2;
+  if(SESSION&&SESSION.lastSid===sid)w*=0.35;return w;}
+function wPickSid(list){const ws=list.map(srWeight);let t=ws.reduce((a,b)=>a+b,0)*Math.random();for(let i=0;i<list.length;i++){t-=ws[i];if(t<=0)return list[i];}return list[list.length-1];}
+const BUILDERS={listen:exListen,subst:exSubst,trans:exTrans,build:exBuild,conv:exConv};
+function startSession(skip){const sel=UI.sel;SESSION={start:Date.now(),sel,mode:P.prefs.mode,method:P.prefs.method,sit:UI.sit,goal:P.prefs.goal,n:0,sum:0,ok:0,part:0,bad:0,rev:0,xp:0,streak:0,
+  sids:{},lvl0:{},mistakes:{},wordsWrong:{},newSeen:[],added:[],fails:[],retry:[],lastSid:null,lastKind:null,done:false};
+  selSids(sel).forEach(s=>SESSION.lvl0[s]=levelOf(rec(s)));
+  if(sel.type==='topic')P.cnt.topics[sel.id]=1;
+  UI.screen='play';if(!skip)nextExercise();}
+function nextExercise(force){const SS=SESSION;let ex=force||null;const method=P.prefs.method;
+  if(!ex){const list=activeSids(selSids(SS.sel));
+    const due=SS.retry.findIndex(r=>r.at<=SS.n);
+    if(due>=0){const r=SS.retry.splice(due,1)[0];const st=S[r.sid];const ks=(SS.mode==='mixed'?KINDS:[SS.mode]).filter(k=>supports(st,k));const k=ks.find(x=>x!==r.kind)||ks[0];
+      if(k)ex=BUILDERS[k](st,{lvl:Math.max(0,levelOf(rec(r.sid))-1),method,sit:SS.sit==='any'?null:SS.sit});}
+    if(!ex&&SS.mode==='mixed'&&Math.random()<0.1){const bank=fullBank().filter(e=>e.cat!=='Componente');const weak=bank.filter(e=>e.status==='nuevo'||(P.w[e.hz]&&P.w[e.hz].w>P.w[e.hz].c));if(weak.length)ex=exVocab(pick(weak),bank);}
+    for(let i=0;i<14&&!ex;i++){let kind=SS.mode;if(kind==='mixed'){const w={listen:25,subst:20,trans:20,build:20,conv:15};const ks=KINDS.filter(k=>k!==SS.lastKind||Math.random()<.3);let t=ks.reduce((a,k)=>a+w[k],0)*Math.random();kind=ks.find(k=>(t-=w[k])<=0)||ks[0];}
+      let cand=list.filter(s=>supports(S[s],kind));if(!cand.length)cand=selSids(SS.sel).filter(s=>supports(S[s],kind));if(!cand.length)continue;
+      const sid=wPickSid(cand);let lvl=levelOf(rec(sid));if(lvl>0&&Math.random()<.25)lvl--;
+      ex=BUILDERS[kind](S[sid],{lvl,method,sit:SS.sit==='any'?null:SS.sit});}}
+  if(!ex){UI.screen='summary';render();return;}
+  UI.ex=ex;UI.res=null;UI.hints=0;UI.plays=0;UI.revealed=0;UI.pick=null;UI.tSel=-1;
+  UI.tiles=ex.answer.type==='free'?{pool:ex.answer.pool.map((t,i)=>({t,i,used:false})),sel:[]}:null;
+  SS.lastSid=ex.sids[0]||null;SS.lastKind=ex.kind;
+  render();
+  if(ex.audio&&(ex.kind==='listen'||ex.kind==='conv'))speak(ex.audio);
+  const inp=document.getElementById('ans');if(inp)inp.focus();}
+function repeatExercise(){const ex=UI.ex;if(!ex)return;
+  const fresh=ex.kind==='vocab'?ex:{...ex};UI.res=null;UI.hints=0;UI.plays=0;UI.revealed=0;UI.pick=null;UI.tSel=-1;
+  UI.tiles=fresh.answer.type==='free'?{pool:shuffle(fresh.answer.pool).map((t,i)=>({t,i,used:false})),sel:[]}:null;
+  if(fresh.answer.type==='mc')fresh.answer={...fresh.answer,opts:shuffle(fresh.answer.opts)};
+  UI.ex=fresh;UI.ex.repeated=1;render();if(fresh.audio&&(fresh.kind==='listen'||fresh.kind==='conv'))speak(fresh.audio);}
+function currentInput(){const ex=UI.ex;if(ex.answer.type==='mc')return UI.pick;
+  if(P.prefs.method==='tiles'||P.prefs.method==='mc')return UI.tiles.sel.map(i=>UI.tiles.pool[i].t).join('');
+  const el=document.getElementById('ans');return el?el.value:'';}
+function inputMethod(){const ex=UI.ex;if(ex.answer.type==='mc')return 'mc';return P.prefs.method==='pinyin'?'pinyin':'hanzi';}
+function check(){const ex=UI.ex;if(!ex||UI.res)return;const inp=currentInput();
+  if(inp==null||inp===''){flash('Elige o escribe una respuesta primero.');return;}
+  UI.rawInput=inp;const acc=P.fixes.accept[exKey(ex)];
+  let res=acc&&acc.includes(inputKey(ex,inp))?{v:'ok',tags:[{t:'info',m:'Aceptada por una corrección tuya anterior.'}]}:evaluate(ex,inp,inputMethod());if(res.v==='empty'){flash('Elige o escribe una respuesta primero.');return;}
+  res.inputShown=ex.answer.type==='mc'?optText(ex.answer.opts[inp],ex.answer.kind):(P.prefs.method==='pinyin'?inp:(ex.answer.template?tj(ex.answer.template.before)+'['+inp+']'+tj(ex.answer.template.after):inp));
+  UI.res=res;UI.fixOpen=false;if(res.v!=='review'){snapshot();res.committed=true;}if(res.v!=='review')commit(res.v==='ok'?1:res.v==='partial'?0.5:0);
+  render();const nb=document.getElementById('nextbtn');if(nb)nb.focus();}
+function selfGrade(ok){if(!UI.res||UI.res.v!=='review'||UI.res.self!=null)return;UI.res.self=ok;snapshot();UI.res.committed=true;commit(ok?1:0,true);render();}
+function commit(score,self){const ex=UI.ex,SS=SESSION,method=P.prefs.method,hints=UI.hints;const free=ex.answer.type==='free';
+  if(ex.repeated){SS.n++;SS.sum+=score;render();persist();return;}
+  SS.n++;SS.sum+=score;if(score===1)SS.ok++;else if(score>0)SS.part++;else SS.bad++;if(self)SS.rev++;
+  if(score===1){SS.streak++;P.cnt.streak++;P.cnt.best=Math.max(P.cnt.best,P.cnt.streak);P.cnt.ok++;if(!hints)P.cnt.nohint++;
+    if((ex.kind==='listen'||ex.kind==='conv')&&!UI.revealed)P.cnt.ear++;if(free&&method==='tiles')P.cnt.tiles++;if(free&&method==='pinyin')P.cnt.py++;if(free&&method==='hanzi')P.cnt.hz++;}
+  else{SS.streak=0;P.cnt.streak=0;}
+  const gain=score===1?Math.max(4,10-2*hints):score>0?Math.max(2,5-hints):0;P.xp+=gain;SS.xp+=gain;UI.res.gain=gain;
+  ex.sids.forEach(sid=>{if(!S[sid])return;const r=rec(sid);const lv0=levelOf(r);r.a++;r.c+=score;if(score===1&&!hints)r.okNH++;r.last.push([score,hints?1:0]);if(r.last.length>12)r.last.shift();
+    if(score===1){r.kinds[ex.kind]=(r.kinds[ex.kind]||0)+1;if(free&&method!=='mc')r.prod++;if((ex.kind==='listen'||ex.kind==='conv')&&!UI.revealed)r.ear++;
+      if(ex.vkey&&!r.vocab.includes(ex.vkey)){r.vocab.push(ex.vkey);if(r.vocab.length>30)r.vocab.shift();}
+      const d=today();if(!r.days.includes(d)){r.days.push(d);if(r.days.length>10)r.days.shift();}}
+    if(score===1&&!hints)r.box=Math.min(6,r.box+1);else if(score===1);else if(score>0)r.box=Math.max(0,r.box-1);else r.box=0;
+    r.due=Date.now()+INTERVALS[r.box];
+    const s=SS.sids[sid]||(SS.sids[sid]={a:0,c:0});s.a++;s.c+=score;if(SS.lvl0[sid]==null)SS.lvl0[sid]=lv0;});
+  (ex.words||[]).forEach(hz=>{const w=P.w[hz]||(P.w[hz]={c:0,w:0});if(score===1)w.c++;else w.w++;
+    const e=fullBank().find(x=>x.hz===hz);if(e&&e.status==='nuevo'){if(!SS.newSeen.includes(hz))SS.newSeen.push(hz);if(w.c>=3)setStatus(hz,'familiar');}
+    if(score<1)SS.wordsWrong[hz]=(SS.wordsWrong[hz]||0)+1;});
+  if(score<1){(UI.res.tags||[]).forEach(t=>{if(t.t==='info')return;const k=t.t+'|'+t.m;const m=SS.mistakes[k]||(SS.mistakes[k]={t:t.t,m:t.m,n:0,ex:''});m.n++;m.ex=tj((UI.res.corr||ex.answer.model||{toks:[]}).toks||[])||m.ex;});
+    if(ex.sids[0])SS.retry.push({sid:ex.sids[0],kind:ex.kind,at:SS.n+2+rnd(2)});SS.fails.push(ex);}
+  ACH.forEach(a=>{if(!P.ach[a.id]&&a.t(P)){P.ach[a.id]=Date.now();UI.res.newAch=(UI.res.newAch||[]).concat(a.n);}});
+  persist();}
+function setStatus(hz,st){const base=BASE_BANK.find(e=>e.hz===hz);if(base)B.status[hz]=st;else{const e=B.added.find(x=>x.hz===hz);if(e)e.status=st;}}
+function endSession(){const SS=SESSION;if(!SS)return;if(!SS.done&&SS.n>0){SS.done=true;P.cnt.sessions++;
+  P.sessions.push({at:Date.now(),n:SS.n,acc:Math.round(SS.sum/SS.n*100),sids:Object.keys(SS.sids)});if(P.sessions.length>20)P.sessions.shift();
+  ACH.forEach(a=>{if(!P.ach[a.id]&&a.t(P))P.ach[a.id]=Date.now();});persist();}
+  UI.screen='summary';stopSpeech();render();}
+
+/* ---------- 12b. CORRECCIONES MANUALES ---------- */
+function exKey(ex){if(ex.kind==='vocab')return 'V:'+ex.entry.hz;if(ex.Q)return 'Q:'+ex.Q.qk;return 'T:'+normHz(tj((ex.review.a||{toks:[]}).toks))+'|'+(ex.task||ex.fmt||'');}
+function inputKey(ex,inp){if(ex.answer.type==='mc')return 'mc:'+optText(ex.answer.opts[inp],ex.answer.kind);
+  const a=ex.answer;if(inputMethod()==='pinyin')return 'py:'+compactPy(a.template?sentPy(a.template.before,1)+inp+sentPy(a.template.after,1):inp);
+  return 'hz:'+normHz(toTrad(a.template?tj(a.template.before)+inp+tj(a.template.after):inp).s);}
+function snapshot(){const SS=SESSION;UI.snap={P:JSON.stringify(P),S:{...SS,sids:JSON.parse(JSON.stringify(SS.sids)),mistakes:JSON.parse(JSON.stringify(SS.mistakes)),wordsWrong:{...SS.wordsWrong},retry:SS.retry.slice(),fails:SS.fails.slice(),newSeen:SS.newSeen.slice(),lvl0:{...SS.lvl0}}};}
+function restore(){if(!UI.snap)return;P=normProg(JSON.parse(UI.snap.P));SESSION=UI.snap.S;UI.snap=null;}
+function qText(ex){if(ex.kind==='vocab')return ex.entry.hz;const q=ex.review.q||ex.base||ex.question;return q?tj(q.toks):(ex.cue||'');}
+function addReport(ex,type,note,ref){P.fixes.reports.unshift({ref:ref||null,at:Date.now(),type,kind:ex.kind,sid:ex.sids[0]||'',q:qText(ex),task:ex.task||ex.instr,exp:tj((ex.answer.type==='mc'?answerOf(ex):ex.review.a||{toks:[]}).toks||[]),yours:UI.res&&UI.res.inputShown||'',note:note||''});if(P.fixes.reports.length>200)P.fixes.reports.pop();}
+function fixAction(kind){const ex=UI.ex,r=UI.res;if(!ex||!r)return;const note=(document.getElementById('fixnote')||{}).value||'';
+  if(kind==='accept'){const key=exKey(ex);const k=inputKey(ex,UI.rawInput);
+    if(r.committed)restore();(P.fixes.accept[key]=P.fixes.accept[key]||[]).push(k);addReport(ex,'accept',note,{key,k});UI.res={...r,v:'ok',tags:[{t:'info',m:'Aceptada por tu corrección. La próxima vez contará como correcta.'}],fixed:'accept'};commit(1);}
+  else if(kind==='pair'||kind==='sentence'){const exp=normHz(tj((ex.answer.type==='mc'?answerOf(ex):ex.review.a).toks||[]));
+    const b=kind==='pair'&&ex.Q?{q:ex.Q.qk,a:exp}:{q:'*',a:ex.Q?ex.Q.qk:exp};
+    if(r.committed)restore();P.fixes.block.push(b);addReport(ex,kind,note,b);UI.res={...r,v:'void',fixed:kind};persist();}
+  else if(kind==='note'){addReport(ex,'note',note);UI.res={...r,fixed:'note'};persist();}
+  UI.fixOpen=false;render();}
+function undoFix(i){const rp=P.fixes.reports[i];if(!rp)return;P.fixes.reports.splice(i,1);const f=rp.ref;
+  if(f&&f.q!=null){const j=P.fixes.block.findIndex(b=>b.q===f.q&&b.a===f.a);if(j>=0)P.fixes.block.splice(j,1);}
+  if(f&&f.key){const arr=P.fixes.accept[f.key]||[];const j=arr.indexOf(f.k);if(j>=0)arr.splice(j,1);if(!arr.length)delete P.fixes.accept[f.key];}
+  persist('prog');flash('Corrección deshecha.');render();}
+function reportsText(){const R=P.fixes.reports;if(!R.length)return 'Sin reportes.';const T={accept:'Mi respuesta es válida',pair:'Pregunta y respuesta no coinciden',sentence:'Oración incorrecta o poco natural',note:'Nota'};
+  return '說說看 — reportes de errores\n'+R.map((r,i)=>`${i+1}. [${T[r.type]}] ${KIND_LABEL[r.kind]||r.kind}${r.sid&&S[r.sid]?' · '+S[r.sid].name:''}\n   Pregunta/oración: ${r.q}\n   Tarea: ${r.task}\n   Esperado: ${r.exp}\n   Mi respuesta: ${r.yours}${r.note?'\n   Nota: '+r.note:''}`).join('\n');}
+
+/* ---------- 13. AUDIO (síntesis del navegador) ---------- */
+let VOICES=[];
+const TTS=typeof window!=='undefined'&&'speechSynthesis' in window;
+function loadVoices(){if(!TTS)return;const all=speechSynthesis.getVoices();
+  VOICES=all.filter(v=>/^(zh|cmn)/i.test(v.lang)&&!/HK|yue/i.test(v.lang)).sort((a,b)=>score(b)-score(a));
+  function score(v){return (/TW|Hant|Taiwan/i.test(v.lang+v.name)?10:0)+(/zh-CN|cmn/i.test(v.lang)?3:0)+(v.localService?1:0);}}
+function voice(){if(!VOICES.length)return null;return VOICES.find(v=>v.voiceURI===P.prefs.voice)||VOICES[0];}
+function speak(toks){if(!TTS)return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(tj(toks).replace(/，/g,'，'));const v=voice();u.lang=v?v.lang:'zh-TW';if(v)u.voice=v;u.rate=P.prefs.rate||0.85;speechSynthesis.speak(u);UI.plays++;const c=document.getElementById('plays');if(c)c.textContent=UI.plays;}catch(e){}}
+function stopSpeech(){if(TTS)try{speechSynthesis.cancel();}catch(e){}}
+
+/* ---------- 14. INTERFAZ ---------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const zh=toks=>`<span class="zh">${esc(tj(toks))}</span>`;
+function sentBlock(r,label){if(!r||!r.toks)return '';return `<div class="sent">${label?`<div class="lbl">${label}</div>`:''}<div class="zh big">${esc(tj(r.toks))}</div><div class="py">${esc(sentPy(r.toks))}</div>${r.es?`<div class="es">${esc(r.es)}</div>`:''}</div>`;}
+function optText(o,kind){if(!o)return '';if(kind==='es')return o.es;if(kind==='desc')return o.d;return tj(o.toks||[]);}
+function lvlPill(sid){const l=levelOf(rec(sid));return `<span class="pill l${l}">${LEVELS[l]}</span>`;}
+function flash(m){const f=$('#flash');if(!f)return;f.textContent=m;f.hidden=false;clearTimeout(flash.t);flash.t=setTimeout(()=>f.hidden=true,2400);}
+function saveText(){if(SAVE.remote==='ok')return {c:'ok',t:'Guardado en tu cuenta'};if(SAVE.remote==='saving')return {c:'wait',t:'Guardando…'};if(SAVE.remote==='pending')return {c:'wait',t:'Conectando…'};
+  if(SAVE.remote==='error')return SAVE.local?{c:'warn',t:'Solo en este navegador (la cuenta falló)'}:{c:'bad',t:'Sin guardar: exporta tu código'};
+  return SAVE.local?{c:window.claude?'warn':'ok',t:window.claude?'Guardado solo en este navegador':'Guardado en este navegador'}:{c:'bad',t:'Sin guardar: exporta tu código'};}
+function renderSave(){const el=$('#save');if(!el)return;const s=saveText();el.className='save '+s.c;el.textContent=s.t;}
+function levelNum(xp){return Math.floor((1+Math.sqrt(1+8*xp/100))/2);}
+function xpFor(n){return 100*n*(n-1)/2;}
+function header(){const L=levelNum(P.xp);const a=xpFor(L),b=xpFor(L+1);
+  return `<header class="top"><div class="brand"><span class="seal">說</span><div><b>說說看</b><small>Mandarín de Taiwán</small></div></div>
+  <nav>${[['home','Practicar'],['sprint','Sprint'],['bank','Banco'],['progress','Progreso']].map(([k,n])=>`<button data-act="nav" data-to="${k}" class="${UI.screen===k||(k==='home'&&['play','summary'].includes(UI.screen))?'on':''}">${n}</button>`).join('')}</nav>
+  <div class="me"><span class="lvl">Nivel ${L}</span><span class="xpbar" title="${P.xp} XP"><i style="width:${Math.round((P.xp-a)/(b-a)*100)}%"></i></span><span id="save" class="save"></span></div></header>`;}
+function render(){const app=$('#app');let h=header();
+  if(UI.screen==='home')h+=homeView();else if(UI.screen==='play')h+=playView();else if(UI.screen==='summary')h+=summaryView();else if(UI.screen==='bank')h+=bankView();else if(UI.screen==='progress')h+=progressView();else if(UI.screen==='sprint')h+='<main class="wrap"><div id="sp-host"></div></main>';
+  if(UI.screen!=='sprint')Sprint.stop();
+  app.innerHTML=h+'<div id="flash" class="flash" hidden></div>';renderSave();if(UI.screen==='sprint')Sprint.open(document.getElementById('sp-host'));}
+
+function homeView(){const sel=UI.sel,pf=P.prefs;
+  const topicBtn=t=>`<button class="chip ${sel.type==='topic'&&sel.id===t.id?'on':''}" data-act="sel-topic" data-id="${t.id}"><b>${t.id}</b> ${esc(t.name)}</button>`;
+  const resume=SESSION&&!SESSION.done&&SESSION.n>0?`<div class="resume">Tienes una sesión a medias (${SESSION.n} ejercicios). <button class="link" data-act="resume">Continuar</button> · <button class="link" data-act="end">Ver resumen</button></div>`:'';
+  return `<main class="wrap home">${resume}
+  <section><h1>¿Qué quieres practicar?</h1>
+   <div class="chips">${TOPICS.map(topicBtn).join('')}<button class="chip ${sel.type==='all'?'on':''}" data-act="sel-all">Todos los temas</button></div>
+   <button class="link" data-act="toggle-structs">${UI.showStructs||sel.type==='struct'?'Ocultar estructuras':'…o una estructura concreta'}</button>
+   ${UI.showStructs||sel.type==='struct'?`<div class="structs">${STRUCT_ORDER.map(id=>`<button class="srow ${sel.type==='struct'&&sel.id===id?'on':''}" data-act="sel-struct" data-id="${id}"><span class="zh">${esc(S[id].name)}</span><span class="pat">${esc(S[id].pattern)}</span>${lvlPill(id)}</button>`).join('')}</div>`:''}
+  </section>
+  <section><h2>Modo</h2><div class="modes">${MODES.map(m=>`<button class="mode ${pf.mode===m.id?'on':''}" data-act="mode" data-id="${m.id}"><b>${m.name}</b><small>${m.d}</small></button>`).join('')}</div>
+   ${pf.mode==='conv'?`<div class="chips sits"><span class="lbl">Situación</span><button class="chip ${UI.sit==='any'?'on':''}" data-act="sit" data-id="any">Sorpréndeme</button>${SITS.map(s=>`<button class="chip ${UI.sit===s.id?'on':''}" data-act="sit" data-id="${s.id}">${esc(s.name)}</button>`).join('')}</div>`:''}
+  </section>
+  <section><h2>Cómo respondes</h2><div class="seg4">${METHODS.map(m=>`<button class="${pf.method===m.id?'on':''}" data-act="method" data-id="${m.id}"><b>${m.name}</b><small>${m.d}</small></button>`).join('')}</div>
+   <div class="row"><span class="lbl">Ejercicios por sesión</span>${[8,12,20].map(n=>`<button class="chip sm ${pf.goal===n?'on':''}" data-act="goal" data-n="${n}">${n}</button>`).join('')}</div>
+  </section>
+  <button class="primary big" data-act="start">Empezar</button>
+  ${!TTS?'<p class="note">Este navegador no tiene síntesis de voz: los ejercicios de escucha mostrarán el texto.</p>':''}
+  </main>`;}
+
+function playView(){const ex=UI.ex,SS=SESSION;if(!ex)return '<main class="wrap"></main>';const done=!!UI.res;const pct=Math.min(100,Math.round(SS.n/SS.goal*100));
+  const stId=ex.st?ex.st.id:null;const head=ex.kind==='vocab'?'Vocabulario':esc(ex.st.name);
+  return `<main class="wrap play">
+  <div class="ptop"><button class="ghost" data-act="end">Terminar</button><div class="bar"><i style="width:${pct}%"></i></div><span class="cnt">${SS.n}/${SS.goal}</span><span class="xp">+${SS.xp} XP</span></div>
+  <section class="card ex">
+   <div class="exhead"><span class="kind">${KIND_LABEL[ex.kind]}</span><span class="stchip">${head}${stId?' '+lvlPill(stId):''}</span></div>
+   <p class="instr">${esc(ex.instr)}${ex.task?` <b>${esc(ex.task)}</b>`:''}</p>
+   ${promptHtml(ex)}
+   ${answerHtml(ex)}
+   ${hintsHtml(ex)}
+   ${done?'':`<div class="actions"><button class="ghost" data-act="hint" ${UI.hints>=hintCount(ex)?'disabled':''}>Pista ${Math.min(UI.hints+1,hintCount(ex))}/${hintCount(ex)}</button>
+     ${ex.answer.type==='free'||ex.kind!=='vocab'?`<label class="msel">Responder con <select data-act="method-change">${METHODS.map(m=>`<option value="${m.id}" ${P.prefs.method===m.id?'selected':''}>${m.name}</option>`).join('')}</select></label>`:''}
+     <button class="primary" data-act="check">Comprobar</button></div>`}
+   ${done?feedbackHtml(ex):''}
+  </section></main>`;}
+function hintCount(ex){return ex.hints.filter(Boolean).length;}
+function hintsHtml(ex){if(!UI.hints)return '';return `<ol class="hints">${ex.hints.filter(Boolean).slice(0,UI.hints).map(h=>`<li>${esc(h)}</li>`).join('')}</ol>`;}
+function audioBar(ex){const v=voice();const rates=[0.6,0.75,0.85,1,1.2];
+  return `<div class="audio"><button class="play" data-act="play" aria-label="Escuchar">▶ Escuchar</button><span class="muted">Reproducciones: <b id="plays">${UI.plays}</b></span>
+  <label>Velocidad <select data-act="rate">${rates.map(r=>`<option value="${r}" ${Math.abs((P.prefs.rate||.85)-r)<.01?'selected':''}>${r}×</option>`).join('')}</select></label>
+  ${VOICES.length>1?`<label>Voz <select data-act="voice">${VOICES.map(x=>`<option value="${esc(x.voiceURI)}" ${v&&v.voiceURI===x.voiceURI?'selected':''}>${esc(x.name)} (${esc(x.lang)})</option>`).join('')}</select></label>`:''}</div>
+  ${!TTS?'<p class="warn">Tu navegador no tiene voz. Usa “Mostrar pregunta escrita”.</p>':!VOICES.length?'<p class="warn">No encuentro una voz china instalada; puede sonar mal o no sonar. Instala “Chino (Taiwán)” en los ajustes de voz de tu sistema, o muestra la pregunta escrita.</p>':(!/TW|Hant|Taiwan/i.test(v.lang+v.name)?'<p class="muted small">No hay voz de Taiwán (zh-TW) instalada; uso '+esc(v.name)+'.</p>':'')}`;}
+function promptHtml(ex){let h='';
+  if(ex.kind==='listen'||ex.kind==='conv'){h+=audioBar(ex);
+    if(UI.revealed||!TTS){h+=`<div class="qtext"><span class="zh big">${esc(tj(ex.audio))}</span>${UI.revealed>1?`<div class="py">${esc(sentPy(ex.audio))}</div>`:''}</div>`;}
+    if(!UI.res)h+=`<div class="reveal">${UI.revealed<1&&TTS?'<button class="link" data-act="reveal">Mostrar pregunta escrita</button>':''}${UI.revealed===1?'<button class="link" data-act="reveal">Mostrar pinyin</button>':''}</div>`;}
+  else if(ex.kind==='vocab'){const e=ex.entry;h+=ex.fmt==='hz'?`<div class="big1 zh">${esc(e.hz)}</div><button class="link" data-act="play">▶ Escuchar</button>`:`<div class="cue">${esc(e.es)}</div>`;}
+  else{
+    if(ex.question){h+=`<div class="qtext"><span class="zh big">${esc(tj(ex.question.toks))}</span> <button class="link" data-act="play">▶</button></div>`;}
+    if(ex.base)h+=`<div class="basesent"><span class="lbl">Oración</span><span class="zh big">${esc(tj(ex.base.toks))}</span></div>`;
+    if(ex.changes)h+=`<ul class="changes">${ex.changes.map(c=>`<li><span class="lbl">${esc(c.label)}</span> <span class="zh">${esc(c.from)}</span> → <b>${esc(c.to)}</b></li>`).join('')}</ul>`;
+    if(ex.showPattern)h+=`<div class="pattern">${esc(ex.b.pattern)}</div>`;
+    if(ex.cue)h+=`<div class="cue">${esc(ex.cue)}</div>`;
+    if(ex.scrambled)h+=`<div class="scr">${ex.scrambled.map(t=>`<span class="zh">${esc(t)}</span>`).join('')}</div>`;}
+  return h;}
+function tileHtml(t,attr,cls){const e=ENTRY[t];const showPy=P.prefs.pyTiles||(e&&e.status==='nuevo');return `<button class="tile ${cls||''}" ${attr}><span class="zh">${esc(t)}</span>${showPy?`<small>${esc(tokPy(t))}</small>`:''}</button>`;}
+function answerHtml(ex){const a=ex.answer,done=!!UI.res;
+  if(a.type==='mc'){return `<div class="opts ${a.kind}">${a.opts.map((o,i)=>{let cls='';if(done){if(o.ok)cls='right';else if(UI.pick===i)cls='wrong';}else if(UI.pick===i)cls='sel';
+    const body=a.kind==='es'?esc(o.es):a.kind==='desc'?esc(o.d):`<span class="zh">${esc(tj(o.toks||[]))}</span>`;
+    return `<button class="opt ${cls}" data-act="opt" data-i="${i}" ${done?'disabled':''}><span class="k">${i+1}</span>${body}</button>`;}).join('')}</div>`;}
+  const tpl=a.template;const m=P.prefs.method;
+  if(m==='tiles'||m==='mc'){const T=UI.tiles;const built=T.sel.length?T.sel.map((pi,k)=>tileHtml(T.pool[pi].t,`data-act="btile" data-k="${k}" ${done?'disabled':''}`,UI.tSel===k?'focus':'')).join(''):'<span class="ph">Toca las fichas en orden</span>';
+    return `<div class="build">${tpl?`<span class="zh big">${esc(tj(tpl.before))}</span>`:''}<div class="built">${built}</div>${tpl?`<span class="zh big">${esc(tj(tpl.after))}</span>`:''}</div>
+     ${done?'':`<div class="tctl"><button class="ghost sm" data-act="tmove" data-d="-1" ${UI.tSel<0?'disabled':''}>◀ Mover</button><button class="ghost sm" data-act="tmove" data-d="1" ${UI.tSel<0?'disabled':''}>Mover ▶</button><button class="ghost sm" data-act="tdel" ${UI.tSel<0?'disabled':''}>Quitar</button><button class="ghost sm" data-act="tclear" ${T.sel.length?'':'disabled'}>Borrar todo</button></div>
+     <div class="pool">${T.pool.map((x,i)=>x.used?'':tileHtml(x.t,`data-act="tile" data-i="${i}"`)).join('')}</div>`}`;}
+  const ph=m==='pinyin'?(tpl?'la parte que falta, p. ej. hen':'p. ej. wo shi meiguo ren'):(tpl?'la parte que falta':'escribe en caracteres tradicionales');
+  return `<div class="build">${tpl?`<span class="zh big">${esc(tj(tpl.before))}</span>`:''}<input id="ans" class="ans ${m==='hanzi'?'zh':''}" autocomplete="off" autocapitalize="off" spellcheck="false" ${m==='hanzi'?'lang="zh-Hant-TW"':''} placeholder="${ph}" ${done?'disabled':''} value="${done?esc(UI.lastTyped||''):''}">${tpl?`<span class="zh big">${esc(tj(tpl.after))}</span>`:''}</div>
+   <p class="muted small">${m==='pinyin'?'Puedes escribir sin tonos, con tonos (nǐ) o con números (ni3). Los tonos se revisan aparte.':'Usa el teclado chino de tu sistema (pinyin o 注音). Si aún no lo usas, cambia a “Seleccionar caracteres”.'}</p>`;}
+function feedbackHtml(ex){const r=UI.res;const v=r.v==='review'&&r.self!=null?(r.self?'ok':'bad'):r.v;
+  if(v==='void')return `<div class="fb review"><div class="verdict">Ejercicio anulado</div><p>No cuenta para tu progreso. ${r.fixed==='pair'?'Esa combinación de pregunta y respuesta ya no volverá a salir.':'Esa oración ya no volverá a salir.'} Quedó guardado en <b>Progreso → Correcciones</b>.</p></div>`+nextBtns('void');
+  const head={ok:'Correcto',partial:'Parcialmente correcto',bad:'Incorrecto',review:'No puedo evaluarla con reglas'}[v];
+  let h=`<div class="fb ${v}"><div class="verdict">${head}${r.tone==='bad'&&v==='ok'?' · revisa los tonos':''}${r.gain?` <span class="gain">+${r.gain} XP</span>`:''}</div>`;
+  if(r.newAch)h+=`<div class="ach-new">Logro desbloqueado: ${r.newAch.map(esc).join(', ')}</div>`;
+  if(ex.kind==='vocab'){const e=ex.entry;const exm=e.ex?{toks:[e.ex],es:''}:exampleFor(e.hz);h+=`<div class="vocabfb"><span class="zh big">${esc(e.hz)}</span> <span class="py">${esc(e.py)}</span> · ${esc(e.es)} <span class="pill">${esc(e.cat)}</span>${exm?`<div class="muted">Ejemplo: <span class="zh">${esc(tj(exm.toks))}</span> ${esc(exm.es||'')}</div>`:''}</div></div>`+nextBtns(v);return h;}
+  if(ex.review&&ex.review.q)h+=sentBlock(ex.review.q,'Pregunta');
+  if(v!=='ok'||ex.kind==='listen'||ex.kind==='conv'||(ex.review&&ex.review.q)){h+=`<div class="yours"><span class="lbl">Tu respuesta</span> <span class="${ex.answer.kind==='es'||ex.answer.kind==='desc'||P.prefs.method==='pinyin'?'':'zh'}">${esc(r.inputShown)}</span></div>`;}
+  if(r.v==='review'&&r.self==null)h+=`<p>Tu respuesta usa algo que mis reglas no pueden comprobar. Compárala con la respuesta modelo y decide tú:</p><div class="row"><button class="ghost" data-act="self" data-ok="1">Estaba bien</button><button class="ghost" data-act="self" data-ok="0">Estaba mal</button></div>`;
+  const model=ex.answer.type==='mc'?answerOf(ex):(r.corr&&v!=='ok'?withEs(r.corr,ex):ex.review.a);
+  if(ex.answer.kind==='desc'){h+=`<div class="sent"><div class="lbl">Cambio correcto</div><div>${esc(ex.answer.opts.find(o=>o.ok).d)}</div></div>`+sentBlock(ex.review.a,'Resultado');}
+  else if(ex.answer.kind==='es'){h+=sentBlock(ex.review.a,'Una respuesta posible');}
+  else if(v!=='ok'||ex.kind==='listen'||ex.kind==='conv'||ex.question)h+=sentBlock(model,v==='ok'?'Respuesta':'Corrección');
+  if(r.tags&&r.tags.length)h+=`<ul class="tags">${r.tags.map(t=>`<li><span class="tag t-${t.t}">${TAGNAME[t.t]||t.t}</span> ${esc(t.m)}</li>`).join('')}</ul>`;
+  if(v!=='ok'&&ex.b){const e2=otherExample(ex.b,model);if(e2)h+=`<div class="more"><span class="lbl">Otro ejemplo con ${esc(ex.b.pattern)}</span> <span class="zh">${esc(tj(e2.toks))}</span> <span class="py">${esc(sentPy(e2.toks))}</span> · ${esc(e2.es)}</div>`;}
+  h+=fixPanel(ex,v);h+='</div>';return h+nextBtns(v);}
+function fixPanel(ex,v){const r=UI.res;if(r.fixed)return r.fixed==='note'?'<p class="muted small">Nota guardada en Progreso → Correcciones.</p>':'';
+  if(!UI.fixOpen)return `<button class="link small" data-act="fix-open">¿Algo está mal en este ejercicio?</button>`;
+  const canAccept=v!=='ok'&&!(ex.answer.type==='mc'&&(ex.answer.kind==='desc'));
+  return `<div class="fixp"><b>Corregir este ejercicio</b>
+   ${canAccept?`<button class="ghost sm" data-act="fix" data-k="accept">Mi respuesta también es correcta</button><small class="muted">Se acepta desde ahora para esta misma pregunta y se recalifica como correcta.</small>`:''}
+   ${ex.Q?`<button class="ghost sm" data-act="fix" data-k="pair">La pregunta y la respuesta no coinciden</button><small class="muted">Anula el ejercicio y esa combinación no vuelve a salir.</small>`:''}
+   <button class="ghost sm" data-act="fix" data-k="sentence">${ex.Q?'La pregunta':'La oración'} está mal o no es natural</button><small class="muted">Anula el ejercicio y esa oración no vuelve a salir.</small>
+   <textarea id="fixnote" rows="2" placeholder="Nota opcional: qué está mal o cómo debería ser"></textarea>
+   <div class="row"><button class="ghost sm" data-act="fix" data-k="note">Solo guardar la nota</button><button class="link small" data-act="fix-close">Cancelar</button></div></div>`;}
+function nextBtns(v){const SS=SESSION;if(v==='void')v='ok';const fin=SS.n>=SS.goal;return `<div class="actions">${v!=='ok'&&!UI.res.fixed?'<button class="ghost" data-act="repeat">Repetir este ejercicio</button>':''}${UI.res.v==='review'&&UI.res.self==null?'':`<button class="primary" id="nextbtn" data-act="${fin?'end':'next'}">${fin?'Ver resumen':'Siguiente →'}</button>`}${fin?'<button class="ghost" data-act="next">Seguir practicando</button>':''}</div>`;}
+function answerOf(ex){const o=ex.answer.opts.find(x=>x.ok);if(ex.answer.kind==='word'&&ex.template)return {toks:[...ex.template.before,...o.toks,...ex.template.after],es:ex.cue||(ex.review.a&&ex.review.a.es)};if(ex.answer.kind==='word')return {toks:o.toks,es:o.es};return o.toks?{toks:o.toks,es:o.es}:ex.review.a;}
+function withEs(toks,ex){const A=ex.answer.A;const h=normHz(tj(toks));const it=A.list.find(a=>variants(a,a.sa).some(t=>normHz(tj(t))===h));return {toks,es:it?it.es:''};}
+
+function summaryView(){const SS=SESSION;if(!SS||!SS.n)return `<main class="wrap"><section class="card"><h1>Sin ejercicios todavía</h1><button class="primary" data-act="nav" data-to="home">Volver</button></section></main>`;
+  const acc=Math.round(SS.sum/SS.n*100);const sids=Object.keys(SS.sids);
+  const rows=sids.map(id=>{const s=SS.sids[id];const a=Math.round(s.c/s.a*100);const l0=SS.lvl0[id]||0,l1=levelOf(rec(id));return {id,a,s,l0,l1};});
+  const review=rows.filter(r=>r.a<70||r.l1<2).sort((x,y)=>x.a-y.a);
+  const mist=Object.values(SS.mistakes).sort((a,b)=>b.n-a.n);const rep=mist.filter(m=>m.n>=2);
+  const ww=Object.entries(SS.wordsWrong).sort((a,b)=>b[1]-a[1]).slice(0,10);
+  const can=STRUCT_ORDER.filter(id=>levelOf(rec(id))>=2);const need=rows.filter(r=>r.l1<2).map(r=>r.id);
+  const focus=suggestFocus(SS,rows,mist);
+  const bank=fullBank();const newW=[...new Set([...SS.newSeen,...SS.added])].map(hz=>bank.find(e=>e.hz===hz)).filter(Boolean);
+  return `<main class="wrap summary"><section class="card"><h1>Resumen de la sesión</h1>
+  <div class="kpis"><div><b>${SS.n}</b><span>ejercicios</span></div><div><b>${acc}%</b><span>precisión</span></div><div><b>+${SS.xp}</b><span>XP</span></div></div>
+  <h2>Estructuras practicadas</h2><div class="tblwrap"><table class="tbl"><tr><th>Estructura</th><th>Intentos</th><th>Precisión</th><th>Nivel</th></tr>${rows.map(r=>`<tr><td class="zh">${esc(S[r.id].name)}</td><td>${r.s.a}</td><td>${r.a}%</td><td>${r.l1!==r.l0?`<span class="pill l${r.l0}">${LEVELS[r.l0]}</span> → `:''}<span class="pill l${r.l1}">${LEVELS[r.l1]}</span></td></tr>`).join('')}</table></div>
+  <div class="two">
+   <div><h2>Ya puedes hacer sola</h2>${can.length?`<ul>${can.map(id=>`<li>${esc(S[id].cando)} <span class="zh muted">${esc(S[id].name)}</span></li>`).join('')}</ul>`:'<p class="muted">Todavía ninguna estructura en nivel Desarrollando. Llegan con aciertos sin pistas.</p>'}</div>
+   <div><h2>Aún requiere práctica</h2>${need.length?`<ul>${need.map(id=>`<li>${esc(S[id].cando)} <span class="zh muted">${esc(S[id].name)}</span></li>`).join('')}</ul>`:'<p class="muted">Nada pendiente de lo que practicaste hoy.</p>'}</div></div>
+  <h2>Errores repetidos</h2>${(rep.length?rep:mist.slice(0,3)).length?`<ul class="tags">${(rep.length?rep:mist.slice(0,3)).map(m=>`<li><span class="tag t-${m.t}">${TAGNAME[m.t]}</span> ${esc(m.m)} <span class="muted">×${m.n}${m.ex?' · <span class="zh">'+esc(m.ex)+'</span>':''}</span></li>`).join('')}</ul>`:'<p class="muted">Sin errores.</p>'}
+  <div class="two"><div><h2>Estructuras para repasar</h2>${review.length?`<ul>${review.map(r=>`<li><span class="zh">${esc(S[r.id].name)}</span> · ${r.a}%</li>`).join('')}</ul>`:'<p class="muted">Ninguna.</p>'}</div>
+  <div><h2>Palabras para repasar</h2>${ww.length?`<ul>${ww.map(([hz,n])=>{const e=bank.find(x=>x.hz===hz);return `<li><span class="zh">${esc(hz)}</span> ${e?esc(e.py)+' · '+esc(e.es):''} <span class="muted">×${n}</span></li>`;}).join('')}</ul>`:'<p class="muted">Ninguna.</p>'}</div></div>
+  <h2>Vocabulario nuevo</h2>${newW.length?`<p>${newW.map(e=>`<span class="zh">${esc(e.hz)}</span> ${esc(e.py)} (${esc(e.es)})`).join(' · ')}</p>`:'<p class="muted">No apareció vocabulario nuevo.</p>'}
+  <h2>Siguiente sesión</h2><p class="focus">${esc(focus)}</p>
+  <div class="actions"><button class="primary" data-act="new-session">Nueva sesión</button>${SS.fails.length?`<button class="ghost" data-act="repeat-fails">Repetir los ${Math.min(SS.fails.length,10)} ejercicios difíciles</button>`:''}<button class="ghost" data-act="copy-summary">Copiar resumen</button><button class="ghost" data-act="dl-summary">Descargar resumen</button></div>
+  </section></main>`;}
+function suggestFocus(SS,rows,mist){const parts=[];const worst=rows.slice().sort((a,b)=>a.a-b.a)[0];
+  if(worst&&worst.a<80)parts.push('Practica «'+S[worst.id].name+'» en modo '+(worst.l1<1?'Construir':'Transformar')+'.');
+  const tc={};mist.forEach(m=>tc[m.t]=(tc[m.t]||0)+m.n);const top=Object.entries(tc).sort((a,b)=>b[1]-a[1])[0];
+  if(top)parts.push({gram:'Fíjate en el orden y en las partículas (不/沒, 嗎, 也).',vocab:'Repasa el vocabulario de tu banco antes de empezar.',char:'Repasa los caracteres parecidos (他/她, 臺/台).',py:'Practica los tonos escribiendo pinyin con números.',nat:'Repasa las formas naturales: 你忙嗎, 太熱了.',comp:'Haz una sesión de Escuchar a velocidad 0.75×.'}[top[0]]||'');
+  const acc=SS.sum/SS.n;const mi=METHODS.findIndex(m=>m.id===SS.method);
+  if(acc>=0.85&&mi<3)parts.push('Vas bien con «'+METHODS[mi].name+'». Si te sientes cómoda, prueba «'+METHODS[mi+1].name+'».');
+  if(!parts.length)parts.push('Prueba Práctica mixta con todos los temas para reciclar lo aprendido.');return parts.join(' ');}
+function summaryText(){const SS=SESSION;if(!SS)return '';const acc=SS.n?Math.round(SS.sum/SS.n*100):0;const L=[];
+  L.push('說說看 — resumen de sesión ('+new Date(SS.start).toLocaleDateString('es-MX')+')');L.push('Ejercicios: '+SS.n+' · Precisión: '+acc+'% · XP: +'+SS.xp);
+  L.push('Estructuras: '+Object.keys(SS.sids).map(id=>S[id].name+' ('+Math.round(SS.sids[id].c/SS.sids[id].a*100)+'%, '+LEVELS[levelOf(rec(id))]+')').join('; '));
+  const mist=Object.values(SS.mistakes).sort((a,b)=>b.n-a.n);if(mist.length)L.push('Errores: '+mist.slice(0,5).map(m=>TAGNAME[m.t]+': '+m.m+' ×'+m.n).join(' | '));
+  const ww=Object.keys(SS.wordsWrong);if(ww.length)L.push('Palabras para repasar: '+ww.join(' '));
+  L.push('Siguiente: '+suggestFocus(SS,Object.keys(SS.sids).map(id=>({id,a:Math.round(SS.sids[id].c/SS.sids[id].a*100),l1:levelOf(rec(id))})),mist));return L.join('\n');}
+function progressText(){const L=['說說看 — progreso','Nivel '+levelNum(P.xp)+' · '+P.xp+' XP · '+P.cnt.sessions+' sesiones',''];
+  STRUCT_ORDER.forEach(id=>{const r=rec(id);const a=accOf(r);L.push(S[id].name+': '+LEVELS[levelOf(r)]+(r.a?' · '+r.a+' intentos · '+Math.round((a||0)*100)+'% reciente':''));});
+  const weak=Object.entries(P.w).filter(([k,w])=>w.w>w.c).map(([k])=>k);L.push('','Palabras con más errores: '+(weak.join(' ')||'ninguna'));
+  const rev=STRUCT_ORDER.filter(id=>rec(id).a&&(accOf(rec(id))<0.7||levelOf(rec(id))<2));L.push('Prioridad de repaso: '+(rev.map(id=>S[id].name).join(', ')||'ninguna'));return L.join('\n');}
+
+function bankView(){const bank=fullBank();const q=UI.bankQ.trim().toLowerCase();
+  const rows=bank.filter(e=>(!UI.bankCat||e.cat===UI.bankCat)&&(!UI.bankStatus||e.status===UI.bankStatus||(UI.bankStatus==='tú'&&e.src==='tú'))&&(!q||e.hz.includes(q)||toneless(e.py).includes(toneless(q))||e.es.toLowerCase().includes(q)));
+  const nNew=bank.filter(e=>e.status==='nuevo').length;
+  return `<main class="wrap bank"><section class="card"><h1>Actualizar mi banco</h1>
+  <p class="muted">Añade lo que viste en clase. No se borra ni se cambia nada de lo que ya tienes, y no se aceptan duplicados. Las palabras de categoría <i>objeto</i>, <i>país</i>, <i>idioma</i> y <i>apellido</i> entran solas en los ejercicios de estructuras; las demás aparecen en el repaso de vocabulario.</p>
+  <form id="addone" class="addf"><input id="f-hz" placeholder="字 (tradicional)" lang="zh-Hant-TW" required><input id="f-py" placeholder="pinyin con tonos" required><input id="f-es" placeholder="español" required>
+   <select id="f-cat">${CATS.map(c=>`<option>${c}</option>`).join('')}</select><input id="f-ex" placeholder="ejemplo corto (opcional)" lang="zh-Hant-TW"><button class="primary">Añadir</button></form>
+  <details><summary>Añadir varias a la vez</summary><p class="muted small">Una palabra por línea: <code>字 | pinyin | español | categoría | ejemplo</code></p>
+   <textarea id="f-bulk" rows="5" placeholder="韓國 | Hánguó | Corea | País/lugar | 我是韓國人。"></textarea><button class="primary" data-act="add-bulk">Añadir todas</button></details>
+  ${UI.bankMsg?`<div class="confirm">${UI.bankMsg}</div>`:''}
+  </section>
+  <section class="card"><div class="bhead"><h2>Mi banco · ${bank.length} entradas <span class="muted">(${nNew} nuevas)</span></h2>
+   <div class="filters"><input id="bq" placeholder="Buscar 字, pinyin o español" value="${esc(UI.bankQ)}"><select id="bcat"><option value="">Todas las categorías</option>${CATS.map(c=>`<option ${UI.bankCat===c?'selected':''}>${c}</option>`).join('')}</select>
+   <select id="bst"><option value="">Todas</option><option value="familiar" ${UI.bankStatus==='familiar'?'selected':''}>Familiares</option><option value="nuevo" ${UI.bankStatus==='nuevo'?'selected':''}>Nuevas</option><option value="tú" ${UI.bankStatus==='tú'?'selected':''}>Añadidas por ti</option></select></div></div>
+   <div class="tblwrap"><table class="tbl vocab"><tr><th>字</th><th>Pinyin</th><th>Español</th><th>Categoría</th><th>Ejemplo</th><th>Estado</th></tr>
+   ${rows.map(e=>{const ex=e.ex?{toks:[e.ex],es:''}:exampleFor(e.hz);const hl=UI.lastAdded.includes(e.hz);return `<tr class="${hl?'hl':''}"><td class="zh big">${esc(e.hz)}</td><td>${esc(e.py)}</td><td>${esc(e.es)}</td><td>${esc(e.cat)}</td><td>${ex?`<span class="zh">${esc(tj(ex.toks))}</span>${ex.es?'<br><small class="muted">'+esc(ex.es)+'</small>':''}`:''}</td><td><span class="pill ${e.status==='nuevo'?'new':''}">${e.status==='nuevo'?'Nueva':'Familiar'}</span>${e.src!=='libro'?`<br><small class="muted">${esc(e.src==='tú'?'añadida por ti':e.src)}</small>`:''}</td></tr>`;}).join('')}
+   </table></div></section>
+  ${backupCard()}</main>`;}
+function backupCard(){return `<section class="card"><h2>Respaldo</h2><p class="muted">${esc(saveText().t)}. ${SAVE.remote==='ok'?'Tu banco y tu progreso se guardan en tu cuenta y se cargan al abrir esta página.':'Exporta un código para no perder tu banco ni tu progreso.'}</p>
+  <div class="row"><button class="ghost" data-act="export">Exportar banco y progreso</button><button class="ghost" data-act="dl-export">Descargar archivo</button><button class="ghost" data-act="progress-text">Copiar resumen de progreso</button></div>
+  ${UI.exportText?`<textarea id="exp" rows="4" readonly>${esc(UI.exportText)}</textarea><button class="ghost sm" data-act="copy-export">Copiar código</button>`:''}
+  <details><summary>Importar un respaldo</summary><textarea id="imp" rows="4" placeholder="Pega aquí tu código"></textarea><input type="file" id="impfile" accept=".json,.txt,application/json">
+   <div class="row"><button class="primary" data-act="import" data-mode="bank">Unir vocabulario</button><button class="ghost" data-act="import" data-mode="all">Unir vocabulario y restaurar progreso</button></div></details>
+  ${UI.importMsg?`<div class="confirm">${UI.importMsg}</div>`:''}</section>`;}
+function progressView(){const L=levelNum(P.xp);
+  return `<main class="wrap prog"><section class="card"><h1>Progreso</h1><div class="kpis"><div><b>${L}</b><span>nivel</span></div><div><b>${P.xp}</b><span>XP</span></div><div><b>${P.cnt.sessions}</b><span>sesiones</span></div><div><b>${P.cnt.best}</b><span>mejor racha</span></div></div>
+  <h2>Estructuras</h2><div class="tblwrap"><table class="tbl"><tr><th>Estructura</th><th>Nivel</th><th>Precisión reciente</th><th>Sin pistas</th><th>Escucha</th><th></th></tr>
+  ${STRUCT_ORDER.map(id=>{const r=rec(id);const a=accOf(r);return `<tr><td><span class="zh">${esc(S[id].name)}</span><br><small class="muted">${esc(S[id].cando)}</small></td><td>${lvlPill(id)}</td><td>${a==null?'—':Math.round(a*100)+'%'}</td><td>${r.okNH}</td><td>${r.ear}</td><td><button class="ghost sm" data-act="practice" data-id="${id}">Practicar</button></td></tr>`;}).join('')}</table></div>
+  <p class="muted small">Dominado pide: 8 aciertos sin pistas, 3 tipos de ejercicio, al menos uno escuchando, 2 respuestas escritas o armadas, 4 contextos distintos, 80% reciente y práctica en 2 días distintos.</p>
+  <h2>Logros</h2><div class="achs">${ACH.map(a=>`<div class="ach ${P.ach[a.id]?'on':''}"><b>${esc(a.n)}</b><small>${esc(a.d)}</small></div>`).join('')}</div>
+  <h2>Ajustes</h2><label class="chk"><input type="checkbox" id="pytiles" ${P.prefs.pyTiles?'checked':''}> Mostrar pinyin en todas las fichas (por defecto solo en las palabras nuevas)</label>
+  </section>${fixesCard()}${backupCard()}
+  <section class="card"><h2>Reiniciar progreso</h2><p class="muted">Borra niveles, XP y logros. Tu banco de vocabulario no se toca.</p>${UI.confirmReset?'<button class="danger" data-act="reset" data-c="2">Sí, borrar mi progreso</button> <button class="ghost" data-act="reset" data-c="0">Cancelar</button>':'<button class="ghost" data-act="reset" data-c="1">Reiniciar progreso…</button>'}</section></main>`;}
+
+function fixesCard(){const R=P.fixes.reports;const T={accept:'Respuesta aceptada',pair:'Pregunta y respuesta no coinciden',sentence:'Oración bloqueada',note:'Nota'};
+  return `<section class="card"><h2>Correcciones</h2><p class="muted">Lo que corregiste durante el juego. Funciona de inmediato en esta página. Para arreglarlo de raíz en el generador, copia la lista y pégamela en el chat.</p>
+  ${R.length?`<div class="tblwrap"><table class="tbl"><tr><th>Tipo</th><th>Pregunta / oración</th><th>Esperado</th><th>Tu respuesta</th><th></th></tr>${R.map((r,i)=>`<tr><td>${T[r.type]}<br><small class="muted">${new Date(r.at).toLocaleDateString('es-MX')}</small></td><td class="zh">${esc(r.q)}${r.note?`<br><small class="muted">${esc(r.note)}</small>`:''}</td><td class="zh">${esc(r.exp)}</td><td class="zh">${esc(r.yours)}</td><td>${r.type==='note'?'':`<button class="ghost sm" data-act="undo-fix" data-i="${i}">Deshacer</button>`}</td></tr>`).join('')}</table></div>
+  <div class="row"><button class="ghost" data-act="copy-reports">Copiar lista para Claude</button></div>`:'<p class="muted small">Todavía no hay correcciones. Si un ejercicio está mal, usa «¿Algo está mal en este ejercicio?» debajo de la respuesta.</p>'}</section>`;}
+
+/* ---------- 15. BANCO: AÑADIR, EXPORTAR, IMPORTAR ---------- */
+const HAN=/^[㐀-鿿豈-﫿]+$/;
+function matchCat(c){if(!c)return 'Otro';const t=toneless(c).trim();const f=CATS.find(x=>toneless(x)===t)||CATS.find(x=>toneless(x).startsWith(t.slice(0,5)));if(/objeto/.test(t))return 'Sustantivo (objeto)';return f||'Otro';}
+function addEntries(list){const have=new Set(fullBank().map(e=>normHz(e.hz)));const added=[],dup=[],bad=[];
+  list.forEach(x=>{const hz=toTrad((x.hz||'').trim()).s;const py=(x.py||'').trim(),es=(x.es||'').trim();
+    if(!hz||!HAN.test(hz)||!py||!es){bad.push(x.raw||hz||'(vacía)');return;}
+    if(have.has(normHz(hz))){dup.push(hz);return;}
+    const e={hz,py,es,cat:matchCat(x.cat),ex:(x.ex||'').trim(),src:'tú',status:'nuevo',added:today()};B.added.push(e);have.add(normHz(hz));added.push(e);});
+  if(added.length){P.cnt.added+=added.length;rebuildIndex(fullBank());if(SESSION)SESSION.added.push(...added.map(e=>e.hz));persist();}
+  UI.lastAdded=added.map(e=>e.hz);
+  UI.bankMsg=(added.length?`<b>Añadidas (${added.length}):</b> ${added.map(e=>`<span class="zh">${esc(e.hz)}</span> ${esc(e.py)} · ${esc(e.es)}`).join(' — ')}`:'<b>No se añadió nada.</b>')+
+   (dup.length?`<br>Ya estaban en tu banco y no se modificaron: <span class="zh">${dup.map(esc).join('、')}</span>`:'')+(bad.length?`<br>Faltan datos (字, pinyin y español son obligatorios): ${bad.map(esc).join(' · ')}`:'')+(added.length?'<br>Están resaltadas en la tabla de abajo.':'');
+  if(added.length){UI.bankQ='';UI.bankCat='';UI.bankStatus='';}render();}
+function exportData(){return JSON.stringify({app:'shuoshuokan',v:1,at:new Date().toISOString(),bank:fullBank().map(e=>({hz:e.hz,py:e.py,es:e.es,cat:e.cat,ex:e.ex||'',status:e.status,src:e.src})),prog:P});}
+async function download(name,text,mime){try{const d=window.claude&&await window.claude.use('downloads');if(!d){const u=URL.createObjectURL(new Blob([text],{type:mime||'text/plain'}));const a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),2000);flash('Archivo descargado.');return true;}await d.save({filename:name,data:new Blob([text],{type:mime||'text/plain'})});flash('Archivo listo.');return true;}catch(e){flash(e&&e.code==='declined'?'Descarga cancelada.':'No se pudo descargar. Usa “Copiar”.');return false;}}
+async function copy(text,sel){try{await navigator.clipboard.writeText(text);flash('Copiado.');}catch(e){const el=sel&&document.querySelector(sel);if(el){el.focus();el.select();flash('Selecciona y copia con Ctrl/Cmd + C.');}else flash('No se pudo copiar.');}}
+function doImport(text,mode){let d;try{d=JSON.parse(text);}catch(e){UI.importMsg='Ese código no es válido. Pega el texto completo que exportaste.';render();return;}
+  if(!d||d.app!=='shuoshuokan'||!Array.isArray(d.bank)){UI.importMsg='Ese código no es un respaldo de 說說看.';render();return;}
+  const base=new Set(BASE_BANK.map(e=>e.hz));const extra=d.bank.filter(e=>!base.has(e.hz));const have=new Set(fullBank().map(e=>normHz(e.hz)));let n=0;
+  extra.forEach(e=>{if(e.hz&&!have.has(normHz(e.hz))){B.added.push({hz:e.hz,py:e.py,es:e.es,cat:e.cat||'Otro',ex:e.ex||'',src:e.src||'tú',status:e.status||'nuevo'});have.add(normHz(e.hz));n++;}});
+  d.bank.forEach(e=>{if(base.has(e.hz)&&e.status==='familiar')B.status[e.hz]='familiar';});
+  let msg=`Vocabulario: ${n} entradas nuevas unidas; lo que ya tenías no cambió.`;
+  if(mode==='all'&&d.prog){P=normProg(d.prog);P.updatedAt=Date.now();msg+=' Progreso restaurado desde el respaldo.';}
+  rebuildIndex(fullBank());persist();UI.importMsg=msg;render();}
+
+/* ---------- 16. EVENTOS ---------- */
+document.addEventListener('click',e=>{const a=e.target.closest('[data-act]');if(!a||a.tagName==='SELECT')return;const act=a.dataset.act;
+  switch(act){
+  case 'nav':stopSpeech();UI.screen=a.dataset.to;if(UI.screen==='home'&&SESSION&&SESSION.done)SESSION=null;UI.bankMsg=null;UI.importMsg=null;UI.confirmReset=false;render();window.scrollTo(0,0);break;
+  case 'sel-topic':UI.sel={type:'topic',id:+a.dataset.id};render();break;
+  case 'sel-all':UI.sel={type:'all'};render();break;
+  case 'sel-struct':UI.sel={type:'struct',id:a.dataset.id};render();break;
+  case 'toggle-structs':UI.showStructs=!(UI.showStructs||UI.sel.type==='struct');if(!UI.showStructs&&UI.sel.type==='struct')UI.sel={type:'topic',id:1};render();break;
+  case 'mode':P.prefs.mode=a.dataset.id;persist('prog');render();break;
+  case 'sit':UI.sit=a.dataset.id;render();break;
+  case 'method':P.prefs.method=a.dataset.id;persist('prog');render();break;
+  case 'goal':P.prefs.goal=+a.dataset.n;persist('prog');render();break;
+  case 'start':case 'new-session':startSession();break;
+  case 'resume':UI.screen='play';nextExercise();break;
+  case 'practice':UI.sel={type:'struct',id:a.dataset.id};P.prefs.mode='mixed';UI.screen='home';startSession();break;
+  case 'play':if(UI.ex)speak(UI.ex.audio||(UI.ex.question&&UI.ex.question.toks)||[]);break;
+  case 'reveal':UI.revealed++;render();break;
+  case 'hint':UI.hints=Math.min(hintCount(UI.ex),UI.hints+1);render();break;
+  case 'opt':if(UI.res)break;UI.pick=+a.dataset.i;render();break;
+  case 'tile':{if(UI.res)break;const i=+a.dataset.i;UI.tiles.pool[i].used=true;UI.tiles.sel.push(i);UI.tSel=-1;render();break;}
+  case 'btile':{if(UI.res)break;const k=+a.dataset.k;UI.tSel=UI.tSel===k?-1:k;render();break;}
+  case 'tmove':{const T=UI.tiles,k=UI.tSel,d=+a.dataset.d,j=k+d;if(k<0||j<0||j>=T.sel.length)break;[T.sel[k],T.sel[j]]=[T.sel[j],T.sel[k]];UI.tSel=j;render();break;}
+  case 'tdel':{const T=UI.tiles,k=UI.tSel;if(k<0)break;const pi=T.sel.splice(k,1)[0];T.pool[pi].used=false;UI.tSel=-1;render();break;}
+  case 'tclear':UI.tiles.sel.forEach(pi=>UI.tiles.pool[pi].used=false);UI.tiles.sel=[];UI.tSel=-1;render();break;
+  case 'check':{const el=document.getElementById('ans');if(el)UI.lastTyped=el.value;check();break;}
+  case 'self':selfGrade(a.dataset.ok==='1');break;
+  case 'fix-open':UI.fixOpen=true;render();break;
+  case 'fix-close':UI.fixOpen=false;render();break;
+  case 'fix':fixAction(a.dataset.k);break;
+  case 'undo-fix':undoFix(+a.dataset.i);break;
+  case 'copy-reports':copy(reportsText());break;
+  case 'next':stopSpeech();nextExercise();window.scrollTo(0,0);break;
+  case 'repeat':repeatExercise();break;
+  case 'end':endSession();window.scrollTo(0,0);break;
+  case 'repeat-fails':{const f=SESSION.fails.slice(-10);startSession(true);SESSION.queue=f;nextFromQueue();break;}
+  case 'copy-summary':copy(summaryText());break;
+  case 'dl-summary':download('shuoshuokan-resumen.txt',summaryText());break;
+  case 'add-bulk':{const t=document.getElementById('f-bulk').value;const list=t.split('\n').map(l=>l.trim()).filter(Boolean).map(l=>{const [hz,py,es,cat,ex]=l.split(/\s*[|｜]\s*/);return {hz,py,es,cat,ex,raw:l};});addEntries(list);break;}
+  case 'export':UI.exportText=exportData();render();break;
+  case 'copy-export':copy(UI.exportText,'#exp');break;
+  case 'dl-export':download('shuoshuokan-respaldo.json',exportData(),'application/json');break;
+  case 'progress-text':copy(progressText());break;
+  case 'import':{const t=document.getElementById('imp').value.trim();const f=document.getElementById('impfile');const mode=a.dataset.mode;
+    if(f&&f.files&&f.files[0]){f.files[0].text().then(x=>doImport(x,mode));}else if(t)doImport(t,mode);else{UI.importMsg='Pega tu código o elige un archivo.';render();}break;}
+  case 'reset':{const c=+a.dataset.c;if(c===1){UI.confirmReset=true;}else if(c===2){const keep=P.prefs;P=defProg();P.prefs=keep;persist('prog');UI.confirmReset=false;flash('Progreso reiniciado.');}else UI.confirmReset=false;render();break;}
+  }});
+function nextFromQueue(){const q=SESSION.queue;if(q&&q.length){const ex=q.shift();const fresh={...ex,repeated:0};if(fresh.answer.type==='mc')fresh.answer={...fresh.answer,opts:shuffle(fresh.answer.opts)};else fresh.answer={...fresh.answer,pool:shuffle(fresh.answer.pool)};nextExercise(fresh);}else nextExercise();}
+document.addEventListener('change',e=>{const t=e.target;
+  if(t.dataset.act==='rate'){P.prefs.rate=+t.value;persist('prog');}
+  else if(t.dataset.act==='voice'){P.prefs.voice=t.value;persist('prog');}
+  else if(t.dataset.act==='method-change'){P.prefs.method=t.value;persist('prog');const ex=UI.ex;if(!ex||UI.res)return;
+    const rebuilt=ex.kind==='vocab'?ex:(BUILDERS[ex.kind](ex.st,{lvl:levelOf(rec(ex.sids[0])),method:t.value,fmt:ex.fmt,sit:ex.sit,Q:ex.Q,p:ex.kind==='subst'||ex.kind==='build'?undefined:undefined})||ex);
+    UI.res=null;UI.pick=null;UI.tSel=-1;UI.ex=rebuilt;UI.tiles=rebuilt.answer.type==='free'?{pool:rebuilt.answer.pool.map((x,i)=>({t:x,i,used:false})),sel:[]}:null;render();}
+  else if(t.id==='bcat'){UI.bankCat=t.value;render();}else if(t.id==='bst'){UI.bankStatus=t.value;render();}
+  else if(t.id==='pytiles'){P.prefs.pyTiles=t.checked;persist('prog');}});
+document.addEventListener('input',e=>{if(e.target.id==='bq'){UI.bankQ=e.target.value;clearTimeout(window.__bq);window.__bq=setTimeout(()=>{const pos=e.target.selectionStart;render();const el=document.getElementById('bq');if(el){el.focus();try{el.setSelectionRange(pos,pos);}catch(_){}}},250);}});
+document.addEventListener('submit',e=>{if(e.target.id==='addone'){e.preventDefault();const g=id=>document.getElementById(id).value;addEntries([{hz:g('f-hz'),py:g('f-py'),es:g('f-es'),cat:g('f-cat'),ex:g('f-ex')}]);}});
+document.addEventListener('keydown',e=>{if(UI.screen!=='play'||!UI.ex)return;const tag=(e.target.tagName||'').toLowerCase();
+  if(e.key==='Enter'&&!e.isComposing){if(tag==='select'||tag==='textarea')return;e.preventDefault();if(UI.res){const nb=document.getElementById('nextbtn');if(nb)nb.click();}else{const el=document.getElementById('ans');if(el)UI.lastTyped=el.value;check();}return;}
+  if(tag==='input'||tag==='textarea'||tag==='select')return;
+  if(/^[1-4]$/.test(e.key)&&UI.ex.answer.type==='mc'&&!UI.res){const i=+e.key-1;if(i<UI.ex.answer.opts.length){UI.pick=i;render();}}});
+
+/* ---------- 17. ARRANQUE ---------- */
+function boot(){loadLocal();try{localStorage.setItem('__t','1');localStorage.removeItem('__t');SAVE.local=true;}catch(e){}rebuildIndex(fullBank());if(SESSION&&!SESSION.sel)SESSION=null;
+  if(SESSION){SESSION.retry=SESSION.retry||[];SESSION.fails=[];}
+  UI.sel=SESSION&&SESSION.sel?SESSION.sel:UI.sel;render();
+  if(TTS){loadVoices();speechSynthesis.onvoiceschanged=()=>{loadVoices();if(UI.screen==='play')render();};}
+  initRemote();}
+boot();
+
+</script>
+
+</body>
+</html>
