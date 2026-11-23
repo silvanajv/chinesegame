@@ -2,7 +2,7 @@
 
 Juego para practicar chino mandarín con caracteres tradicionales. No se trata de memorizar diálogos: practicas **estructuras gramaticales**. Escuchas preguntas, cambias piezas de una oración, la transformas y construyes respuestas propias.
 
-**Jugar:** https://TU-USUARIO.github.io/shuoshuokan/
+**Jugar:** https://github.com/silvanajv/chinesegame
 
 Funciona en el navegador, en computadora o celular. No necesitas crear cuenta ni instalar nada. Las instrucciones están en inglés por defecto; en **Settings → Instruction language** puedes elegir inglés, español o los dos.
 
