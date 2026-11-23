@@ -2,7 +2,7 @@
 
 Juego para practicar chino mandarín con caracteres tradicionales. No se trata de memorizar diálogos: practicas **estructuras gramaticales**. Escuchas preguntas, cambias piezas de una oración, la transformas y construyes respuestas propias.
 
-**Jugar:** https://silvanajv.github.io/chinesegame/
+**Jugar:** https://TU-USUARIO.github.io/shuoshuokan/
 
 Funciona en el navegador, en computadora o celular. No necesitas crear cuenta ni instalar nada. Las instrucciones están en inglés por defecto; en **Settings → Instruction language** puedes elegir inglés, español o los dos.
 
@@ -10,37 +10,42 @@ Funciona en el navegador, en computadora o celular. No necesitas crear cuenta ni
 
 ## Cómo se juega
 
-Al entrar ves tu racha de días, tu progreso, el botón **Continuar aprendiendo** (retoma tu última práctica) y cuatro actividades:
-- **學 Aprender:** Hanzi Sprint, para conocer caracteres nuevos.
-- **認 Reconocer:** preguntas en audio.
-- **寫 Practicar:** estructuras gramaticales y vocabulario por tema.
-- **複 Repasar:** lo que toca repasar hoy.
+El juego te guía. Al entrar ves **Today's session**: una sesión de unos 20 minutos con 4 pasos en orden. Solo pulsa **Start** y el juego te dice qué hacer en cada paso.
 
-En **寫 Practicar**:
+| Paso | Qué haces |
+|---|---|
+| 複 Repasar | Lo que toca repasar hoy, empezando por tus caracteres difíciles. Si no hay nada pendiente, se salta solo. |
+| 學 Aprender | Una ronda de **Hanzi Sprint** con caracteres nuevos: primero sin reloj para aprender, luego rápida. |
+| 似 Parecidos | Practicas juntos caracteres que se confunden (por ejemplo 喝 / 渴, 今 / 會, 天 / 太 / 大). |
+| 用 Usar | Usas los caracteres en oraciones: escuchar, sustituir, transformar y construir. |
 
-1. **Elige qué practicar** en la lista: todos los temas, un tema (Nombres, Nacionalidad, Clima, Gustos, Objetos), un tema solo de vocabulario (como Compras y dinero, o los temas que tú crees) o una estructura concreta, como `有 / 沒有`.
-2. **Elige un modo.**
-   | Modo | Qué haces |
-   |---|---|
-   | Escuchar | Oyes una pregunta sin verla escrita y eliges qué significa o qué responder. |
-   | Sustituir | Cambias una o varias piezas de una oración sin romper la estructura. |
-   | Transformar | Conviertes una oración: negativa, pregunta con 嗎, pregunta A-不-A, plural… |
-   | Construir | Ordenas palabras, completas huecos o traduces del español. |
-   | Conversar | Te hacen preguntas inesperadas de situaciones reales, como conocer a alguien o hablar del clima. |
-   | Práctica mixta | Combina todos los modos según tu nivel. |
-3. **Elige cómo responder.** Puedes cambiarlo en cualquier momento.
-   - **Opción múltiple:** para empezar.
-   - **Seleccionar caracteres:** armas la respuesta con fichas.
-   - **Pinyin:** con o sin tonos (`ni hao`, `nǐ hǎo` o `ni3 hao3`).
-   - **Teclado chino:** cuando ya sepas escribir con pinyin o 注音.
+Un reloj te muestra el tiempo. Puedes pausar y seguir después; la sesión del día se queda guardada.
 
-Si te atoras, usa **Pista**. Son 4 niveles: estructura, pista gramatical, oración a medias y otro ejemplo. Nunca te revela la respuesta antes de que respondas.
+### Configuración (Settings)
+Lo que antes se preguntaba en cada actividad ahora está en **Settings**, y se elige una sola vez:
+- **Duración diaria:** 10, 20 o 30 minutos.
+- **Caracteres nuevos desde:** Lección 1 a 4.
+- **Tema** de las oraciones (todos los temas, un tema o una estructura).
+- **Forma de responder:** opción múltiple, fichas, pinyin o teclado chino.
+- **Idioma:** instrucciones, significados y ejemplos en inglés (por defecto), español o ambos.
+
+### Caracteres difíciles
+Si fallas un carácter 2 veces, se marca como **Difícil**. Desde ese momento sale **todos los días** con repaso activo (recordar el significado, escribirlo desde el sonido, completar una oración), hasta que lo aciertes sin pistas **3 días seguidos**. En la pantalla principal ves cuántos tienes y puedes repasarlos al momento.
+
+### My characters
+Tiene tres pestañas:
+- **All:** todo tu vocabulario.
+- **Look-alikes:** caracteres agrupados porque se parecen, suenan igual o comparten componente. Cada grupo tiene un botón para practicarlo.
+- **Hard:** tus caracteres difíciles.
+
+### Práctica libre
+Si quieres practicar algo concreto fuera de la sesión guiada, usa **Free practice** al final de la pantalla principal. En las preguntas, **Pista** tiene 4 niveles: estructura, pista gramatical, oración a medias y otro ejemplo.
 
 ### Hanzi Sprint
-La actividad **學 Aprender** abre Hanzi Sprint, un juego de velocidad para reconocer caracteres. Tiene lecciones de radicales, palabras compuestas, caracteres sueltos y un examen final. Cada lección empieza con una ronda sin reloj para aprender y sigue con una ronda rápida. Puedes pausar con el botón ❚❚ o con la tecla **P**. Si ya avanzaste en otro dispositivo, usa **Desbloquear todas las lecciones** al final de la lista.
+Las lecciones completas (radicales, palabras compuestas, caracteres sueltos y examen final) siguen disponibles en la tarjeta **Hanzi Sprint**. Puedes pausar con ❚❚ o la tecla **P**. Si ya avanzaste en otro dispositivo, usa **Desbloquear todas las lecciones**.
 
 ### Cómo aprende el juego contigo
-- **Repetición espaciada:** cada carácter tiene una "caja" del 0 al 6. Si aciertas sin pistas sube de caja y el siguiente repaso se aleja (10 minutos, 1 día, 3 días, 1 semana, 16 días, 35 días). Si fallas, baja y vuelve pronto. **複 Repasar** te muestra solo lo que toca hoy.
+- **Repetición espaciada:** cada carácter tiene una "caja" del 0 al 6. Si aciertas sin pistas sube de caja y el siguiente repaso se aleja (10 minutos, 1 día, 3 días, 1 semana, 16 días, 35 días). Si fallas, baja y vuelve pronto. El paso **複 Repasar** de la sesión diaria te muestra solo lo que toca hoy.
 - **Recuerdo activo:** primero intentas recordar y después ves la respuesta. Los caracteres nuevos se presentan una vez completos (carácter, sonido, pinyin, 注音, significado, componentes y ejemplo) y luego se practican sin ayuda.
 - **Práctica intercalada:** nunca salen dos veces seguidas el mismo tipo de pregunta ni el mismo carácter. Se alternan significado, pronunciación (escuchar y elegir, elegir el tono), reconocimiento visual, contexto (completar una oración) y componentes.
 - **Componentes:** el juego te muestra las piezas de cada carácter, como 們 = 亻 persona + 門 (suena mén), y te pregunta qué parte da la pista del significado.
@@ -137,6 +142,9 @@ El juego revisa con reglas, sin inteligencia artificial. Acepta respuestas larga
 
 ### ¿Gasta datos o necesita internet?
 Necesita internet para cargar la página la primera vez y las fuentes. Después todo funciona en tu navegador: no hay servidores, cuentas ni inteligencia artificial.
+
+### ¿Funciona en un iPad o iPhone viejo?
+Sí, desde iOS 11 en adelante, en Safari. Si no carga, actualiza iOS a la versión más nueva que permita tu dispositivo y recarga la página.
 
 ### La página no muestra cambios nuevos
 Recarga sin caché: **Ctrl + Shift + R** (Windows) o **Cmd + Shift + R** (Mac).
